@@ -1,4 +1,4 @@
-// Loader Progressivo
+// 1. Sistema do Loader
 let progress = 0;
 const loaderInterval = setInterval(() => {
     progress += Math.floor(Math.random() * 15) + 5;
@@ -15,7 +15,7 @@ const loaderInterval = setInterval(() => {
     }
 }, 100);
 
-// Dark Mode
+// 2. Tema Dark/Light
 const themeBtn = document.getElementById("themeToggle");
 if(themeBtn) {
     themeBtn.onclick = () => {
@@ -26,26 +26,31 @@ if(themeBtn) {
     };
 }
 
-// Data Moçambique
+// 3. Data Atual (Moçambique)
 document.getElementById("calendar").innerText = new Date().toLocaleDateString("pt-MZ");
 
-// --- SCROLL REVEAL (Ajustado para começar do Topo) ---
-const sr = ScrollReveal({
-    origin: 'bottom',
-    distance: '50px',
-    duration: 1000,
-    delay: 200,
-    reset: false
+// 4. Contador de Visitas (Simulação Profissional)
+function updateVisits() {
+    // Usamos o localStorage para simular persistência se a API falhar
+    let visits = localStorage.getItem('visit_count') || 1240;
+    visits = parseInt(visits) + 1;
+    localStorage.setItem('visit_count', visits);
+    
+    // Mostra o número formatado
+    document.getElementById('visits').innerText = visits.toLocaleString();
+}
+updateVisits();
+
+// 5. Animações de Scroll
+const sr = ScrollReveal({ 
+    origin: 'bottom', 
+    distance: '60px', 
+    duration: 1000, 
+    delay: 200, 
+    reset: false 
 });
 
-// Animação imediata para o Topo e Hero
-sr.reveal('.topbar', { origin: 'top', delay: 100 });
-sr.reveal('.navbar', { origin: 'top', delay: 300 });
-sr.reveal('.badge', { origin: 'top', delay: 500 });
-sr.reveal('.hero h1', { delay: 600 });
-sr.reveal('.hero p', { delay: 800 });
-
-// Animação para o resto das seções
-sr.reveal('#sobre', { delay: 400 });
-sr.reveal('.card', { interval: 150 });
-sr.reveal('.contact-card', { interval: 100, origin: 'right' });
+sr.reveal('.badge', { origin: 'top', delay: 400 });
+sr.reveal('.hero h1', { delay: 500 });
+sr.reveal('.card', { interval: 200 });
+sr.reveal('#sobre', { delay: 300 });

@@ -24,27 +24,24 @@ body {
     position: relative;
 }
 
-/* BACKGROUND COM IMAGEM TÉCNICA */
+/* BACKGROUND COM IMAGEM TÉCNICA (MODO CLARO) */
 body::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Imagem de circuitos/tecnologia neutra */
+    top: 0; left: 0; width: 100%; height: 100%;
     background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); 
     background-size: cover;
     background-position: center;
-    opacity: 0.04; /* Quase imperceptível, apenas textura */
+    opacity: 0.05;
     z-index: -1; 
     transition: 0.4s;
     pointer-events: none;
 }
 
+/* AJUSTE DO BACKGROUND (MODO ESCURO) */
 body.dark::before {
-    opacity: 0.02;
-    filter: invert(1); /* Inverte para que as linhas fiquem claras no fundo escuro */
+    opacity: 0.03;
+    filter: invert(1) grayscale(1);
 }
 
 .container { width: 90%; max-width: 1100px; margin: auto; }
@@ -72,7 +69,7 @@ body.dark::before {
 .badge { background: var(--primary); color: white; padding: 8px 18px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-bottom: 25px; display: inline-block; }
 
 .section { padding: 80px 0; }
-.bg-light { background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(5px); } /* Efeito de vidro sobre o fundo */
+.bg-light { background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(8px); }
 body.dark .bg-light { background: rgba(15, 23, 42, 0.5); }
 
 .text-left { max-width: 850px; margin: auto; line-height: 1.8; }
@@ -87,6 +84,10 @@ body.dark .bg-light { background: rgba(15, 23, 42, 0.5); }
 .contact-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
 .contact-card { display: flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 50px; text-decoration: none; color: white; font-weight: 700; font-size: 0.9rem; transition: 0.3s; }
 .whatsapp { background: #10b981; } .call { background: var(--primary); } .email { background: #6366f1; }
-.contact-card:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+
+/* Visitor Counter */
+.visitor-counter { margin-top: 20px; font-size: 0.8rem; color: #64748b; display: flex; justify-content: center; align-items: center; gap: 8px; }
+.visitor-counter i { color: var(--primary); }
+#visits { font-weight: bold; color: var(--text); }
 
 footer { text-align: center; padding: 60px; background: #0f172a; color: #64748b; font-size: 0.85rem; }
