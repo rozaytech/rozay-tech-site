@@ -1,4 +1,4 @@
-// Loader
+// Sistema de Carregamento (Loader)
 let progress = 0;
 const loaderInterval = setInterval(() => {
     progress += Math.floor(Math.random() * 15) + 5;
@@ -15,30 +15,30 @@ const loaderInterval = setInterval(() => {
     }
 }, 100);
 
-// Dark Mode
+// Alternar entre Modo Claro e Escuro
 const themeBtn = document.getElementById("themeToggle");
-themeBtn.onclick = () => {
-    document.body.classList.toggle("dark");
-    const icon = themeBtn.querySelector("i");
-    icon.classList.toggle("fa-moon");
-    icon.classList.toggle("fa-sun");
-};
+if(themeBtn) {
+    themeBtn.onclick = () => {
+        document.body.classList.toggle("dark");
+        const icon = themeBtn.querySelector("i");
+        icon.classList.toggle("fa-moon");
+        icon.classList.toggle("fa-sun");
+    };
+}
 
-// Data
+// Data em Tempo Real (Moçambique)
 document.getElementById("calendar").innerText = new Date().toLocaleDateString("pt-MZ");
 
-// --- SUGESTÃO MASTER: SCROLL REVEAL ---
-const sr = ScrollReveal({
-    origin: 'bottom',
-    distance: '60px',
-    duration: 1000,
-    delay: 200,
-    reset: false // A animação acontece apenas uma vez
+// Configuração das Animações (ScrollReveal)
+const sr = ScrollReveal({ 
+    origin: 'bottom', 
+    distance: '60px', 
+    duration: 1000, 
+    delay: 200, 
+    reset: false 
 });
 
-sr.reveal('.hero h1', {});
-sr.reveal('.hero p', { delay: 400 });
-sr.reveal('.badge', { origin: 'top', delay: 500 });
-sr.reveal('.card', { interval: 200 }); // Cards aparecem em sequência
-sr.reveal('#sobre h2, #sobre p', { interval: 200 });
-sr.reveal('.contact-card', { interval: 150, origin: 'right' });
+sr.reveal('.badge', { origin: 'top', delay: 400 });
+sr.reveal('.hero h1', { delay: 500 });
+sr.reveal('.card', { interval: 200 });
+sr.reveal('#sobre', { delay: 300 });
