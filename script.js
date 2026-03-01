@@ -1,4 +1,4 @@
-// Sistema de Carregamento (Loader)
+// Loader Progressivo
 let progress = 0;
 const loaderInterval = setInterval(() => {
     progress += Math.floor(Math.random() * 15) + 5;
@@ -15,7 +15,7 @@ const loaderInterval = setInterval(() => {
     }
 }, 100);
 
-// Alternar entre Modo Claro e Escuro
+// Dark Mode
 const themeBtn = document.getElementById("themeToggle");
 if(themeBtn) {
     themeBtn.onclick = () => {
@@ -26,19 +26,26 @@ if(themeBtn) {
     };
 }
 
-// Data em Tempo Real (Moçambique)
+// Data Moçambique
 document.getElementById("calendar").innerText = new Date().toLocaleDateString("pt-MZ");
 
-// Configuração das Animações (ScrollReveal)
-const sr = ScrollReveal({ 
-    origin: 'bottom', 
-    distance: '60px', 
-    duration: 1000, 
-    delay: 200, 
-    reset: false 
+// --- SCROLL REVEAL (Ajustado para começar do Topo) ---
+const sr = ScrollReveal({
+    origin: 'bottom',
+    distance: '50px',
+    duration: 1000,
+    delay: 200,
+    reset: false
 });
 
-sr.reveal('.badge', { origin: 'top', delay: 400 });
-sr.reveal('.hero h1', { delay: 500 });
-sr.reveal('.card', { interval: 200 });
-sr.reveal('#sobre', { delay: 300 });
+// Animação imediata para o Topo e Hero
+sr.reveal('.topbar', { origin: 'top', delay: 100 });
+sr.reveal('.navbar', { origin: 'top', delay: 300 });
+sr.reveal('.badge', { origin: 'top', delay: 500 });
+sr.reveal('.hero h1', { delay: 600 });
+sr.reveal('.hero p', { delay: 800 });
+
+// Animação para o resto das seções
+sr.reveal('#sobre', { delay: 400 });
+sr.reveal('.card', { interval: 150 });
+sr.reveal('.contact-card', { interval: 100, origin: 'right' });
