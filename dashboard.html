@@ -6,30 +6,26 @@
     <title>RozayTech | NOC Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
     <link rel="stylesheet" href="dash-style.css">
 </head>
 <body class="dash-body">
     
-    <aside class="sidebar">
+    <button id="menu-toggle" class="menu-btn"><i class="fa-solid fa-bars"></i></button>
+
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">Rozay<span>Admin</span></div>
         <nav class="side-nav">
-            <a href="#" id="nav-resumo" onclick="navigateTo('resumo', this)" class="active">
-                <i class="fa-solid fa-chart-pie"></i> Centro de Operações
-            </a>
-            <a href="#" id="nav-clientes" onclick="navigateTo('clientes', this)">
-                <i class="fa-solid fa-users"></i> Gestão de Clientes
-            </a>
-            <a href="#" id="nav-infra" onclick="navigateTo('infra', this)">
-                <i class="fa-solid fa-tower-broadcast"></i> Infraestrutura
-            </a>
+            <a href="#" id="nav-resumo" onclick="navigateTo('resumo', this)" class="active"><i class="fa-solid fa-chart-pie"></i> Operações</a>
+            <a href="#" id="nav-clientes" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-users"></i> Clientes</a>
+            <a href="#" id="nav-infra" onclick="navigateTo('infra', this)"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
             <div class="nav-divider"></div>
-            <a href="index.html" class="back-link">
-                <i class="fa-solid fa-house"></i> Voltar ao Site
-            </a>
-            <a href="#" onclick="logout()" class="logout-link">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i> Terminar Sessão
-            </a>
+            <a href="index.html" class="back-link"><i class="fa-solid fa-house"></i> Voltar ao Site</a>
+            <a href="#" onclick="logout()" class="logout-link"><i class="fa-solid fa-power-off"></i> Sair</a>
         </nav>
     </aside>
 
@@ -40,8 +36,12 @@
                 <p id="current-time-dash"></p>
             </div>
             <div class="user-profile">
-                <div class="status-indicator"><span class="pulse-dot"></span> SISTEMA ATIVO</div>
-                <div class="user-avatar">R</div>
+                <div class="status-indicator"><span class="pulse-dot"></span> NOC ATIVO</div>
+                <div class="user-info-text">
+                    <span id="logged-user-name">Usuário</span>
+                    <small>Engenheiro de Redes</small>
+                </div>
+                <div class="user-avatar" id="user-initial">R</div>
             </div>
         </header>
 
@@ -52,28 +52,29 @@
                     <div class="stat-data"><h3 id="count-starlinks">0</h3><p>Starlinks</p></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon green"><i class="fa-solid fa-link"></i></div>
-                    <div class="stat-data"><h3 id="count-ptp">0</h3><p>Links PtP</p></div>
+                    <div class="stat-icon green"><i class="fa-solid fa-network-wired"></i></div>
+                    <div class="stat-data"><h3 id="count-cabeamento">0</h3><p>Cabeamento</p></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <div class="stat-data"><h3 id="count-alerts">0</h3><p>Alertas Ativos</p></div>
+                    <div class="stat-icon red"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="stat-data"><h3 id="count-alerts">0</h3><p>Alertas</p></div>
                 </div>
             </div>
             <div class="chart-container">
-                <h4>Distribuição de Infraestrutura</h4>
+                <h4>Estatísticas de Infraestrutura</h4>
                 <canvas id="meuGrafico"></canvas>
             </div>
         </section>
 
         <section id="content-clientes" class="dash-section" style="display: none;">
             <div class="table-section">
-                <h3>Base de Dados de Clientes</h3>
+                <div class="table-ctrl">
+                    <h3>Gestão de Redes</h3>
+                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> Exportar</button>
+                </div>
                 <div class="table-responsive">
                     <table class="dash-table">
-                        <thead>
-                            <tr><th>Cliente</th><th>Tecnologia</th><th>Localização</th><th>Estado</th><th>Ações</th></tr>
-                        </thead>
+                        <thead><tr><th>Cliente</th><th>Tecnologia</th><th>Local</th><th>Estado</th><th>Ação</th></tr></thead>
                         <tbody id="clientTableBody"></tbody>
                     </table>
                 </div>
@@ -81,28 +82,30 @@
         </section>
 
         <section id="content-infra" class="dash-section" style="display: none;">
-            <div class="placeholder-box">Módulo de Engenharia RF aguardando parâmetros...</div>
+            <div class="infra-placeholder">
+                <i class="fa-solid fa-microchip"></i>
+                <p>Módulo de Análise RF Faume Muarabo v1.0</p>
+                <span>Aguardando telemetria dos satélites...</span>
+            </div>
         </section>
     </main>
 
-    <button class="btn-primary-float" onclick="toggleModal()"><i class="fa-solid fa-plus"></i> Novo Cliente</button>
+    <button class="btn-float" onclick="toggleModal()"><i class="fa-solid fa-plus"></i></button>
 
     <div id="modalCliente" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header"><h3>Novo Registro</h3><button onclick="toggleModal()">&times;</button></div>
+            <h3>Nova Instalação</h3>
             <form id="formCliente">
-                <div class="form-group"><label>Nome</label><input type="text" id="nome" required></div>
-                <div class="form-group">
-                    <label>Tecnologia</label>
-                    <select id="tech">
-                        <option value="Starlink">Starlink Business</option>
-                        <option value="PtP">Ponto-a-Ponto (PtP)</option>
-                        <option value="Fibra">Fibra Óptica</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>Cidade/Província</label><input type="text" id="local" required></div>
-                <button type="submit" class="btn-save">Registar Instalação</button>
+                <input type="text" id="nome" placeholder="Cliente" required>
+                <select id="tech">
+                    <option value="Starlink">Starlink Business</option>
+                    <option value="Cabeamento">Cabeamento Estruturado</option>
+                    <option value="PtP">Link PtP</option>
+                </select>
+                <input type="text" id="local" placeholder="Província" required>
+                <button type="submit" class="btn-save">Salvar Dados</button>
             </form>
+            <button onclick="toggleModal()" class="btn-close">Fechar</button>
         </div>
     </div>
 

@@ -1,15 +1,19 @@
-// PROTEÇÃO E LOGOUT
+// PROTEÇÃO E IDENTIFICAÇÃO
 if (localStorage.getItem('rozay_auth') !== 'true') window.location.href = "login.html";
 
-function logout() {
-    localStorage.removeItem('rozay_auth');
-    window.location.href = "login.html";
-}
+const userName = localStorage.getItem('rozay_user') || "Engenheiro";
+document.getElementById('logged-user-name').innerText = userName;
+document.getElementById('user-initial').innerText = userName.charAt(0).toUpperCase();
 
-// PERSISTÊNCIA (BASE DE DADOS NO NAVEGADOR)
+// MENU HAMBÚRGUER
+document.getElementById('menu-toggle').onclick = () => {
+    document.getElementById('sidebar').classList.toggle('hidden');
+};
+
+// BANCO DE DADOS
 let clientes = JSON.parse(localStorage.getItem('rozay_db')) || [
-    { nome: "Porto de Maputo", tech: "Starlink", local: "Maputo", status: "online" },
-    { nome: "Hotel Tofo", tech: "PtP", local: "Inhambane", status: "online" }
+    { nome: "Hospital Central", tech: "Cabeamento", local: "Maputo", status: "online" },
+    { nome: "Complexo Faume", tech: "Starlink", local: "Tete", status: "online" }
 ];
 
 let meuGrafico = null;
@@ -19,73 +23,45 @@ function salvar() {
     updateStats();
 }
 
-// NAVEGAÇÃO
-function navigateTo(menuKey, element) {
-    const sections = ['content-resumo', 'content-clientes', 'content-infra'];
-    sections.forEach(id => document.getElementById(id).style.display = 'none');
-    document.getElementById('content-' + menuKey).style.display = 'block';
+function navigateTo(menu, el) {
+    ['resumo', 'clientes', 'infra'].forEach(s => document.getElementById('content-'+s).style.display = 'none');
+    document.getElementById('content-'+menu).style.display = 'block';
     document.querySelectorAll('.side-nav a').forEach(a => a.classList.remove('active'));
-    element.classList.add('active');
-    if(menuKey === 'resumo') initChart();
-    if(menuKey === 'clientes') renderTable();
+    el.classList.add('active');
+    if(menu === 'resumo') initChart();
+    if(menu === 'clientes') renderTable();
+    if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('hidden');
 }
 
-// GRÁFICOS DINÂMICOS (REAGEM AOS DADOS)
 function initChart() {
-    const canvas = document.getElementById('meuGrafico');
-    if(!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = document.getElementById('meuGrafico').getContext('2d');
     if(meuGrafico) meuGrafico.destroy();
     
-    const counts = {
+    const data = {
         Starlink: clientes.filter(c => c.tech === "Starlink").length,
-        PtP: clientes.filter(c => c.tech === "PtP").length,
-        Fibra: clientes.filter(c => c.tech === "Fibra").length
+        Cabeamento: clientes.filter(c => c.tech === "Cabeamento").length,
+        PtP: clientes.filter(c => c.tech === "PtP").length
     };
 
     meuGrafico = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: Object.keys(counts),
-            datasets: [{
-                data: Object.values(counts),
-                backgroundColor: ['#2563eb', '#10b981', '#f59e0b'],
-                borderWidth: 0,
-                hoverOffset: 20
-            }]
+            labels: Object.keys(data),
+            datasets: [{ data: Object.values(data), backgroundColor: ['#2563eb', '#10b981', '#f59e0b'] }]
         },
-        options: { 
-            responsive: true, 
-            maintainAspectRatio: false,
-            plugins: { legend: { position: 'bottom', labels: { padding: 20, font: { weight: 'bold' } } } }
-        }
+        options: { responsive: true, maintainAspectRatio: false }
     });
 }
 
-// SIMULAÇÃO DE REDE (ALERTA EM TEMPO REAL)
-setInterval(() => {
-    if(clientes.length > 0) {
-        // Chance de 15% de um status mudar a cada 10 segundos
-        if(Math.random() > 0.85) {
-            let i = Math.floor(Math.random() * clientes.length);
-            clientes[i].status = (clientes[i].status === 'online') ? 'offline' : 'online';
-            renderTable();
-            salvar();
-        }
-    }
-}, 10000);
-
-// TABELA E ESTATÍSTICAS
 function renderTable() {
     const tbody = document.getElementById("clientTableBody");
-    if(!tbody) return;
     tbody.innerHTML = clientes.map((c, i) => `
         <tr>
             <td><strong>${c.nome}</strong></td>
-            <td><span style="font-size: 11px; font-weight:bold; color:#64748b">${c.tech}</span></td>
+            <td>${c.tech}</td>
             <td>${c.local}</td>
             <td><span class="status-badge ${c.status}">${c.status}</span></td>
-            <td><button onclick="eliminar(${i})" style="color:#ef4444; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash-can"></i></button></td>
+            <td><button onclick="eliminar(${i})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
         </tr>
     `).join('');
     updateStats();
@@ -93,11 +69,28 @@ function renderTable() {
 
 function updateStats() {
     document.getElementById("count-starlinks").innerText = clientes.filter(c => c.tech === "Starlink").length;
-    document.getElementById("count-ptp").innerText = clientes.filter(c => c.tech === "PtP").length;
+    document.getElementById("count-cabeamento").innerText = clientes.filter(c => c.tech === "Cabeamento").length;
     document.getElementById("count-alerts").innerText = clientes.filter(c => c.status === "offline").length;
 }
 
-// OPERAÇÕES
+// RELATÓRIO PDF
+function gerarRelatorioPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(20); doc.text("ROZAY TECH SOLUTIONS - NOC", 14, 20);
+    doc.setFontSize(10); doc.text("Responsável: " + userName, 14, 28);
+    doc.text("Data: " + new Date().toLocaleString(), 14, 34);
+
+    const rows = clientes.map(c => [c.nome, c.tech, c.local, c.status.toUpperCase()]);
+    doc.autoTable({
+        startY: 40,
+        head: [['CLIENTE', 'TECNOLOGIA', 'LOCALIZAÇÃO', 'STATUS']],
+        body: rows,
+        headStyles: { fillColor: [15, 23, 42] }
+    });
+    doc.save("Relatorio_NOC_RozayTech.pdf");
+}
+
 document.getElementById("formCliente").onsubmit = function(e) {
     e.preventDefault();
     clientes.push({
@@ -113,11 +106,7 @@ document.getElementById("formCliente").onsubmit = function(e) {
 };
 
 function eliminar(i) {
-    if(confirm("Remover sistema da monitorização?")) {
-        clientes.splice(i, 1);
-        salvar();
-        renderTable();
-    }
+    if(confirm("Eliminar registro?")) { clientes.splice(i, 1); salvar(); renderTable(); }
 }
 
 function toggleModal() {
@@ -125,8 +114,13 @@ function toggleModal() {
     m.style.display = (m.style.display === "flex") ? "none" : "flex";
 }
 
+function logout() {
+    localStorage.clear();
+    window.location.href = "login.html";
+}
+
 window.onload = () => {
-    document.getElementById("current-time-dash").innerText = new Date().toLocaleString('pt-MZ');
+    document.getElementById("current-time-dash").innerText = new Date().toLocaleString();
     renderTable();
     initChart();
 };
