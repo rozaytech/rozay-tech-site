@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RozayTech | NOC Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="dash-style.css">
+</head>
+<body class="dash-body">
+    
+    <aside class="sidebar">
+        <div class="sidebar-logo">Rozay<span>Admin</span></div>
+        <nav class="side-nav">
+            <a href="#" id="nav-resumo" onclick="navigateTo('resumo', this)" class="active">
+                <i class="fa-solid fa-chart-pie"></i> Centro de Operações
+            </a>
+            <a href="#" id="nav-clientes" onclick="navigateTo('clientes', this)">
+                <i class="fa-solid fa-users"></i> Gestão de Clientes
+            </a>
+            <a href="#" id="nav-infra" onclick="navigateTo('infra', this)">
+                <i class="fa-solid fa-tower-broadcast"></i> Infraestrutura
+            </a>
+            <div class="nav-divider"></div>
+            <a href="index.html" class="back-link">
+                <i class="fa-solid fa-house"></i> Voltar ao Site
+            </a>
+            <a href="#" onclick="logout()" class="logout-link">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Terminar Sessão
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="dash-header">
+            <div class="header-info">
+                <h1 id="page-title">Monitorização em Tempo Real</h1>
+                <p id="current-time-dash"></p>
+            </div>
+            <div class="user-profile">
+                <div class="status-indicator"><span class="pulse-dot"></span> SISTEMA ATIVO</div>
+                <div class="user-avatar">R</div>
+            </div>
+        </header>
+
+        <section id="content-resumo" class="dash-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fa-solid fa-satellite"></i></div>
+                    <div class="stat-data"><h3 id="count-starlinks">0</h3><p>Starlinks</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fa-solid fa-link"></i></div>
+                    <div class="stat-data"><h3 id="count-ptp">0</h3><p>Links PtP</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-data"><h3 id="count-alerts">0</h3><p>Alertas Ativos</p></div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h4>Distribuição de Infraestrutura</h4>
+                <canvas id="meuGrafico"></canvas>
+            </div>
+        </section>
+
+        <section id="content-clientes" class="dash-section" style="display: none;">
+            <div class="table-section">
+                <h3>Base de Dados de Clientes</h3>
+                <div class="table-responsive">
+                    <table class="dash-table">
+                        <thead>
+                            <tr><th>Cliente</th><th>Tecnologia</th><th>Localização</th><th>Estado</th><th>Ações</th></tr>
+                        </thead>
+                        <tbody id="clientTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="content-infra" class="dash-section" style="display: none;">
+            <div class="placeholder-box">Módulo de Engenharia RF aguardando parâmetros...</div>
+        </section>
+    </main>
+
+    <button class="btn-primary-float" onclick="toggleModal()"><i class="fa-solid fa-plus"></i> Novo Cliente</button>
+
+    <div id="modalCliente" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Novo Registro</h3><button onclick="toggleModal()">&times;</button></div>
+            <form id="formCliente">
+                <div class="form-group"><label>Nome</label><input type="text" id="nome" required></div>
+                <div class="form-group">
+                    <label>Tecnologia</label>
+                    <select id="tech">
+                        <option value="Starlink">Starlink Business</option>
+                        <option value="PtP">Ponto-a-Ponto (PtP)</option>
+                        <option value="Fibra">Fibra Óptica</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Cidade/Província</label><input type="text" id="local" required></div>
+                <button type="submit" class="btn-save">Registar Instalação</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="dash-script.js"></script>
+</body>
+</html>
