@@ -19,8 +19,15 @@ const logsRef = ref(db, 'logs');
 if (localStorage.getItem('rozay_auth') !== 'true') window.location.href = "login.html";
 const loggedUser = localStorage.getItem('rozay_user') || "Admin";
 
-// Boas-vindas corrigido
-document.getElementById("welcome-msg").innerText = `Olá, ${loggedUser}!`;
+// Saudação Dinâmica por Hora
+function getSaudacao() {
+    const hora = new Date().getHours();
+    if (hora >= 5 && hora < 12) return "Bom dia";
+    if (hora >= 12 && hora < 18) return "Boa tarde";
+    return "Boa noite";
+}
+
+document.getElementById("welcome-msg").innerText = `${getSaudacao()}, ${loggedUser}!`;
 document.getElementById("logged-user-name").innerText = loggedUser;
 document.getElementById("user-initial").innerText = loggedUser.charAt(0);
 
@@ -38,7 +45,12 @@ onValue(logsRef, (snap) => {
     if(tbody) {
         tbody.innerHTML = "";
         Object.values(logs).reverse().slice(0, 15).forEach(l => {
-            tbody.innerHTML += `<tr><td>${l.data}</td><td><strong>${l.user}</strong></td><td>${l.acao}</td><td>${l.msg}</td></tr>`;
+            // Prevenção de undefined nos logs
+            const data = l.data || '---';
+            const user = l.user || 'Sistema';
+            const acao = l.acao || 'Ação';
+            const msg = l.msg || '---';
+            tbody.innerHTML += `<tr><td>${data}</td><td><strong>${user}</strong></td><td>${acao}</td><td>${msg}</td></tr>`;
         });
     }
 });
@@ -71,7 +83,7 @@ document.getElementById("formCliente").onsubmit = function(e) {
         nome: nomeClie,
         tech: document.getElementById("tech").value,
         local: document.getElementById("local").value,
-        valor: Number(document.getElementById("valor").value),
+        valor: Number(document.getElementById("valor").value) || 0,
         status: document.getElementById("status").value,
         user: loggedUser,
         data: agora
@@ -79,10 +91,10 @@ document.getElementById("formCliente").onsubmit = function(e) {
 
     if(key === "") {
         push(dbRef, dados);
-        push(logsRef, { data: agora, user: loggedUser, acao: "ADICIONAR", msg: `Registou ${nomeClie} (${dados.tech})` });
+        push(logsRef, { data: agora, user: loggedUser, acao: "ADICIONAR", msg: `Registou ${nomeClie}` });
     } else {
         update(ref(db, `clientes/${key}`), dados);
-        push(logsRef, { data: agora, user: loggedUser, acao: "EDITAR", msg: `Alterou dados de ${nomeClie}` });
+        push(logsRef, { data: agora, user: loggedUser, acao: "EDITAR", msg: `Alterou ${nomeClie}` });
     }
     toggleModal();
 };
@@ -100,10 +112,10 @@ window.prepararEdicao = (key) => {
 };
 
 window.eliminar = (key) => {
-    if(confirm("Apagar da Cloud?")) {
+    if(confirm("Apagar permanentemente?")) {
         const nome = clientes[key].nome;
         remove(ref(db, `clientes/${key}`));
-        push(logsRef, { data: new Date().toLocaleString(), user: loggedUser, acao: "ELIMINAR", msg: `Apagou ${nome}` });
+        push(logsRef, { data: new Date().toLocaleString(), user: loggedUser, acao: "ELIMINAR", msg: `Removeu ${nome}` });
     }
 };
 
@@ -117,12 +129,15 @@ function renderAll() {
 
     Object.keys(clientes).forEach(key => {
         const c = clientes[key];
-        total += (c.valor || 0);
+        const val = Number(c.valor) || 0;
+        total += val;
         if(c.status === 'offline') off++;
 
-        if(tbody) tbody.innerHTML += `<tr><td><strong>${c.nome}</strong></td><td>${c.tech}</td><td>${c.local}</td><td>${(c.valor || 0).toLocaleString()} MT</td><td><span class="status-badge ${c.status}">${c.status}</span></td><td><button onclick="prepararEdicao('${key}')" style="color:blue;border:none;background:none;cursor:pointer;margin-right:10px;"><i class="fa-solid fa-pen"></i></button><button onclick="eliminar('${key}')" style="color:red;border:none;background:none;cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+        // Tabela Clientes com Editar e Apagar
+        if(tbody) tbody.innerHTML += `<tr><td><strong>${c.nome}</strong></td><td>${c.tech}</td><td>${c.local}</td><td>${val.toLocaleString()} MT</td><td><span class="status-badge ${c.status}">${c.status}</span></td><td><button onclick="prepararEdicao('${key}')" style="color:#2563eb;border:none;background:none;cursor:pointer;font-size:16px;margin-right:10px;"><i class="fa-solid fa-pen-to-square"></i></button><button onclick="eliminar('${key}')" style="color:#ef4444;border:none;background:none;cursor:pointer;font-size:16px;"><i class="fa-solid fa-trash"></i></button></td></tr>`;
         
-        if(fbody) fbody.innerHTML += `<tr><td>${c.nome}</td><td>${c.user}</td><td>${c.data}</td><td><strong>${(c.valor || 0).toLocaleString()} MT</strong></td></tr>`;
+        // Tabela Faturação (Corrigido Data e Serviço)
+        if(fbody) fbody.innerHTML += `<tr><td>${c.nome}</td><td>${c.tech}</td><td>${c.user}</td><td>${c.data || '---'}</td><td><strong>${val.toLocaleString()} MT</strong></td></tr>`;
     });
 
     document.getElementById("count-total").innerText = Object.keys(clientes).length;
@@ -149,25 +164,28 @@ window.gerarRelatorioPDF = (tipo) => {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const agora = new Date().toLocaleString();
+    
+    doc.setFontSize(16);
     doc.text(`ROZAY TECH - RELATÓRIO ${tipo.toUpperCase()}`, 14, 20);
     doc.setFontSize(10);
-    doc.text(`Gerado por: ${loggedUser} em ${agora}`, 14, 28);
+    doc.text(`Gerado por: ${loggedUser}`, 14, 28);
+    doc.text(`Data e Hora: ${agora}`, 14, 34);
     
     let rows, head;
     if(tipo === 'clientes') {
-        head = [['Cliente', 'Serviço', 'Local', 'Valor', 'Estado']];
-        rows = Object.values(clientes).map(c => [c.nome, c.tech, c.local, c.valor + " MT", c.status]);
+        head = [['Cliente', 'Serviço', 'Local', 'Valor (MT)', 'Estado']];
+        rows = Object.values(clientes).map(c => [c.nome, c.tech, c.local, (Number(c.valor) || 0).toString() + " MT", c.status]);
     } else {
-        head = [['Cliente', 'Técnico', 'Data Registro', 'Valor']];
-        rows = Object.values(clientes).map(c => [c.nome, c.user, c.data, c.valor + " MT"]);
+        head = [['Cliente', 'Serviço', 'Técnico', 'Data Registro', 'Valor (MT)']];
+        rows = Object.values(clientes).map(c => [c.nome, c.tech, c.user, c.data || '---', (Number(c.valor) || 0).toString() + " MT"]);
     }
     
-    doc.autoTable({ startY: 35, head: head, body: rows });
-    doc.save(`RozayTech_${tipo}.pdf`);
+    doc.autoTable({ startY: 40, head: head, body: rows, theme: 'striped' });
+    doc.save(`RozayTech_${tipo}_${agora.split(',')[0]}.pdf`);
 };
 
 window.logout = () => { localStorage.clear(); window.location.href = "login.html"; };
 setInterval(() => {
-    const agora = new Date().toLocaleString('pt-MZ');
-    if(document.getElementById("current-time-dash")) document.getElementById("current-time-dash").innerText = agora;
+    if(document.getElementById("current-time-dash")) 
+        document.getElementById("current-time-dash").innerText = new Date().toLocaleString('pt-MZ');
 }, 1000);

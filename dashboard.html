@@ -34,7 +34,7 @@
     <main class="main-content">
         <header class="dash-header">
             <div class="header-info">
-                <h1 id="welcome-msg">Carregando...</h1>
+                <h1 id="welcome-msg">A carregar...</h1>
                 <p id="current-time-dash"></p>
             </div>
             <div class="user-profile">
@@ -87,7 +87,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="dash-table">
-                        <thead><tr><th>Cliente</th><th>Técnico</th><th>Data Registro</th><th>Valor</th></tr></thead>
+                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Técnico</th><th>Data Registro</th><th>Valor</th></tr></thead>
                         <tbody id="faturacaoTableBody"></tbody>
                     </table>
                 </div>
@@ -96,10 +96,10 @@
 
         <section id="content-logs" class="dash-section" style="display: none;">
             <div class="table-section">
-                <h3>Logs de Atividade</h3>
+                <h3>Auditoria do Sistema</h3>
                 <div class="table-responsive">
                     <table class="dash-table">
-                        <thead><tr><th>Data/Hora</th><th>Engenheiro</th><th>Ação</th><th>Detalhes</th></tr></thead>
+                        <thead><tr><th>Data/Hora</th><th>Operador</th><th>Ação</th><th>Detalhes</th></tr></thead>
                         <tbody id="logsTableBody"></tbody>
                     </table>
                 </div>
@@ -135,8 +135,8 @@
                 <input type="text" id="local" placeholder="Localização" required>
                 <input type="number" id="valor" placeholder="Valor (MT)" required>
                 <select id="status"><option value="online">Online</option><option value="offline">Offline</option></select>
-                <button type="submit" class="btn-save">Guardar na Nuvem</button>
-                <button type="button" onclick="toggleModal()" class="btn-cancel">Cancelar</button>
+                <button type="submit" class="btn-save">Guardar na Cloud</button>
+                <button type="button" onclick="toggleModal()" class="btn-cancel">Fechar</button>
             </form>
         </div>
     </div>
