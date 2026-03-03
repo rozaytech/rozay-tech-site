@@ -4,58 +4,257 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rozay Tech | Soluções de Conectividade Elite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <style>
-        :root { --primary: #2563eb; --dark: #0f172a; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--dark); color: white; scroll-behavior: smooth; }
-        nav { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.9); position: fixed; width: 90%; z-index: 100; backdrop-filter: blur(10px); }
-        .logo { font-size: 24px; font-weight: 900; }
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+            --success: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVEGAÇÃO --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo { font-size: 24px; font-weight: 900; letter-spacing: -1px; }
         .logo span { color: var(--primary); }
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 10%; background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%); }
-        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.1; }
-        .hero p { font-size: 1.2rem; color: #94a3b8; max-width: 600px; margin-bottom: 30px; }
-        .btn-cta { background: var(--primary); color: white; padding: 18px 35px; border-radius: 50px; text-decoration: none; font-weight: 700; transition: 0.3s; border: none; cursor: pointer; }
-        .btn-cta:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4); }
-        
-        /* Formulário de Lead */
-        .contact-section { padding: 100px 5%; background: #1e293b; border-top: 1px solid rgba(255,255,255,0.1); }
-        .lead-card { max-width: 500px; margin: 0 auto; background: var(--dark); padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .lead-card h2 { text-align: center; margin-bottom: 10px; }
-        .lead-card p { text-align: center; color: #94a3b8; font-size: 14px; margin-bottom: 30px; }
-        input, select, textarea { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: white; box-sizing: border-box; outline: none; }
-        input:focus { border-color: var(--primary); }
-        .status-msg { display: none; text-align: center; padding: 15px; border-radius: 12px; margin-top: 15px; }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-login {
+            border: 1px solid var(--primary);
+            color: var(--primary) !important;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 5%;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            max-width: 900px;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-dim);
+            max-width: 700px;
+            margin-bottom: 40px;
+        }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 16px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-main:hover {
+            transform: translateY(-3px);
+            background: var(--primary-hover);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.5);
+        }
+
+        /* --- FORMULÁRIO SECTION --- */
+        .contact-container {
+            padding: 100px 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lead-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 550px;
+            padding: 50px;
+            border-radius: 32px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        .lead-card h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .lead-card p {
+            color: var(--text-dim);
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 15px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(15, 23, 42, 0.5);
+            color: white;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover { background: var(--primary-hover); }
+
+        #statusMsg {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+            font-weight: 600;
+        }
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .lead-card { padding: 30px; }
+        }
     </style>
 </head>
 <body>
+
     <nav>
         <div class="logo">Rozay<span>Tech</span></div>
-        <a href="login.html" style="color: #94a3b8; text-decoration: none; font-size: 14px;"><i class="fa-solid fa-lock"></i> NOC Login</a>
+        <div class="nav-links">
+            <a href="login.html" class="btn-login"><i class="fa-solid fa-lock"></i> NOC Login</a>
+        </div>
     </nav>
 
     <section class="hero">
-        <h1>Conectividade Ininterrupta para a sua Empresa.</h1>
-        <p>Não instalamos apenas antenas. Gerimos a sua infraestrutura 24/7 com monitorização via NOC (Network Operations Center).</p>
-        <a href="#leads" class="btn-cta">Solicitar Auditoria Gratuita</a>
+        <h1>Conectividade que nunca dorme.</h1>
+        <p>A Rozay Tech oferece gestão de infraestrutura de rede 24/7. Monitorizamos o seu sinal em tempo real para que a sua empresa nunca pare.</p>
+        <a href="#leads" class="btn-main">Solicitar Auditoria Gratuita</a>
     </section>
 
-    <section id="leads" class="contact-section">
+    <section id="leads" class="contact-container">
         <div class="lead-card">
             <h2>Fale com um Especialista</h2>
-            <p>Deixe os seus dados e o nosso NOC entrará em contacto para analisar a sua zona.</p>
+            <p>Deixe os seus dados e o nosso NOC entrará em contacto para analisar a viabilidade na sua zona.</p>
+            
             <form id="leadForm">
-                <input type="text" id="clientName" placeholder="Seu Nome ou Empresa" required>
-                <input type="tel" id="clientPhone" placeholder="Contacto (WhatsApp)" required>
-                <select id="interest">
-                    <option value="Starlink Business">Starlink Business</option>
-                    <option value="Link Ponto a Ponto">Link Ponto a Ponto (PtP)</option>
-                    <option value="Redes Estruturadas">Redes Estruturadas</option>
-                    <option value="Consultoria NOC">Gestão & NOC</option>
-                </select>
-                <textarea id="clientMsg" rows="3" placeholder="Localização ou Necessidade"></textarea>
-                <button type="submit" class="btn-cta" style="width: 100%;">Enviar Solicitação</button>
-                <div id="statusMsg" class="status-msg"></div>
+                <div class="form-group">
+                    <label>Nome ou Empresa</label>
+                    <input type="text" id="clientName" placeholder="Ex: Restaurante Central" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Telemóvel (WhatsApp)</label>
+                    <input type="tel" id="clientPhone" placeholder="Ex: 84XXXXXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Serviço de Interesse</label>
+                    <select id="interest">
+                        <option value="Starlink Business">Starlink Business</option>
+                        <option value="Link Ponto a Ponto (PtP)">Link Ponto a Ponto (PtP)</option>
+                        <option value="Redes Estruturadas">Redes Estruturadas</option>
+                        <option value="Consultoria NOC">Gestão & NOC 24/7</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Mensagem ou Localização</label>
+                    <textarea id="clientMsg" rows="3" placeholder="Conte-nos brevemente o que precisa..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">Enviar Solicitação</button>
+                <div id="statusMsg"></div>
             </form>
         </div>
     </section>
@@ -64,6 +263,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // Configuração Firebase (A mesma que usas no Dash)
         const firebaseConfig = {
             apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U",
             authDomain: "rozaytech-noc.firebaseapp.com",
@@ -79,9 +279,10 @@
 
         document.getElementById('leadForm').onsubmit = async (e) => {
             e.preventDefault();
-            const btn = e.target.querySelector('button');
+            const btn = document.getElementById('submitBtn');
             const msg = document.getElementById('statusMsg');
-            btn.innerText = "A enviar...";
+            
+            btn.innerText = "A processar...";
             btn.disabled = true;
 
             const newLead = {
@@ -96,12 +297,14 @@
             try {
                 await push(ref(db, 'leads'), newLead);
                 msg.style.display = 'block';
-                msg.style.background = '#064e3b';
-                msg.innerText = "Solicitação enviada! O nosso suporte entrará em contacto brevemente.";
+                msg.style.background = 'rgba(16, 185, 129, 0.2)';
+                msg.style.color = '#10b981';
+                msg.innerText = "Sucesso! O nosso NOC recebeu o seu pedido.";
                 e.target.reset();
             } catch (err) {
                 msg.style.display = 'block';
-                msg.style.background = '#7f1d1d';
+                msg.style.background = 'rgba(239, 68, 68, 0.2)';
+                msg.style.color = '#ef4444';
                 msg.innerText = "Erro ao enviar. Tente novamente.";
             } finally {
                 btn.innerText = "Enviar Solicitação";
