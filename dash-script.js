@@ -1,19 +1,18 @@
-// PROTEÇÃO E IDENTIFICAÇÃO
+// 1. AUTENTICAÇÃO E NOMES DINÂMICOS
 if (localStorage.getItem('rozay_auth') !== 'true') window.location.href = "login.html";
 
-const userName = localStorage.getItem('rozay_user') || "Engenheiro";
-document.getElementById('logged-user-name').innerText = userName;
-document.getElementById('user-initial').innerText = userName.charAt(0).toUpperCase();
+const loggedUser = localStorage.getItem('rozay_user') || "Engenheiro";
+document.getElementById('logged-user-name').innerText = loggedUser;
+document.getElementById('user-initial').innerText = loggedUser.charAt(0).toUpperCase();
 
-// MENU HAMBÚRGUER
-document.getElementById('menu-toggle').onclick = () => {
-    document.getElementById('sidebar').classList.toggle('hidden');
-};
+// Resolve o problema do nome no Módulo RF
+if(document.getElementById('infra-user-name')) {
+    document.getElementById('infra-user-name').innerText = loggedUser;
+}
 
-// BANCO DE DADOS
+// 2. BANCO DE DADOS LOCAL
 let clientes = JSON.parse(localStorage.getItem('rozay_db')) || [
-    { nome: "Hospital Central", tech: "Cabeamento", local: "Maputo", status: "online" },
-    { nome: "Complexo Faume", tech: "Starlink", local: "Tete", status: "online" }
+    { nome: "Exemplo Hospital", tech: "Starlink", local: "Maputo", status: "online" }
 ];
 
 let meuGrafico = null;
@@ -23,36 +22,22 @@ function salvar() {
     updateStats();
 }
 
-function navigateTo(menu, el) {
+// 3. NAVEGAÇÃO E MENU
+document.getElementById('menu-toggle').onclick = () => {
+    document.getElementById('sidebar').classList.toggle('active');
+};
+
+function navigateTo(page, el) {
     ['resumo', 'clientes', 'infra'].forEach(s => document.getElementById('content-'+s).style.display = 'none');
-    document.getElementById('content-'+menu).style.display = 'block';
+    document.getElementById('content-'+page).style.display = 'block';
     document.querySelectorAll('.side-nav a').forEach(a => a.classList.remove('active'));
     el.classList.add('active');
-    if(menu === 'resumo') initChart();
-    if(menu === 'clientes') renderTable();
-    if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('hidden');
+    if(window.innerWidth < 900) document.getElementById('sidebar').classList.remove('active');
+    if(page === 'resumo') initChart();
+    if(page === 'clientes') renderTable();
 }
 
-function initChart() {
-    const ctx = document.getElementById('meuGrafico').getContext('2d');
-    if(meuGrafico) meuGrafico.destroy();
-    
-    const data = {
-        Starlink: clientes.filter(c => c.tech === "Starlink").length,
-        Cabeamento: clientes.filter(c => c.tech === "Cabeamento").length,
-        PtP: clientes.filter(c => c.tech === "PtP").length
-    };
-
-    meuGrafico = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: Object.keys(data),
-            datasets: [{ data: Object.values(data), backgroundColor: ['#2563eb', '#10b981', '#f59e0b'] }]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-    });
-}
-
+// 4. GESTÃO DE CLIENTES (ADICIONAR / EDITAR / APAGAR)
 function renderTable() {
     const tbody = document.getElementById("clientTableBody");
     tbody.innerHTML = clientes.map((c, i) => `
@@ -61,63 +46,109 @@ function renderTable() {
             <td>${c.tech}</td>
             <td>${c.local}</td>
             <td><span class="status-badge ${c.status}">${c.status}</span></td>
-            <td><button onclick="eliminar(${i})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+            <td>
+                <button onclick="prepararEdicao(${i})" class="btn-edit"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="eliminar(${i})" class="btn-del"><i class="fa-solid fa-trash"></i></button>
+            </td>
         </tr>
     `).join('');
     updateStats();
 }
 
+// Função que preenche o modal com dados existentes para editar
+function prepararEdicao(index) {
+    const c = clientes[index];
+    document.getElementById('modalTitle').innerText = "Editar Registro";
+    document.getElementById('editIndex').value = index;
+    document.getElementById('nome').value = c.nome;
+    document.getElementById('tech').value = c.tech;
+    document.getElementById('local').value = c.local;
+    document.getElementById('status').value = c.status;
+    toggleModal();
+}
+
+document.getElementById("formCliente").onsubmit = function(e) {
+    e.preventDefault();
+    const index = document.getElementById('editIndex').value;
+    
+    const novoDado = {
+        nome: document.getElementById("nome").value,
+        tech: document.getElementById("tech").value,
+        local: document.getElementById("local").value,
+        status: document.getElementById("status").value
+    };
+
+    if(index === "") {
+        // Adicionar novo
+        clientes.push(novoDado);
+    } else {
+        // Salvar edição
+        clientes[index] = novoDado;
+    }
+
+    toggleModal();
+    salvar();
+    renderTable();
+    this.reset();
+    document.getElementById('editIndex').value = ""; // Limpa para o próximo
+};
+
+function eliminar(i) {
+    if(confirm("Deseja eliminar este cliente permanentemente?")) {
+        clientes.splice(i, 1);
+        salvar();
+        renderTable();
+    }
+}
+
+function toggleModal() {
+    const m = document.getElementById("modalCliente");
+    if(m.style.display !== "flex") {
+        m.style.display = "flex";
+    } else {
+        m.style.display = "none";
+        document.getElementById('modalTitle').innerText = "Novo Registro";
+        document.getElementById('formCliente').reset();
+        document.getElementById('editIndex').value = "";
+    }
+}
+
+// 5. GRÁFICOS E PDF (MANTIDOS)
 function updateStats() {
     document.getElementById("count-starlinks").innerText = clientes.filter(c => c.tech === "Starlink").length;
     document.getElementById("count-cabeamento").innerText = clientes.filter(c => c.tech === "Cabeamento").length;
     document.getElementById("count-alerts").innerText = clientes.filter(c => c.status === "offline").length;
 }
 
-// RELATÓRIO PDF
+function initChart() {
+    const ctx = document.getElementById('meuGrafico').getContext('2d');
+    if(meuGrafico) meuGrafico.destroy();
+    const stats = {
+        Starlink: clientes.filter(c => c.tech === "Starlink").length,
+        Cabeamento: clientes.filter(c => c.tech === "Cabeamento").length,
+        PtP: clientes.filter(c => c.tech === "PtP").length
+    };
+    meuGrafico = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(stats),
+            datasets: [{ data: Object.values(stats), backgroundColor: ['#2563eb', '#10b981', '#f59e0b'], borderWidth: 0 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+}
+
 function gerarRelatorioPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.setFontSize(20); doc.text("ROZAY TECH SOLUTIONS - NOC", 14, 20);
-    doc.setFontSize(10); doc.text("Responsável: " + userName, 14, 28);
-    doc.text("Data: " + new Date().toLocaleString(), 14, 34);
-
+    doc.text("ROZAY TECH - RELATÓRIO DE INFRAESTRUTURA", 14, 20);
+    doc.text(`Responsável: ${loggedUser}`, 14, 30);
     const rows = clientes.map(c => [c.nome, c.tech, c.local, c.status.toUpperCase()]);
-    doc.autoTable({
-        startY: 40,
-        head: [['CLIENTE', 'TECNOLOGIA', 'LOCALIZAÇÃO', 'STATUS']],
-        body: rows,
-        headStyles: { fillColor: [15, 23, 42] }
-    });
-    doc.save("Relatorio_NOC_RozayTech.pdf");
+    doc.autoTable({ startY: 40, head: [['CLIENTE', 'SERVIÇO', 'MORADA', 'ESTADO']], body: rows });
+    doc.save("Relatorio_NOC.pdf");
 }
 
-document.getElementById("formCliente").onsubmit = function(e) {
-    e.preventDefault();
-    clientes.push({
-        nome: document.getElementById("nome").value,
-        tech: document.getElementById("tech").value,
-        local: document.getElementById("local").value,
-        status: "online"
-    });
-    toggleModal();
-    this.reset();
-    salvar();
-    renderTable();
-};
-
-function eliminar(i) {
-    if(confirm("Eliminar registro?")) { clientes.splice(i, 1); salvar(); renderTable(); }
-}
-
-function toggleModal() {
-    const m = document.getElementById("modalCliente");
-    m.style.display = (m.style.display === "flex") ? "none" : "flex";
-}
-
-function logout() {
-    localStorage.clear();
-    window.location.href = "login.html";
-}
+function logout() { localStorage.clear(); window.location.href = "login.html"; }
 
 window.onload = () => {
     document.getElementById("current-time-dash").innerText = new Date().toLocaleString();
