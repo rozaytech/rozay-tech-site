@@ -3,90 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rozay Tech Solutions | Hub de Engenharia Digital</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Cpath d='M30,30 h30 a15,15 0 0,1 0,30 h-30 v15 m15,-15 l15,15' stroke='%232563eb' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
-    <meta name="description" content="Especialistas em Starlink, Redes PtP, Websites e Engenharia Digital em Moçambique.">
+    <title>Rozay Tech | Soluções de Conectividade Elite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://unpkg.com/scrollreveal"></script>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root { --primary: #2563eb; --dark: #0f172a; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--dark); color: white; scroll-behavior: smooth; }
+        nav { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.9); position: fixed; width: 90%; z-index: 100; backdrop-filter: blur(10px); }
+        .logo { font-size: 24px; font-weight: 900; }
+        .logo span { color: var(--primary); }
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 10%; background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%); }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.1; }
+        .hero p { font-size: 1.2rem; color: #94a3b8; max-width: 600px; margin-bottom: 30px; }
+        .btn-cta { background: var(--primary); color: white; padding: 18px 35px; border-radius: 50px; text-decoration: none; font-weight: 700; transition: 0.3s; border: none; cursor: pointer; }
+        .btn-cta:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4); }
+        
+        /* Formulário de Lead */
+        .contact-section { padding: 100px 5%; background: #1e293b; border-top: 1px solid rgba(255,255,255,0.1); }
+        .lead-card { max-width: 500px; margin: 0 auto; background: var(--dark); padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .lead-card h2 { text-align: center; margin-bottom: 10px; }
+        .lead-card p { text-align: center; color: #94a3b8; font-size: 14px; margin-bottom: 30px; }
+        input, select, textarea { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: white; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--primary); }
+        .status-msg { display: none; text-align: center; padding: 15px; border-radius: 12px; margin-top: 15px; }
+    </style>
 </head>
 <body>
-    <div id="loader">
-        <div class="loader-box">
-            <div class="loader-character">🤖</div>
-            <div class="loader-bar"><div id="loaderProgress"></div></div>
-            <p id="loaderPercent">0%</p>
-        </div>
-    </div>
-
-    <header class="topbar">
-        <div class="container topbar-content">
-            <div class="logo-box">Rozay<span>Tech</span></div>
-            <div class="header-right">
-                <button id="themeToggle" title="Trocar Tema"><i class="fa-solid fa-moon"></i></button>
-                <div id="calendar"></div>
-            </div>
-        </div>
-    </header>
-
-    <nav class="navbar"><div class="container nav-links"><a href="#sobre">Sobre Nós</a><a href="#servicos">Serviços</a><a href="#contacto">Contacto</a></div></nav>
+    <nav>
+        <div class="logo">Rozay<span>Tech</span></div>
+        <a href="login.html" style="color: #94a3b8; text-decoration: none; font-size: 14px;"><i class="fa-solid fa-lock"></i> NOC Login</a>
+    </nav>
 
     <section class="hero">
-        <div class="container">
-            <div class="badge">Hub de Engenharia Digital: Conectividade, Audiovisual & Gestão Global</div>
-            <h1>Soluções de Engenharia para o Mercado Moderno</h1>
-            <p>Infraestrutura de redes de elite, presença digital estratégica e operações audiovisuais com drones.</p>
+        <h1>Conectividade Ininterrupta para a sua Empresa.</h1>
+        <p>Não instalamos apenas antenas. Gerimos a sua infraestrutura 24/7 com monitorização via NOC (Network Operations Center).</p>
+        <a href="#leads" class="btn-cta">Solicitar Auditoria Gratuita</a>
+    </section>
+
+    <section id="leads" class="contact-section">
+        <div class="lead-card">
+            <h2>Fale com um Especialista</h2>
+            <p>Deixe os seus dados e o nosso NOC entrará em contacto para analisar a sua zona.</p>
+            <form id="leadForm">
+                <input type="text" id="clientName" placeholder="Seu Nome ou Empresa" required>
+                <input type="tel" id="clientPhone" placeholder="Contacto (WhatsApp)" required>
+                <select id="interest">
+                    <option value="Starlink Business">Starlink Business</option>
+                    <option value="Link Ponto a Ponto">Link Ponto a Ponto (PtP)</option>
+                    <option value="Redes Estruturadas">Redes Estruturadas</option>
+                    <option value="Consultoria NOC">Gestão & NOC</option>
+                </select>
+                <textarea id="clientMsg" rows="3" placeholder="Localização ou Necessidade"></textarea>
+                <button type="submit" class="btn-cta" style="width: 100%;">Enviar Solicitação</button>
+                <div id="statusMsg" class="status-msg"></div>
+            </form>
         </div>
     </section>
 
-    <section id="sobre" class="section">
-        <div class="container text-left">
-            <h2>Sobre Nós</h2>
-            <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores e Redes</strong>. Atuamos como o parceiro estratégico para empresas que buscam robustez digital e inovação.</p>
-            <p>Unimos competência técnica com visão de negócio, desde o desenho de redes críticas até ao desenvolvimento de <strong>websites de alta conversão</strong> e logística global.</p>
-        </div>
-    </section>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    <section id="servicos" class="section bg-light">
-        <div class="container">
-            <h2>Nossas Especialidades</h2>
-            <div class="cards">
-                <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Instalação Starlink, Redes Ponto a Ponto (PtP) e gestão avançada de Firewalls.</p></div>
-                <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Criação de sites profissionais, rápidos e otimizados para converter visitantes.</p></div>
-                
-                <div class="card">
-                    <svg class="drone-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 50px; height: 50px; fill: var(--primary); margin-bottom: 20px;">
-                        <path d="M304 64c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm80 80c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM176 144c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM432 288c0-13.3-10.7-24-24-24H334.3c-11.5-27-33.8-48.4-61.6-58.4c-5.2-1.9-10.7-3.1-16.4-3.5c-30.8-2.2-59.4 12.3-77.1 36.9c-5.6 7.7-10.1 16.2-13.3 25.1H104c-13.3 0-24 10.7-24 24s10.7 24 24 24h61.9c3.2 8.9 7.7 17.3 13.3 25.1c17.7 24.6 46.3 39.1 77.1 36.9c5.6-.4 11.2-1.6 16.4-3.5c27.8-10 50.1-31.4 61.6-58.4H408c13.3 0 24-10.7 24-24zm-176 48c-26.5 0-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48s-21.5 48-48 48z"/>
-                    </svg>
-                    <h3>Serviços de Drone</h3>
-                    <p>Inspeções técnicas, cobertura de eventos e produção audiovisual profissional.</p>
-                </div>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U",
+            authDomain: "rozaytech-noc.firebaseapp.com",
+            databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com",
+            projectId: "rozaytech-noc",
+            storageBucket: "rozaytech-noc.firebasestorage.app",
+            messagingSenderId: "129382246448",
+            appId: "1:129382246448:web:f0ce1b7fca23eed17da5f5"
+        };
 
-                <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria de TI</h3><p>Gestão de parques informáticos, suporte remoto e manutenção especializada.</p></div>
-                <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança Digital</h3><p>Sistemas de CFTV inteligentes e proteção de dados contra invasões.</p></div>
-                <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Import & Export</h3><p>Logística global rápida para equipamentos tecnológicos e mercadorias.</p></div>
-            </div>
-        </div>
-    </section>
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-    <section id="contacto" class="section">
-        <div class="container">
-            <h2>Fale Connosco</h2>
-            <div class="contact-grid">
-                <a href="https://wa.me/258846166104" class="contact-card whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
-                <a href="tel:258870018297" class="contact-card call"><i class="fa-solid fa-phone"></i> Ligar</a>
-                <a href="mailto:contato@rozaytech.com" class="contact-card email"><i class="fa-solid fa-envelope"></i> Email</a>
-            </div>
-        </div>
-    </section>
+        document.getElementById('leadForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const msg = document.getElementById('statusMsg');
+            btn.innerText = "A enviar...";
+            btn.disabled = true;
 
-    <footer>
-        <p>© 2026 Rozay Tech Solutions — Tecnologia em Movimento</p>
-        <div class="visitor-counter"><i class="fa-solid fa-eye"></i> <span id="visits">...</span> visitas</div>
-        <div style="margin-top: 20px; opacity: 0.3;">
-            <a href="login.html" style="color: inherit; text-decoration: none; font-size: 10px;">Acesso Restrito</a>
-        </div>
-    </footer>
-    <script src="script.js"></script>
+            const newLead = {
+                nome: document.getElementById('clientName').value,
+                telefone: document.getElementById('clientPhone').value,
+                interesse: document.getElementById('interest').value,
+                detalhes: document.getElementById('clientMsg').value,
+                data: new Date().toLocaleString('pt-MZ'),
+                status: 'Pendente'
+            };
+
+            try {
+                await push(ref(db, 'leads'), newLead);
+                msg.style.display = 'block';
+                msg.style.background = '#064e3b';
+                msg.innerText = "Solicitação enviada! O nosso suporte entrará em contacto brevemente.";
+                e.target.reset();
+            } catch (err) {
+                msg.style.display = 'block';
+                msg.style.background = '#7f1d1d';
+                msg.innerText = "Erro ao enviar. Tente novamente.";
+            } finally {
+                btn.innerText = "Enviar Solicitação";
+                btn.disabled = false;
+            }
+        };
+    </script>
 </body>
 </html>

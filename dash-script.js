@@ -15,11 +15,11 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const dbRef = ref(db, 'clientes');
 const logsRef = ref(db, 'logs');
+const leadsRef = ref(db, 'leads'); // Nova referência para os pedidos do site
 
 if (localStorage.getItem('rozay_auth') !== 'true') window.location.href = "login.html";
 const loggedUser = localStorage.getItem('rozay_user') || "Admin";
 
-// Saudação Dinâmica por Hora
 function getSaudacao() {
     const hora = new Date().getHours();
     if (hora >= 5 && hora < 12) return "Bom dia";
@@ -34,23 +34,52 @@ document.getElementById("user-initial").innerText = loggedUser.charAt(0);
 let clientes = {};
 let meuGrafico = null;
 
+// Escuta Clientes
 onValue(dbRef, (snap) => {
     clientes = snap.val() || {};
     renderAll();
 });
 
+// Escuta Logs
 onValue(logsRef, (snap) => {
     const logs = snap.val() || {};
     const tbody = document.getElementById("logsTableBody");
     if(tbody) {
         tbody.innerHTML = "";
         Object.values(logs).reverse().slice(0, 15).forEach(l => {
-            // Prevenção de undefined nos logs
-            const data = l.data || '---';
-            const user = l.user || 'Sistema';
-            const acao = l.acao || 'Ação';
-            const msg = l.msg || '---';
-            tbody.innerHTML += `<tr><td>${data}</td><td><strong>${user}</strong></td><td>${acao}</td><td>${msg}</td></tr>`;
+            tbody.innerHTML += `<tr><td>${l.data || '---'}</td><td><strong>${l.user || 'Sistema'}</strong></td><td>${l.acao || 'Ação'}</td><td>${l.msg || '---'}</td></tr>`;
+        });
+    }
+});
+
+// ESCUTA LEADS DO SITE (NOVAS VENDAS)
+onValue(leadsRef, (snap) => {
+    const leads = snap.val() || {};
+    const tbody = document.getElementById("leadsTableBody");
+    const badge = document.getElementById("lead-count-badge");
+    const leadKeys = Object.keys(leads);
+    
+    if(badge) {
+        badge.innerText = leadKeys.length;
+        badge.style.display = leadKeys.length > 0 ? "inline-block" : "none";
+    }
+
+    if(tbody) {
+        tbody.innerHTML = "";
+        leadKeys.reverse().forEach(key => {
+            const l = leads[key];
+            tbody.innerHTML += `
+                <tr style="background: rgba(16, 185, 129, 0.05);">
+                    <td>${l.data}</td>
+                    <td><strong>${l.nome}</strong></td>
+                    <td><a href="https://wa.me/${l.telefone.replace(/\s/g, '')}" target="_blank" style="color:#10b981; text-decoration:none;"><i class="fa-brands fa-whatsapp"></i> ${l.telefone}</a></td>
+                    <td>${l.interesse}</td>
+                    <td>${l.detalhes}</td>
+                    <td>
+                        <button onclick="converterEmCliente('${key}')" style="color:#10b981; border:none; background:none; cursor:pointer;" title="Arquivar"><i class="fa-solid fa-check-double"></i></button>
+                        <button onclick="eliminarLead('${key}')" style="color:#ef4444; border:none; background:none; cursor:pointer; margin-left:10px;"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>`;
         });
     }
 });
@@ -119,6 +148,18 @@ window.eliminar = (key) => {
     }
 };
 
+// Funções para Leads
+window.eliminarLead = (key) => {
+    if(confirm("Remover esta solicitação?")) {
+        remove(ref(db, `leads/${key}`));
+    }
+};
+
+window.converterEmCliente = (key) => {
+    alert("Lead arquivada. Não esqueça de registar como cliente oficial após o contrato!");
+    remove(ref(db, `leads/${key}`));
+};
+
 function renderAll() {
     const tbody = document.getElementById("clientTableBody");
     const fbody = document.getElementById("faturacaoTableBody");
@@ -133,10 +174,8 @@ function renderAll() {
         total += val;
         if(c.status === 'offline') off++;
 
-        // Tabela Clientes com Editar e Apagar
         if(tbody) tbody.innerHTML += `<tr><td><strong>${c.nome}</strong></td><td>${c.tech}</td><td>${c.local}</td><td>${val.toLocaleString()} MT</td><td><span class="status-badge ${c.status}">${c.status}</span></td><td><button onclick="prepararEdicao('${key}')" style="color:#2563eb;border:none;background:none;cursor:pointer;font-size:16px;margin-right:10px;"><i class="fa-solid fa-pen-to-square"></i></button><button onclick="eliminar('${key}')" style="color:#ef4444;border:none;background:none;cursor:pointer;font-size:16px;"><i class="fa-solid fa-trash"></i></button></td></tr>`;
         
-        // Tabela Faturação (Corrigido Data e Serviço)
         if(fbody) fbody.innerHTML += `<tr><td>${c.nome}</td><td>${c.tech}</td><td>${c.user}</td><td>${c.data || '---'}</td><td><strong>${val.toLocaleString()} MT</strong></td></tr>`;
     });
 
@@ -164,12 +203,10 @@ window.gerarRelatorioPDF = (tipo) => {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const agora = new Date().toLocaleString();
-    
     doc.setFontSize(16);
     doc.text(`ROZAY TECH - RELATÓRIO ${tipo.toUpperCase()}`, 14, 20);
     doc.setFontSize(10);
-    doc.text(`Gerado por: ${loggedUser}`, 14, 28);
-    doc.text(`Data e Hora: ${agora}`, 14, 34);
+    doc.text(`Gerado por: ${loggedUser} em ${agora}`, 14, 28);
     
     let rows, head;
     if(tipo === 'clientes') {
