@@ -3,49 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RozayAdmin | Login</title>
+    <title>RozayTech | Login NOC</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        :root { --bg: #0f172a; --primary: #2563eb; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; height: 100vh; color: white; }
-        .login-card { background: #1e293b; padding: 40px; border-radius: 20px; width: 320px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-        .logo { font-size: 24px; font-weight: 800; margin-bottom: 30px; }
-        .logo span { color: var(--primary); }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: var(--primary); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
-        .error { color: #ef4444; font-size: 12px; margin-top: 10px; display: none; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #0f172a; display: flex; align-items: center; justify-content: center; height: 100vh; color: white; }
+        .login-card { background: #1e293b; padding: 40px; border-radius: 24px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
+        .logo { font-size: 28px; font-weight: 800; margin-bottom: 30px; }
+        .logo span { color: #2563eb; }
+        input { width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #1d4ed8; }
     </style>
 </head>
 <body>
     <div class="login-card">
-        <div class="logo">Rozay<span>Admin</span></div>
+        <div class="logo">Rozay<span>Tech</span></div>
         <form id="loginForm">
-            <input type="text" id="username" placeholder="Utilizador" required>
-            <input type="password" id="password" placeholder="Senha" required>
-            <button type="submit">Entrar no NOC</button>
-            <p id="errorMsg" class="error">Credenciais Inválidas</p>
+            <input type="text" id="user" placeholder="Utilizador" required>
+            <input type="password" id="pass" placeholder="Palavra-passe" required>
+            <button type="submit">Aceder ao NOC</button>
         </form>
     </div>
-    <script>
-        const users = {
-            "admin": { name: "Administrador", pass: "rozay2026" },
-            "faume": { name: "Faume Muarabo", pass: "faume2026" }
-        };
 
+    <script>
         document.getElementById('loginForm').onsubmit = function(e) {
             e.preventDefault();
-            const u = document.getElementById('username').value.toLowerCase();
-            const p = document.getElementById('password').value;
-
-            if(users[u] && users[u].pass === p) {
+            const u = document.getElementById('user').value.toLowerCase();
+            const p = document.getElementById('pass').value;
+            if((u === 'engenheiro' || u === 'faume') && p === 'rozay2024') {
                 localStorage.setItem('rozay_auth', 'true');
-                localStorage.setItem('rozay_user', users[u].name);
-                window.location.href = "dashboard.html";
-            } else {
-                document.getElementById('errorMsg').style.display = 'block';
-            }
+                localStorage.setItem('rozay_user', u.charAt(0).toUpperCase() + u.slice(1));
+                window.location.href = 'dashboard.html';
+            } else { alert('Acesso Negado!'); }
         };
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
     </script>
 </body>
 </html>

@@ -2,8 +2,10 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RozayTech | NOC & ERP Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RozayTech | NOC & ERP</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
@@ -13,28 +15,26 @@
     
     <link rel="stylesheet" href="dash-style.css">
 </head>
-<body class="dash-body">
-    
+<body>
     <button id="menu-toggle" class="menu-btn"><i class="fa-solid fa-bars"></i></button>
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">Rozay<span>Admin</span></div>
         <nav class="side-nav">
-            <a href="#" id="nav-resumo" onclick="navigateTo('resumo', this)" class="active"><i class="fa-solid fa-chart-pie"></i> Painel Geral</a>
-            <a href="#" id="nav-clientes" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-server"></i> Clientes & Redes</a>
-            <a href="#" id="nav-faturacao" onclick="navigateTo('faturacao', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</a>
-            <a href="#" id="nav-infra" onclick="navigateTo('infra', this)"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura RF</a>
-            <a href="#" id="nav-logs" onclick="navigateTo('logs', this)"><i class="fa-solid fa-clipboard-list"></i> Logs do Sistema</a>
+            <a href="#" onclick="navigateTo('resumo', this)" class="active"><i class="fa-solid fa-chart-pie"></i> Painel Geral</a>
+            <a href="#" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-server"></i> Clientes & Redes</a>
+            <a href="#" onclick="navigateTo('faturacao', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</a>
+            <a href="#" onclick="navigateTo('logs', this)"><i class="fa-solid fa-clipboard-list"></i> Logs do Sistema</a>
+            <a href="#" onclick="navigateTo('infra', this)"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
             <div class="nav-divider"></div>
-            <a href="index.html" class="back-link"><i class="fa-solid fa-house"></i> Site Público</a>
-            <a href="#" onclick="logout()" class="logout-link"><i class="fa-solid fa-power-off"></i> Sair</a>
+            <a href="#" onclick="logout()" class="logout-link"><i class="fa-solid fa-power-off"></i> Sair do Sistema</a>
         </nav>
     </aside>
 
     <main class="main-content">
         <header class="dash-header">
             <div class="header-info">
-                <h1 id="welcome-msg">Carregando Sistema...</h1>
+                <h1 id="welcome-msg">Carregando...</h1>
                 <p id="current-time-dash"></p>
             </div>
             <div class="user-profile">
@@ -54,7 +54,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon green"><i class="fa-solid fa-money-bill-trend-up"></i></div>
-                    <div class="stat-data"><h3 id="count-receita">0 MT</h3><p>Receita Estimada</p></div>
+                    <div class="stat-data"><h3 id="count-receita">0 MT</h3><p>Receita Global</p></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="chart-container">
-                <h4>Distribuição de Serviços</h4>
+                <h4>Distribuição de Serviços Rozay Tech</h4>
                 <canvas id="meuGrafico"></canvas>
             </div>
         </section>
@@ -70,13 +70,13 @@
         <section id="content-clientes" class="dash-section" style="display: none;">
             <div class="table-section">
                 <div class="table-header-flex">
-                    <h3>Gestão de Inventário (Em Tempo Real)</h3>
-                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> PDF de Clientes</button>
+                    <h3>Gestão de Redes Cloud</h3>
+                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> PDF Clientes</button>
                 </div>
                 <div class="table-responsive">
                     <table class="dash-table">
                         <thead>
-                            <tr><th>Cliente</th><th>Tecnologia</th><th>Localização</th><th>Valor (MT)</th><th>Estado</th><th>Ações</th></tr>
+                            <tr><th>Cliente</th><th>Serviço</th><th>Localização</th><th>Valor</th><th>Estado</th><th>Ações</th></tr>
                         </thead>
                         <tbody id="clientTableBody"></tbody>
                     </table>
@@ -88,12 +88,12 @@
             <div class="table-section">
                 <div class="table-header-flex">
                     <h3>Resumo Financeiro</h3>
-                    <h3 style="color: var(--success);" id="total-faturacao">Total: 0 MT</h3>
+                    <h3 id="total-faturacao-header" style="color: var(--success);">0 MT</h3>
                 </div>
                 <div class="table-responsive">
                     <table class="dash-table">
                         <thead>
-                            <tr><th>Cliente</th><th>Serviço</th><th>Responsável</th><th>Valor Pago</th></tr>
+                            <tr><th>Cliente</th><th>Técnico Responsável</th><th>Data de Registo</th><th>Valor Cobrado</th></tr>
                         </thead>
                         <tbody id="faturacaoTableBody"></tbody>
                     </table>
@@ -103,14 +103,11 @@
 
         <section id="content-logs" class="dash-section" style="display: none;">
             <div class="table-section">
-                <div class="table-header-flex">
-                    <h3>Auditoria de Sistema (Logs)</h3>
-                    <small>Registo inalterável de atividades</small>
-                </div>
+                <div class="table-header-flex"><h3>Auditoria de Sistema</h3></div>
                 <div class="table-responsive">
                     <table class="dash-table">
                         <thead>
-                            <tr><th>Data / Hora</th><th>Engenheiro</th><th>Ação</th><th>Detalhes</th></tr>
+                            <tr><th>Data/Hora</th><th>Engenheiro</th><th>Ação Realizada</th><th>Detalhes</th></tr>
                         </thead>
                         <tbody id="logsTableBody"></tbody>
                     </table>
@@ -121,10 +118,9 @@
         <section id="content-infra" class="dash-section" style="display: none;">
             <div class="infra-box">
                 <i class="fa-solid fa-microchip"></i>
-                <h3>Módulo de Análise RF <span id="infra-user-name"></span> v2.0</h3>
-                <p>Status: Aguardando telemetria dos satélites...</p>
+                <h3>Rozay Analyzer v2.5</h3>
+                <p>Status: Monitorização RF Ativa via Firebase Cloud</p>
                 <div class="progress-bar-infra"><div class="progress-fill"></div></div>
-                <small style="color: #94a3b8; margin-top: 10px; display: block;">Conexão Segura WebSocket via Google Cloud.</small>
             </div>
         </section>
     </main>
@@ -133,33 +129,38 @@
 
     <div id="modalCliente" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="modalTitle">Novo Registo</h3>
+            <h3 id="modalTitle">Novo Registo NOC</h3>
             <form id="formCliente">
                 <input type="hidden" id="editIndex">
                 <input type="text" id="nome" placeholder="Nome do Cliente / Empresa" required>
                 <select id="tech" required>
-                    <option value="" disabled selected>Selecione o Serviço...</option>
+                    <option value="" disabled selected>Escolha o serviço...</option>
                     <option value="Starlink">Internet Starlink</option>
                     <option value="PtP">Rede Ponto-a-Ponto (PtP)</option>
                     <option value="Cabeamento">Cabeamento Estruturado</option>
-                    <option value="Websites">Criação de Websites</option>
-                    <option value="Drones">Serviços de Drone / Audiovisual</option>
-                    <option value="Consultoria">Consultoria de TI & Manutenção</option>
-                    <option value="CFTV">Segurança Digital & CFTV</option>
-                    <option value="Importacao">Importação de Equipamentos</option>
+                    <option value="Websites">Criação de Website</option>
+                    <option value="Drones">Drone & Audiovisual</option>
+                    <option value="CFTV">Segurança Eletrónica (CFTV)</option>
+                    <option value="Consultoria">Consultoria & TI</option>
+                    <option value="Importacao">Importação de Equipamento</option>
                 </select>
-                <input type="text" id="local" placeholder="Província / Cidade / Bairro" required>
-                <input type="number" id="valor" placeholder="Valor Cobrado (Meticais)" required>
+                <input type="text" id="local" placeholder="Província / Morada" required>
+                <input type="number" id="valor" placeholder="Valor em Meticais (MT)" required>
                 <select id="status">
-                    <option value="online">Serviço Concluído / Online</option>
-                    <option value="offline">Pendente / Manutenção (Offline)</option>
+                    <option value="online">Online / Ativo</option>
+                    <option value="offline">Offline / Pendente</option>
                 </select>
-                <button type="submit" class="btn-save">Guardar no Sistema Central</button>
+                <button type="submit" class="btn-save">Guardar na Nuvem</button>
                 <button type="button" onclick="toggleModal()" class="btn-cancel">Cancelar</button>
             </form>
         </div>
     </div>
 
     <script type="module" src="dash-script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(() => console.log("PWA Registada"));
+        }
+    </script>
 </body>
 </html>
