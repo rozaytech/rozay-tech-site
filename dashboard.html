@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RozayTech | NOC Dashboard</title>
+    <title>RozayTech | NOC & ERP Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
@@ -21,8 +21,10 @@
         <div class="sidebar-logo">Rozay<span>Admin</span></div>
         <nav class="side-nav">
             <a href="#" id="nav-resumo" onclick="navigateTo('resumo', this)" class="active"><i class="fa-solid fa-chart-pie"></i> Painel Geral</a>
-            <a href="#" id="nav-clientes" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-server"></i> Clientes</a>
-            <a href="#" id="nav-infra" onclick="navigateTo('infra', this)"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
+            <a href="#" id="nav-clientes" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-server"></i> Clientes & Redes</a>
+            <a href="#" id="nav-faturacao" onclick="navigateTo('faturacao', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</a>
+            <a href="#" id="nav-infra" onclick="navigateTo('infra', this)"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura RF</a>
+            <a href="#" id="nav-logs" onclick="navigateTo('logs', this)"><i class="fa-solid fa-clipboard-list"></i> Logs do Sistema</a>
             <div class="nav-divider"></div>
             <a href="index.html" class="back-link"><i class="fa-solid fa-house"></i> Site Público</a>
             <a href="#" onclick="logout()" class="logout-link"><i class="fa-solid fa-power-off"></i> Sair</a>
@@ -32,7 +34,7 @@
     <main class="main-content">
         <header class="dash-header">
             <div class="header-info">
-                <h1 id="welcome-msg">Carregando NOC...</h1>
+                <h1 id="welcome-msg">Carregando Sistema...</h1>
                 <p id="current-time-dash"></p>
             </div>
             <div class="user-profile">
@@ -47,20 +49,20 @@
         <section id="content-resumo" class="dash-section">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon blue"><i class="fa-solid fa-satellite"></i></div>
-                    <div class="stat-data"><h3 id="count-starlinks">0</h3><p>Starlinks</p></div>
+                    <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-data"><h3 id="count-total">0</h3><p>Total Clientes</p></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon green"><i class="fa-solid fa-network-wired"></i></div>
-                    <div class="stat-data"><h3 id="count-cabeamento">0</h3><p>Cabeamento</p></div>
+                    <div class="stat-icon green"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                    <div class="stat-data"><h3 id="count-receita">0 MT</h3><p>Receita Estimada</p></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <div class="stat-data"><h3 id="count-alerts">0</h3><p>Alertas</p></div>
+                    <div class="stat-data"><h3 id="count-alerts">0</h3><p>Sistemas Offline</p></div>
                 </div>
             </div>
             <div class="chart-container">
-                <h4>Distribuição de Redes</h4>
+                <h4>Distribuição de Serviços</h4>
                 <canvas id="meuGrafico"></canvas>
             </div>
         </section>
@@ -68,15 +70,49 @@
         <section id="content-clientes" class="dash-section" style="display: none;">
             <div class="table-section">
                 <div class="table-header-flex">
-                    <h3>Gestão Sincronizada (Firebase)</h3>
-                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
+                    <h3>Gestão de Inventário (Em Tempo Real)</h3>
+                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> PDF de Clientes</button>
                 </div>
                 <div class="table-responsive">
                     <table class="dash-table">
                         <thead>
-                            <tr><th>Cliente</th><th>Tecnologia</th><th>Localização</th><th>Estado</th><th>Ações</th></tr>
+                            <tr><th>Cliente</th><th>Tecnologia</th><th>Localização</th><th>Valor (MT)</th><th>Estado</th><th>Ações</th></tr>
                         </thead>
                         <tbody id="clientTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="content-faturacao" class="dash-section" style="display: none;">
+            <div class="table-section">
+                <div class="table-header-flex">
+                    <h3>Resumo Financeiro</h3>
+                    <h3 style="color: var(--success);" id="total-faturacao">Total: 0 MT</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="dash-table">
+                        <thead>
+                            <tr><th>Cliente</th><th>Serviço</th><th>Responsável</th><th>Valor Pago</th></tr>
+                        </thead>
+                        <tbody id="faturacaoTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="content-logs" class="dash-section" style="display: none;">
+            <div class="table-section">
+                <div class="table-header-flex">
+                    <h3>Auditoria de Sistema (Logs)</h3>
+                    <small>Registo inalterável de atividades</small>
+                </div>
+                <div class="table-responsive">
+                    <table class="dash-table">
+                        <thead>
+                            <tr><th>Data / Hora</th><th>Engenheiro</th><th>Ação</th><th>Detalhes</th></tr>
+                        </thead>
+                        <tbody id="logsTableBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -85,10 +121,10 @@
         <section id="content-infra" class="dash-section" style="display: none;">
             <div class="infra-box">
                 <i class="fa-solid fa-microchip"></i>
-                <h3>Módulo de Análise RF <span id="infra-user-name"></span> v1.2</h3>
-                <p>Status: Aguardando telemetria dos satélites Starlink...</p>
+                <h3>Módulo de Análise RF <span id="infra-user-name"></span> v2.0</h3>
+                <p>Status: Aguardando telemetria dos satélites...</p>
                 <div class="progress-bar-infra"><div class="progress-fill"></div></div>
-                <small style="color: #94a3b8; margin-top: 10px; display: block;">Sincronização Cloud Ativa via Firebase.</small>
+                <small style="color: #94a3b8; margin-top: 10px; display: block;">Conexão Segura WebSocket via Google Cloud.</small>
             </div>
         </section>
     </main>
@@ -97,27 +133,33 @@
 
     <div id="modalCliente" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="modalTitle">Nova Instalação</h3>
+            <h3 id="modalTitle">Novo Registo</h3>
             <form id="formCliente">
                 <input type="hidden" id="editIndex">
-                <input type="text" id="nome" placeholder="Nome do Cliente" required>
-                <select id="tech">
-                    <option value="Starlink">Starlink Business</option>
+                <input type="text" id="nome" placeholder="Nome do Cliente / Empresa" required>
+                <select id="tech" required>
+                    <option value="" disabled selected>Selecione o Serviço...</option>
+                    <option value="Starlink">Internet Starlink</option>
+                    <option value="PtP">Rede Ponto-a-Ponto (PtP)</option>
                     <option value="Cabeamento">Cabeamento Estruturado</option>
-                    <option value="PtP">Ponto-a-Ponto (PtP)</option>
+                    <option value="Websites">Criação de Websites</option>
+                    <option value="Drones">Serviços de Drone / Audiovisual</option>
+                    <option value="Consultoria">Consultoria de TI & Manutenção</option>
+                    <option value="CFTV">Segurança Digital & CFTV</option>
+                    <option value="Importacao">Importação de Equipamentos</option>
                 </select>
-                <input type="text" id="local" placeholder="Província / Cidade / Morada" required>
+                <input type="text" id="local" placeholder="Província / Cidade / Bairro" required>
+                <input type="number" id="valor" placeholder="Valor Cobrado (Meticais)" required>
                 <select id="status">
-                    <option value="online">Online / Ativo</option>
-                    <option value="offline">Offline / Alerta</option>
+                    <option value="online">Serviço Concluído / Online</option>
+                    <option value="offline">Pendente / Manutenção (Offline)</option>
                 </select>
-                <button type="submit" class="btn-save">Guardar na Nuvem</button>
+                <button type="submit" class="btn-save">Guardar no Sistema Central</button>
                 <button type="button" onclick="toggleModal()" class="btn-cancel">Cancelar</button>
             </form>
         </div>
     </div>
 
     <script type="module" src="dash-script.js"></script>
-
 </body>
 </html>
