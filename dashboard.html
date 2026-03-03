@@ -32,7 +32,7 @@
     <main class="main-content">
         <header class="dash-header">
             <div class="header-info">
-                <h1 id="welcome-msg">A carregar...</h1>
+                <h1 id="welcome-msg">Carregando NOC...</h1>
                 <p id="current-time-dash"></p>
             </div>
             <div class="user-profile">
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="chart-container">
-                <h4>Visão Geral da Rede</h4>
+                <h4>Distribuição de Redes</h4>
                 <canvas id="meuGrafico"></canvas>
             </div>
         </section>
@@ -68,7 +68,7 @@
         <section id="content-clientes" class="dash-section" style="display: none;">
             <div class="table-section">
                 <div class="table-header-flex">
-                    <h3>Gestão de Inventário</h3>
+                    <h3>Gestão Sincronizada (Firebase)</h3>
                     <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
                 </div>
                 <div class="table-responsive">
@@ -85,10 +85,10 @@
         <section id="content-infra" class="dash-section" style="display: none;">
             <div class="infra-box">
                 <i class="fa-solid fa-microchip"></i>
-                <h3>Módulo de Análise RF <span id="infra-user-name"></span> v1.1</h3>
+                <h3>Módulo de Análise RF <span id="infra-user-name"></span> v1.2</h3>
                 <p>Status: Aguardando telemetria dos satélites Starlink...</p>
                 <div class="progress-bar-infra"><div class="progress-fill"></div></div>
-                <small style="color: #94a3b8; margin-top: 10px; display: block;">Nota: Conexão direta via API pendente de licença.</small>
+                <small style="color: #94a3b8; margin-top: 10px; display: block;">Sincronização Cloud Ativa via Firebase.</small>
             </div>
         </section>
     </main>
@@ -111,12 +111,13 @@
                     <option value="online">Online / Ativo</option>
                     <option value="offline">Offline / Alerta</option>
                 </select>
-                <button type="submit" class="btn-save">Guardar Sistema</button>
+                <button type="submit" class="btn-save">Guardar na Nuvem</button>
                 <button type="button" onclick="toggleModal()" class="btn-cancel">Cancelar</button>
             </form>
         </div>
     </div>
 
-    <script src="dash-script.js"></script>
+    <script type="module" src="dash-script.js"></script>
+
 </body>
 </html>
