@@ -8,11 +8,9 @@
     <meta name="theme-color" content="#2563eb">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    
     <link rel="stylesheet" href="dash-style.css">
 </head>
 <body>
@@ -21,7 +19,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">Rozay<span>Admin</span></div>
         <nav class="side-nav">
-            <a href="https://rozaytech.com" class="back-link"><i class="fa-solid fa-globe"></i> Ver Site Público</a>
+            <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar ao Site</a>
             <div class="nav-divider"></div>
             <a href="#" onclick="navigateTo('resumo', this)" class="active"><i class="fa-solid fa-chart-pie"></i> Painel Geral</a>
             <a href="#" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-server"></i> Clientes & Redes</a>
@@ -36,7 +34,7 @@
     <main class="main-content">
         <header class="dash-header">
             <div class="header-info">
-                <h1 id="welcome-msg">A carregar...</h1>
+                <h1 id="welcome-msg">Carregando...</h1>
                 <p id="current-time-dash"></p>
             </div>
             <div class="user-profile">
@@ -49,15 +47,15 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
-                    <div class="stat-data"><h3 id="count-total">0</h3><p>Total Clientes</p></div>
+                    <div class="stat-data"><h3 id="count-total">0</h3><p>Clientes</p></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon green"><i class="fa-solid fa-wallet"></i></div>
-                    <div class="stat-data"><h3 id="count-receita">0 MT</h3><p>Receita Global</p></div>
+                    <div class="stat-data"><h3 id="count-receita">0 MT</h3><p>Receita</p></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <div class="stat-data"><h3 id="count-alerts">0</h3><p>Sistemas Offline</p></div>
+                    <div class="stat-data"><h3 id="count-alerts">0</h3><p>Offline</p></div>
                 </div>
             </div>
             <div class="chart-container">
@@ -69,14 +67,12 @@
         <section id="content-clientes" class="dash-section" style="display: none;">
             <div class="table-section">
                 <div class="table-header-flex">
-                    <h3>Base de Dados Cloud</h3>
-                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
+                    <h3>Base de Dados Clientes</h3>
+                    <button onclick="gerarRelatorioPDF('clientes')" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> Exportar Clientes</button>
                 </div>
                 <div class="table-responsive">
                     <table class="dash-table">
-                        <thead>
-                            <tr><th>Cliente</th><th>Serviço</th><th>Morada</th><th>Valor</th><th>Estado</th><th>Ações</th></tr>
-                        </thead>
+                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Morada</th><th>Valor</th><th>Estado</th><th>Ações</th></tr></thead>
                         <tbody id="clientTableBody"></tbody>
                     </table>
                 </div>
@@ -86,14 +82,12 @@
         <section id="content-faturacao" class="dash-section" style="display: none;">
             <div class="table-section">
                 <div class="table-header-flex">
-                    <h3>Faturação Consolidada</h3>
-                    <h3 id="total-faturacao-header" style="color: var(--success);">0 MT</h3>
+                    <h3>Faturação Total: <span id="total-faturacao-header">0 MT</span></h3>
+                    <button onclick="gerarRelatorioPDF('faturacao')" class="btn-pdf"><i class="fa-solid fa-file-invoice"></i> Exportar Faturação</button>
                 </div>
                 <div class="table-responsive">
                     <table class="dash-table">
-                        <thead>
-                            <tr><th>Cliente</th><th>Técnico</th><th>Data</th><th>Valor Pago</th></tr>
-                        </thead>
+                        <thead><tr><th>Cliente</th><th>Técnico</th><th>Data Registro</th><th>Valor</th></tr></thead>
                         <tbody id="faturacaoTableBody"></tbody>
                     </table>
                 </div>
@@ -105,9 +99,7 @@
                 <h3>Logs de Atividade</h3>
                 <div class="table-responsive">
                     <table class="dash-table">
-                        <thead>
-                            <tr><th>Data</th><th>Engenheiro</th><th>Ação</th><th>Detalhes</th></tr>
-                        </thead>
+                        <thead><tr><th>Data/Hora</th><th>Engenheiro</th><th>Ação</th><th>Detalhes</th></tr></thead>
                         <tbody id="logsTableBody"></tbody>
                     </table>
                 </div>
@@ -117,9 +109,9 @@
         <section id="content-infra" class="dash-section" style="display: none;">
             <div class="infra-box">
                 <i class="fa-solid fa-microchip"></i>
-                <h3>RF Monitoring Active</h3>
+                <h3>Rozay Analyzer v2.5</h3>
+                <p>Status: Monitorização RF Ativa via Firebase Cloud</p>
                 <div class="progress-bar-infra"><div class="progress-fill"></div></div>
-                <p>Ligado ao Firebase Cloud Nodes.</p>
             </div>
         </section>
     </main>
@@ -128,11 +120,11 @@
 
     <div id="modalCliente" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="modalTitle">Novo Registo</h3>
+            <h3 id="modalTitle">Novo Registro</h3>
             <form id="formCliente">
                 <input type="hidden" id="editIndex">
-                <input type="text" id="nome" placeholder="Cliente" required>
-                <select id="tech" required>
+                <input type="text" id="nome" placeholder="Nome do Cliente" required>
+                <select id="tech">
                     <option value="Starlink">Starlink</option>
                     <option value="PtP">Link PtP</option>
                     <option value="Cabeamento">Cabeamento</option>
@@ -142,16 +134,12 @@
                 </select>
                 <input type="text" id="local" placeholder="Localização" required>
                 <input type="number" id="valor" placeholder="Valor (MT)" required>
-                <select id="status">
-                    <option value="online">Online</option>
-                    <option value="offline">Offline</option>
-                </select>
-                <button type="submit" class="btn-save">Guardar na Cloud</button>
-                <button type="button" onclick="toggleModal()" class="btn-cancel">Fechar</button>
+                <select id="status"><option value="online">Online</option><option value="offline">Offline</option></select>
+                <button type="submit" class="btn-save">Guardar na Nuvem</button>
+                <button type="button" onclick="toggleModal()" class="btn-cancel">Cancelar</button>
             </form>
         </div>
     </div>
-
     <script type="module" src="dash-script.js"></script>
 </body>
 </html>
