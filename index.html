@@ -24,7 +24,7 @@
             <div class="logo-box">Rozay<span>Tech</span></div>
             <div class="header-right">
                 <button id="themeToggle" title="Trocar Tema"><i class="fa-solid fa-moon"></i></button>
-                <div id="calendar" style="font-family: monospace; font-weight: bold; color: var(--primary);">00:00:00</div>
+                <div id="calendar">00:00:00</div>
             </div>
         </div>
     </header>
@@ -72,15 +72,15 @@
             <h2>Solicitar Orçamento Automático</h2>
             <div class="card" style="max-width: 500px; margin: 0 auto 40px; text-align: left;">
                 <form id="leadForm">
-                    <input type="text" id="leadName" placeholder="Nome ou Empresa" required style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd; background: var(--bg); color: var(--text);">
-                    <input type="tel" id="leadPhone" placeholder="WhatsApp / Telemóvel" required style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd; background: var(--bg); color: var(--text);">
-                    <select id="leadInterest" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd; background: var(--bg); color: var(--text);">
+                    <input type="text" id="leadName" placeholder="Nome ou Empresa" required style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #cbd5e1; background: var(--bg); color: var(--text);">
+                    <input type="tel" id="leadPhone" placeholder="WhatsApp / Telemóvel" required style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #cbd5e1; background: var(--bg); color: var(--text);">
+                    <select id="leadInterest" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #cbd5e1; background: var(--bg); color: var(--text);">
                         <option value="Starlink/Redes">Starlink & Redes</option>
                         <option value="Websites">Websites de Elite</option>
                         <option value="Drones">Serviços de Drone</option>
                         <option value="Consultoria">Consultoria TI</option>
                     </select>
-                    <button type="submit" class="contact-card whatsapp" style="width:100%; border:none; cursor:pointer; font-weight:bold;">Enviar Solicitação ao NOC</button>
+                    <button type="submit" class="contact-card" style="width:100%; border:none; cursor:pointer; font-weight:bold; background: #2563eb; color: white;">Enviar Solicitação ao NOC</button>
                 </form>
                 <p id="formStatus" style="margin-top:10px; display:none; text-align:center; font-weight:bold;"></p>
             </div>
@@ -133,7 +133,7 @@
                 status.style.display = "block";
                 e.target.reset();
             } catch (err) {
-                status.innerText = "Erro ao enviar. Tente o WhatsApp.";
+                status.innerText = "Erro ao enviar.";
                 status.style.color = "#ef4444";
                 status.style.display = "block";
             }

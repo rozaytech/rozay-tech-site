@@ -1,6 +1,10 @@
-/* =========================================
-   SISTEMA DE LOADER (O seu original)
-   ========================================= */
+/**
+ * ROZAY TECH SOLUTIONS - Script Principal v2.5
+ * Localização: Moçambique
+ * Funcionalidades: Loader, Relógio, Tema, Visitas, ScrollReveal, Smooth Scroll e Leads.
+ */
+
+/* 1. SISTEMA DE PRE-LOADER (ANIMADO) */
 window.addEventListener('load', () => {
     let progress = 0;
     const progressLimit = 100;
@@ -8,103 +12,138 @@ window.addEventListener('load', () => {
     const loaderProgress = document.getElementById('loaderProgress');
     const loader = document.getElementById('loader');
 
+    // Simulação de carregamento de recursos
     const interval = setInterval(() => {
-        progress += Math.floor(Math.random() * 10) + 5;
+        // Incremento aleatório para parecer natural
+        progress += Math.floor(Math.random() * 12) + 5;
+        
         if (progress >= progressLimit) {
             progress = progressLimit;
             clearInterval(interval);
+            
+            // Efeito de saída suave
             setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 500);
+                if (loader) {
+                    loader.style.opacity = '0';
+                    loader.style.transition = 'opacity 0.6s ease';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 600);
+                }
             }, 500);
         }
-        if (loaderProgress) loaderProgress.style.width = progress + '%';
-        if (loaderPercent) loaderPercent.innerText = progress + '%';
-    }, 100);
+
+        // Atualização visual da barra e do texto
+        if (loaderProgress) {
+            loaderProgress.style.width = progress + '%';
+        }
+        if (loaderPercent) {
+            loaderPercent.innerText = progress + '%';
+        }
+    }, 120);
 });
 
-/* =========================================
-   RELÓGIO EM TEMPO REAL (Novo)
-   ========================================= */
-function updateClock() {
+/* 2. RELÓGIO DIGITAL (MAPUTO TIME - 24H) */
+function startRealTimeClock() {
     const calendarEl = document.getElementById('calendar');
-    if (calendarEl) {
-        const now = new Date();
-        // Formato Moçambique (24h)
-        const timeString = now.toLocaleTimeString('pt-MZ', { 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit',
-            hour12: false 
-        });
-        calendarEl.innerText = timeString;
+    
+    function update() {
+        if (!calendarEl) return;
+        const agora = new Date();
+        const horas = String(agora.getHours()).padStart(2, '0');
+        const minutos = String(agora.getMinutes()).padStart(2, '0');
+        const segundos = String(agora.getSeconds()).padStart(2, '0');
+        
+        calendarEl.innerText = `${horas}:${minutos}:${segundos}`;
     }
-}
-// Atualiza a cada 1 segundo
-setInterval(updateClock, 1000);
-updateClock(); // Inicia imediatamente
 
-/* =========================================
-   CONTADOR DE VISITAS (LocalStorage)
-   ========================================= */
-function updateVisits() {
-    let visits = localStorage.getItem('rozay_visits') || 0;
-    visits = parseInt(visits) + 1;
-    localStorage.setItem('rozay_visits', visits);
-    const visitEl = document.getElementById('visits');
-    if (visitEl) visitEl.innerText = visits;
+    setInterval(update, 1000);
+    update(); // Execução imediata
 }
-updateVisits();
+startRealTimeClock();
 
-/* =========================================
-   ALTERNADOR DE TEMA (Dark/Light)
-   ========================================= */
+/* 3. GESTÃO DE TEMA (DARK / LIGHT MODE) */
 const themeToggle = document.getElementById('themeToggle');
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
+        // Alterna a classe no body
         document.body.classList.toggle('light-theme');
+        
+        // Troca o ícone (Lua/Sol)
         const icon = themeToggle.querySelector('i');
         if (document.body.classList.contains('light-theme')) {
-            icon.classList.replace('fa-moon', 'fa-sun');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            localStorage.setItem('rozay_theme', 'light');
         } else {
-            icon.classList.replace('fa-sun', 'fa-moon');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+            localStorage.setItem('rozay_theme', 'dark');
         }
     });
 }
 
-/* =========================================
-   ANIMAÇÕES SCROLL REVEAL (As suas originais)
-   ========================================= */
+// Persistência do tema ao recarregar a página
+if (localStorage.getItem('rozay_theme') === 'light') {
+    document.body.classList.add('light-theme');
+    const icon = themeToggle?.querySelector('i');
+    if (icon) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+}
+
+/* 4. CONTADOR DE VISITAS ÚNICAS */
+function initVisitorCounter() {
+    let visits = localStorage.getItem('rozay_visits') || 0;
+    // Só incrementa se for uma nova sessão (opcional)
+    if (!sessionStorage.getItem('session_start')) {
+        visits = parseInt(visits) + 1;
+        localStorage.setItem('rozay_visits', visits);
+        sessionStorage.setItem('session_start', 'true');
+    }
+    
+    const visitEl = document.getElementById('visits');
+    if (visitEl) {
+        visitEl.innerText = visits;
+    }
+}
+initVisitorCounter();
+
+/* 5. ANIMAÇÕES DE ENTRADA (SCROLL REVEAL) */
 if (typeof ScrollReveal !== 'undefined') {
     const sr = ScrollReveal({
         origin: 'bottom',
-        distance: '60px',
-        duration: 1000,
+        distance: '50px',
+        duration: 1200,
         delay: 200,
-        reset: false // Para animar apenas uma vez ao descer
+        reset: false // Não repete para não cansar o utilizador
     });
 
     sr.reveal('.hero h1', { delay: 100, origin: 'left' });
     sr.reveal('.hero p', { delay: 300, origin: 'left' });
-    sr.reveal('.badge', { delay: 100, scale: 0.8 });
-    sr.reveal('.card', { interval: 100 });
+    sr.reveal('.badge', { delay: 100, scale: 0.9 });
+    sr.reveal('.card', { interval: 150, rotate: { x: 10, y: 0, z: 0 } });
     sr.reveal('.section h2', { delay: 100, origin: 'top' });
-    sr.reveal('.contact-grid a', { interval: 150 });
+    sr.reveal('.contact-grid a', { interval: 100, scale: 0.8 });
+    sr.reveal('.card form', { delay: 400 });
 }
 
-/* =========================================
-   SMOOTH SCROLL (Navegação Suave)
-   ========================================= */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
+/* 6. NAVEGAÇÃO SUAVE (SMOOTH SCROLL) */
+document.querySelectorAll('.nav-links a, .hero a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 80, // Compensação da topbar fixa
+                    behavior: 'smooth'
+                });
+            }
         }
     });
 });
+
+console.log("Rozay Tech Solutions: Sistemas operacional.");
