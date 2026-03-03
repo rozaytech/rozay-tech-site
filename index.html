@@ -22,7 +22,7 @@
         <div class="container topbar-content">
             <div class="logo-box">Rozay<span>Tech</span></div>
             <div class="header-right">
-                <button id="themeToggle" title="Trocar Tema"><i class="fa-solid fa-moon"></i></button>
+                <button id="themeToggle"><i class="fa-solid fa-moon"></i></button>
                 <div id="calendar" class="led-clock">00:00:00</div>
             </div>
         </div>
@@ -36,19 +36,19 @@
         </div>
     </nav>
 
-    <main class="main-wrapper">
+    <main class="main-container">
         <section class="hero">
             <div class="container">
-                <div class="badge">Hub de Engenharia Digital: Conectividade & Gestão</div>
+                <div class="badge">Hub de Engenharia Digital</div>
                 <h1>Soluções de Engenharia para o Mercado Moderno</h1>
-                <p>Infraestrutura de redes de elite, presença digital estratégica e operações audiovisuais.</p>
+                <p>Infraestrutura de redes de elite, presença digital estratégica e operações com drones.</p>
             </div>
         </section>
 
         <section id="sobre" class="section">
             <div class="container text-left">
                 <h2>Sobre Nós</h2>
-                <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores</strong>. Atuamos como o parceiro estratégico para inovação.</p>
+                <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores</strong>. Garantimos robustez técnica em cada projeto.</p>
             </div>
         </section>
 
@@ -57,10 +57,10 @@
                 <h2>Nossas Especialidades</h2>
                 <div class="cards">
                     <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Starlink, Redes PtP e Firewalls.</p></div>
-                    <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Plataformas profissionais e rápidas.</p></div>
-                    <div class="card"><i class="fa-solid fa-plane-up"></i><h3>Drones</h3><p>Inspeções técnicas e audiovisual profissional.</p></div>
-                    <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria TI</h3><p>Gestão de infraestrutura e suporte.</p></div>
-                    <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança</h3><p>CFTV inteligente e proteção de dados.</p></div>
+                    <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Plataformas rápidas e otimizadas.</p></div>
+                    <div class="card"><i class="fa-solid fa-plane-up"></i><h3>Drones</h3><p>Inspeções e audiovisual técnico.</p></div>
+                    <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria TI</h3><p>Gestão de parques informáticos.</p></div>
+                    <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança</h3><p>CFTV e proteção de dados.</p></div>
                     <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Logística</h3><p>Importação rápida de hardware.</p></div>
                 </div>
             </div>
@@ -70,19 +70,19 @@
             <div class="container">
                 <h2>Fale Connosco</h2>
                 
-                <div class="form-card">
+                <div class="dashboard-form">
                     <form id="leadForm">
-                        <div class="form-row">
+                        <div class="input-group">
                             <input type="text" id="leadName" placeholder="Nome / Empresa" required>
-                            <input type="text" id="leadLoc" placeholder="Localização (ex: Maputo)" required>
+                            <input type="text" id="leadLoc" placeholder="Localização" required>
                         </div>
-                        <div class="form-row">
-                            <input type="tel" id="leadPhone" placeholder="WhatsApp (ex: 84...)" required>
+                        <div class="input-group">
+                            <input type="tel" id="leadPhone" placeholder="WhatsApp" required>
                             <select id="leadService">
-                                <option value="Redes/Starlink">Starlink & Redes</option>
-                                <option value="Websites">Websites</option>
-                                <option value="Drones">Serviços de Drone</option>
-                                <option value="Consultoria">Consultoria / Outros</option>
+                                <option value="Redes">Starlink & Redes</option>
+                                <option value="Web">Websites</option>
+                                <option value="Drones">Drones</option>
+                                <option value="TI">Consultoria TI</option>
                             </select>
                         </div>
                         <button type="submit" id="btnSubmit">Enviar para o NOC</button>
@@ -91,9 +91,9 @@
                 </div>
 
                 <div class="mini-socials">
-                    <a href="https://wa.me/258846166104" class="icon-btn wa" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                    <a href="tel:258870018297" class="icon-btn ph" title="Ligar"><i class="fa-solid fa-phone"></i></a>
-                    <a href="mailto:contato@rozaytech.com" class="icon-btn em" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="https://wa.me/258846166104" class="btn-icon wa" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="tel:258870018297" class="btn-icon ph" title="Ligar"><i class="fa-solid fa-phone"></i></a>
+                    <a href="mailto:adamgyadamo@gmail.com" class="btn-icon em" title="Email"><i class="fa-solid fa-envelope"></i></a>
                 </div>
             </div>
         </section>
@@ -112,7 +112,7 @@
         const app = initializeApp(fbConfig); const db = getDatabase(app);
         document.getElementById('leadForm').onsubmit = async (e) => {
             e.preventDefault(); const b = document.getElementById('btnSubmit'); const s = document.getElementById('formStatus');
-            b.disabled = true; b.innerText = "Processando...";
+            b.disabled = true; b.innerText = "Sincronizando...";
             try {
                 await push(ref(db, 'leads'), {
                     nome: document.getElementById('leadName').value,
@@ -121,8 +121,8 @@
                     servico: document.getElementById('leadService').value,
                     data: new Date().toLocaleString('pt-MZ')
                 });
-                s.innerText = "✓ Enviado com sucesso!"; s.style.color = "#10b981"; e.target.reset();
-            } catch (err) { s.innerText = "Erro ao conectar."; s.style.color = "#ef4444"; }
+                s.innerText = "✓ Enviado ao Dashboard!"; s.style.color = "#10b981"; e.target.reset();
+            } catch (err) { s.innerText = "Erro de conexão."; s.style.color = "#ef4444"; }
             finally { b.disabled = false; b.innerText = "Enviar para o NOC"; }
         };
     </script>

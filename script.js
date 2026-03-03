@@ -1,4 +1,4 @@
-// 1. LOADER FLASH
+// 1. LOADER FLASH SPEED
 window.addEventListener('load', () => {
     let p = 0;
     const bar = document.getElementById('loaderProgress');
@@ -6,20 +6,20 @@ window.addEventListener('load', () => {
     const ldr = document.getElementById('loader');
 
     const inv = setInterval(() => {
-        p += Math.floor(Math.random() * 25) + 5;
+        p += Math.floor(Math.random() * 20) + 10;
         if (p >= 100) {
             p = 100; clearInterval(inv);
             setTimeout(() => {
                 ldr.style.opacity = '0';
                 setTimeout(() => ldr.style.display = 'none', 500);
-            }, 300);
+            }, 200);
         }
         if (bar) bar.style.width = p + '%';
         if (txt) txt.innerText = p + '%';
     }, 100);
 });
 
-// 2. RELÓGIO LED
+// 2. RELÓGIO WHITE LED
 function tick() {
     const el = document.getElementById('calendar');
     if (el) el.innerText = new Date().toLocaleTimeString('pt-MZ', { hour12: false });
@@ -32,12 +32,7 @@ tBtn.addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
     const isL = document.body.classList.contains('light-theme');
     tBtn.innerHTML = isL ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-    localStorage.setItem('rozay_t', isL ? 'light' : 'dark');
 });
-if(localStorage.getItem('rozay_t') === 'light') {
-    document.body.classList.add('light-theme');
-    tBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-}
 
 // 4. CONTADOR 1041
 let count = localStorage.getItem('rozay_v');
