@@ -21,27 +21,26 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">Rozay<span>Admin</span></div>
         <nav class="side-nav">
+            <a href="https://rozaytech.com" class="back-link"><i class="fa-solid fa-globe"></i> Ver Site Público</a>
+            <div class="nav-divider"></div>
             <a href="#" onclick="navigateTo('resumo', this)" class="active"><i class="fa-solid fa-chart-pie"></i> Painel Geral</a>
             <a href="#" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-server"></i> Clientes & Redes</a>
             <a href="#" onclick="navigateTo('faturacao', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</a>
-            <a href="#" onclick="navigateTo('logs', this)"><i class="fa-solid fa-clipboard-list"></i> Logs do Sistema</a>
+            <a href="#" onclick="navigateTo('logs', this)"><i class="fa-solid fa-clipboard-list"></i> Auditoria</a>
             <a href="#" onclick="navigateTo('infra', this)"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
             <div class="nav-divider"></div>
-            <a href="#" onclick="logout()" class="logout-link"><i class="fa-solid fa-power-off"></i> Sair do Sistema</a>
+            <a href="#" onclick="logout()" class="logout-link"><i class="fa-solid fa-power-off"></i> Sair</a>
         </nav>
     </aside>
 
     <main class="main-content">
         <header class="dash-header">
             <div class="header-info">
-                <h1 id="welcome-msg">Carregando...</h1>
+                <h1 id="welcome-msg">A carregar...</h1>
                 <p id="current-time-dash"></p>
             </div>
             <div class="user-profile">
-                <div class="user-info-text">
-                    <span id="logged-user-name">Usuário</span>
-                    <small>NOC Engineering</small>
-                </div>
+                <div class="user-info-text"><span id="logged-user-name">...</span><small>NOC Master</small></div>
                 <div class="user-avatar" id="user-initial">R</div>
             </div>
         </header>
@@ -53,7 +52,7 @@
                     <div class="stat-data"><h3 id="count-total">0</h3><p>Total Clientes</p></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon green"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                    <div class="stat-icon green"><i class="fa-solid fa-wallet"></i></div>
                     <div class="stat-data"><h3 id="count-receita">0 MT</h3><p>Receita Global</p></div>
                 </div>
                 <div class="stat-card">
@@ -62,21 +61,21 @@
                 </div>
             </div>
             <div class="chart-container">
-                <h4>Distribuição de Serviços Rozay Tech</h4>
-                <canvas id="meuGrafico"></canvas>
+                <h4>Distribuição de Serviços</h4>
+                <div style="height: 300px;"><canvas id="meuGrafico"></canvas></div>
             </div>
         </section>
 
         <section id="content-clientes" class="dash-section" style="display: none;">
             <div class="table-section">
                 <div class="table-header-flex">
-                    <h3>Gestão de Redes Cloud</h3>
-                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> PDF Clientes</button>
+                    <h3>Base de Dados Cloud</h3>
+                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
                 </div>
                 <div class="table-responsive">
                     <table class="dash-table">
                         <thead>
-                            <tr><th>Cliente</th><th>Serviço</th><th>Localização</th><th>Valor</th><th>Estado</th><th>Ações</th></tr>
+                            <tr><th>Cliente</th><th>Serviço</th><th>Morada</th><th>Valor</th><th>Estado</th><th>Ações</th></tr>
                         </thead>
                         <tbody id="clientTableBody"></tbody>
                     </table>
@@ -87,13 +86,13 @@
         <section id="content-faturacao" class="dash-section" style="display: none;">
             <div class="table-section">
                 <div class="table-header-flex">
-                    <h3>Resumo Financeiro</h3>
+                    <h3>Faturação Consolidada</h3>
                     <h3 id="total-faturacao-header" style="color: var(--success);">0 MT</h3>
                 </div>
                 <div class="table-responsive">
                     <table class="dash-table">
                         <thead>
-                            <tr><th>Cliente</th><th>Técnico Responsável</th><th>Data de Registo</th><th>Valor Cobrado</th></tr>
+                            <tr><th>Cliente</th><th>Técnico</th><th>Data</th><th>Valor Pago</th></tr>
                         </thead>
                         <tbody id="faturacaoTableBody"></tbody>
                     </table>
@@ -103,11 +102,11 @@
 
         <section id="content-logs" class="dash-section" style="display: none;">
             <div class="table-section">
-                <div class="table-header-flex"><h3>Auditoria de Sistema</h3></div>
+                <h3>Logs de Atividade</h3>
                 <div class="table-responsive">
                     <table class="dash-table">
                         <thead>
-                            <tr><th>Data/Hora</th><th>Engenheiro</th><th>Ação Realizada</th><th>Detalhes</th></tr>
+                            <tr><th>Data</th><th>Engenheiro</th><th>Ação</th><th>Detalhes</th></tr>
                         </thead>
                         <tbody id="logsTableBody"></tbody>
                     </table>
@@ -118,9 +117,9 @@
         <section id="content-infra" class="dash-section" style="display: none;">
             <div class="infra-box">
                 <i class="fa-solid fa-microchip"></i>
-                <h3>Rozay Analyzer v2.5</h3>
-                <p>Status: Monitorização RF Ativa via Firebase Cloud</p>
+                <h3>RF Monitoring Active</h3>
                 <div class="progress-bar-infra"><div class="progress-fill"></div></div>
+                <p>Ligado ao Firebase Cloud Nodes.</p>
             </div>
         </section>
     </main>
@@ -129,38 +128,30 @@
 
     <div id="modalCliente" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="modalTitle">Novo Registo NOC</h3>
+            <h3 id="modalTitle">Novo Registo</h3>
             <form id="formCliente">
                 <input type="hidden" id="editIndex">
-                <input type="text" id="nome" placeholder="Nome do Cliente / Empresa" required>
+                <input type="text" id="nome" placeholder="Cliente" required>
                 <select id="tech" required>
-                    <option value="" disabled selected>Escolha o serviço...</option>
-                    <option value="Starlink">Internet Starlink</option>
-                    <option value="PtP">Rede Ponto-a-Ponto (PtP)</option>
-                    <option value="Cabeamento">Cabeamento Estruturado</option>
-                    <option value="Websites">Criação de Website</option>
-                    <option value="Drones">Drone & Audiovisual</option>
-                    <option value="CFTV">Segurança Eletrónica (CFTV)</option>
-                    <option value="Consultoria">Consultoria & TI</option>
-                    <option value="Importacao">Importação de Equipamento</option>
+                    <option value="Starlink">Starlink</option>
+                    <option value="PtP">Link PtP</option>
+                    <option value="Cabeamento">Cabeamento</option>
+                    <option value="Drones">Drones</option>
+                    <option value="Websites">Website</option>
+                    <option value="CFTV">CFTV</option>
                 </select>
-                <input type="text" id="local" placeholder="Província / Morada" required>
-                <input type="number" id="valor" placeholder="Valor em Meticais (MT)" required>
+                <input type="text" id="local" placeholder="Localização" required>
+                <input type="number" id="valor" placeholder="Valor (MT)" required>
                 <select id="status">
-                    <option value="online">Online / Ativo</option>
-                    <option value="offline">Offline / Pendente</option>
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
                 </select>
-                <button type="submit" class="btn-save">Guardar na Nuvem</button>
-                <button type="button" onclick="toggleModal()" class="btn-cancel">Cancelar</button>
+                <button type="submit" class="btn-save">Guardar na Cloud</button>
+                <button type="button" onclick="toggleModal()" class="btn-cancel">Fechar</button>
             </form>
         </div>
     </div>
 
     <script type="module" src="dash-script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(() => console.log("PWA Registada"));
-        }
-    </script>
 </body>
 </html>
