@@ -1,71 +1,87 @@
 :root {
     --primary: #2563eb;
     --bg: #0f172a;
-    --card: #1e293b;
+    --card: rgba(30, 41, 59, 0.7);
     --text: #f8fafc;
 }
 
 body.light-theme {
     --bg: #f1f5f9;
-    --card: #ffffff;
+    --card: rgba(255, 255, 255, 0.9);
     --text: #0f172a;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; transition: 0.3s; }
+* { margin: 0; padding: 0; box-sizing: border-box; transition: 0.3s ease; }
+html { scroll-behavior: smooth; }
 
 body { 
     font-family: 'Inter', sans-serif; 
     background-color: var(--bg); 
     color: var(--text);
-    /* Fundo de Circuito */
+    /* FUNDO MOTHERBOARD */
     background-image: url('https://www.transparenttextures.com/patterns/circuit-board.png');
     background-attachment: fixed;
 }
 
 .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
-/* Loader Flash */
-#loader { position: fixed; inset: 0; background: #0f172a; z-index: 9999; display: flex; align-items: center; justify-content: center; text-align: center; }
-.loader-character { font-size: 40px; color: #fbbf24; animation: flash 0.5s infinite alternate; }
-@keyframes flash { from { opacity: 0.2; transform: scale(0.8); } to { opacity: 1; transform: scale(1.1); } }
-.loader-bar { width: 150px; height: 4px; background: #334155; margin: 15px auto; border-radius: 10px; overflow: hidden; }
-#loaderProgress { width: 0%; height: 100%; background: var(--primary); }
-.loader-msg { font-size: 10px; letter-spacing: 2px; opacity: 0.6; }
+/* LOADER FLASH */
+#loader { position: fixed; inset: 0; background: #020617; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.flash-icon { font-size: 50px; color: #fbbf24; animation: flashPulse 0.6s infinite alternate; }
+@keyframes flashPulse { from { transform: scale(0.8); opacity: 0.5; } to { transform: scale(1.1); opacity: 1; text-shadow: 0 0 20px #fbbf24; } }
+.loader-bar { width: 200px; height: 4px; background: #1e293b; margin: 20px auto; border-radius: 10px; overflow: hidden; }
+#loaderProgress { width: 0%; height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
 
-/* Topbar & Relógio LED */
-.topbar { position: fixed; width: 100%; background: rgba(15,23,42,0.9); backdrop-filter: blur(10px); z-index: 1000; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.topbar-content { display: flex; justify-content: space-between; align-items: center; }
-.logo-box { font-size: 22px; font-weight: 900; }
+/* TOPBAR & LED CLOCK */
+.topbar { position: fixed; top: 0; width: 100%; height: 70px; background: rgba(15,23,42,0.85); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.topbar-content { height: 100%; display: flex; justify-content: space-between; align-items: center; }
+.logo-box { font-size: 24px; font-weight: 900; }
 .logo-box span { color: var(--primary); }
-#calendar { color: #ffffff !important; font-family: monospace; font-weight: bold; background: #000; padding: 5px 12px; border-radius: 5px; border: 1px solid #333; }
+.led-clock { background: #000; color: #fff !important; font-family: monospace; padding: 5px 12px; border-radius: 5px; border: 1px solid #334155; font-size: 16px; box-shadow: 0 0 10px var(--primary); }
 
-/* Navbar fix para não sobrepor */
-.navbar { position: fixed; top: 60px; width: 100%; background: rgba(15,23,42,0.8); z-index: 999; padding: 10px 0; }
-.nav-links { text-align: center; }
-.nav-links a { color: var(--text); text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 13px; opacity: 0.7; }
+#themeToggle { background: none; border: none; color: var(--text); cursor: pointer; font-size: 1.2rem; margin-right: 15px; }
+
+/* NAVBAR FIX */
+.navbar { position: fixed; top: 70px; width: 100%; height: 50px; background: rgba(15,23,42,0.8); z-index: 999; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.nav-links { display: flex; justify-content: center; gap: 25px; width: 100%; }
+.nav-links a { text-decoration: none; color: var(--text); font-weight: 700; font-size: 13px; opacity: 0.7; }
 .nav-links a:hover { opacity: 1; color: var(--primary); }
 
-.hero { padding: 160px 0 80px; text-align: center; }
-.hero h1 { font-size: clamp(30px, 5vw, 48px); font-weight: 900; margin-bottom: 20px; }
+/* CONTENT SPACING */
+.hero { padding: 180px 0 80px; text-align: center; }
+.hero h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
 .badge { background: rgba(37,99,235,0.1); color: var(--primary); padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: bold; margin-bottom: 20px; display: inline-block; }
 
-/* Cards */
-.section { padding: 80px 0; }
-.bg-light { background: rgba(0,0,0,0.05); }
+/* SECTIONS */
+.section { padding: 100px 0; }
+.bg-light { background: rgba(0,0,0,0.1); }
+h2 { font-size: 32px; font-weight: 900; margin-bottom: 40px; text-align: center; }
+
+/* CARDS */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-.card { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
-.card i { font-size: 35px; color: var(--primary); margin-bottom: 20px; }
+.card { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
+.card i { font-size: 40px; color: var(--primary); margin-bottom: 20px; }
 
-/* Lead Card Form */
-.lead-card { max-width: 450px; margin: 0 auto 40px; }
-.lead-card input, .lead-card select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #334155; background: rgba(0,0,0,0.2); color: #fff; }
-.btn-submit { width: 100%; padding: 12px; background: var(--primary); border: none; color: #fff; font-weight: bold; border-radius: 8px; cursor: pointer; }
+/* FORMULÁRIO COMPACTO */
+.form-container { max-width: 600px; margin: 0 auto 40px; background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid var(--primary); }
+.input-row { display: flex; gap: 15px; margin-bottom: 15px; }
+input, select { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #fff; font-size: 14px; }
+#btnSubmit { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; }
+#formStatus { text-align: center; margin-top: 10px; font-weight: bold; font-size: 14px; }
 
-/* Contact Buttons Compact */
-.contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.contact-card { padding: 15px 5px; text-align: center; border-radius: 12px; text-decoration: none; font-weight: bold; color: #fff; font-size: 12px; }
-.whatsapp { background: #16a34a; }
-.call { background: #2563eb; }
-.email { background: #dc2626; }
+/* MINI CONTACT BUTTONS */
+.mini-contact-grid { display: flex; justify-content: center; gap: 20px; }
+.mini-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff; text-decoration: none; }
+.wa { background: #16a34a; }
+.phone { background: var(--primary); }
+.mail { background: #dc2626; }
+.mini-btn:hover { transform: scale(1.2); }
 
-footer { padding: 60px 0; text-align: center; opacity: 0.8; }
+/* FOOTER */
+footer { padding: 60px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+.visitor-counter { margin-top: 15px; font-size: 14px; opacity: 0.6; }
+
+@media (max-width: 600px) {
+    .input-row { flex-direction: column; }
+    .hero { padding-top: 150px; }
+}
