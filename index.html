@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rozay Tech Solutions | Hub de Engenharia Digital</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Cpath d='M30,30 h30 a15,15 0 0,1 0,30 h-30 v15 m15,-15 l15,15' stroke='%232563eb' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+    <meta name="description" content="Especialistas em Starlink, Redes PtP, Websites e Engenharia Digital em Moçambique.">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    
     <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="loader">
         <div class="loader-box">
-            <div class="flash-bolt"><i class="fa-solid fa-bolt-lightning"></i></div>
-            <div class="loader-bar"><div id="loaderProgress"></div></div>
+            <div class="flash-animation">
+                <i class="fa-solid fa-bolt-lightning"></i>
+                <div class="light-ray"></div>
+            </div>
+            <div class="loader-bar-bg">
+                <div id="loaderProgress"></div>
+            </div>
             <p id="loaderPercent">0%</p>
+            <span class="loader-status">ESTABELECENDO CONEXÃO...</span>
         </div>
     </div>
 
@@ -22,79 +32,126 @@
         <div class="container topbar-content">
             <div class="logo-box">Rozay<span>Tech</span></div>
             <div class="header-right">
-                <button id="themeToggle"><i class="fa-solid fa-moon"></i></button>
-                <div id="calendar">00:00:00</div>
+                <button id="themeToggle" title="Alternar Tema"><i class="fa-solid fa-moon"></i></button>
+                <div id="calendar" class="led-clock">00:00:00</div>
             </div>
         </div>
     </header>
 
-    <nav class="navbar"><div class="container nav-links"><a href="#sobre">Sobre Nós</a><a href="#servicos">Serviços</a><a href="#contacto">Contacto</a></div></nav>
-
-    <section class="hero">
-        <div class="container">
-            <div class="badge">Engenharia Digital & Conectividade</div>
-            <h1>Soluções de Engenharia para o Mercado Moderno</h1>
-            <p>Infraestrutura de redes de elite e operações audiovisuais com drones.</p>
+    <nav class="navbar">
+        <div class="container nav-links">
+            <a href="#sobre">SOBRE NÓS</a>
+            <a href="#servicos">SERVIÇOS</a>
+            <a href="#contacto">CONTACTO</a>
         </div>
-    </section>
+    </nav>
 
-    <section id="sobre" class="section">
-        <div class="container text-left">
-            <h2>Sobre Nós</h2>
-            <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores</strong>. Atuamos como parceiro estratégico para inovação digital.</p>
-        </div>
-    </section>
-
-    <section id="servicos" class="section bg-light">
-        <div class="container">
-            <div class="cards">
-                <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Starlink e Links PtP.</p></div>
-                <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Plataformas Web e ERP.</p></div>
-                <div class="card"><i class="fa-solid fa-drone"></i><h3>Serviços de Drone</h3><p>Produção audiovisual e inspeções.</p></div>
-                <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria TI</h3><p>Gestão de infraestrutura.</p></div>
-                <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança</h3><p>CFTV e proteção de dados.</p></div>
-                <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Logística</h3><p>Importação de hardware.</p></div>
+    <main class="main-content">
+        <section class="hero">
+            <div class="container">
+                <div class="badge">ENGENHARIA DIGITAL • CONECTIVIDADE • GESTÃO GLOBAL</div>
+                <h1>Soluções de Engenharia para o Mercado Moderno</h1>
+                <p>Infraestrutura de redes de elite, presença digital estratégica e operações audiovisuais com drones de alta precisão.</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="contacto" class="section">
-        <div class="container">
-            <h2>Fale Connosco</h2>
-            <div class="card lead-container">
-                <form id="leadForm">
-                    <input type="text" id="n" placeholder="Nome / Empresa" required>
-                    <input type="tel" id="t" placeholder="WhatsApp" required>
-                    <button type="submit" class="btn-send">Enviar para o NOC</button>
-                </form>
-                <div id="status"></div>
+        <section id="sobre" class="section">
+            <div class="container text-left">
+                <h2>Sobre Nós</h2>
+                <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores e Redes</strong>. Atuamos como o parceiro estratégico para empresas que buscam robustez digital e inovação.</p>
+                <p>Unimos competência técnica com visão de negócio, desde o desenho de redes críticas até ao desenvolvimento de websites de alta conversão e logística global.</p>
             </div>
+        </section>
 
-            <div class="contact-grid">
-                <a href="https://wa.me/258846166104" class="contact-card whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
-                <a href="tel:258870018297" class="contact-card call"><i class="fa-solid fa-phone"></i> Ligar</a>
-                <a href="mailto:contato@rozaytech.com" class="contact-card email"><i class="fa-solid fa-envelope"></i> Email</a>
+        <section id="servicos" class="section bg-light">
+            <div class="container">
+                <h2>Nossas Especialidades</h2>
+                <div class="cards">
+                    <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Instalação Starlink, Redes PtP e gestão avançada de Firewalls.</p></div>
+                    <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Criação de sites profissionais, rápidos e otimizados.</p></div>
+                    <div class="card">
+                        <i class="fa-solid fa-plane-up"></i>
+                        <h3>Serviços de Drone</h3>
+                        <p>Inspeções técnicas, cobertura de eventos e produção audiovisual profissional.</p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria de TI</h3><p>Gestão de parques informáticos e suporte remoto especializado.</p></div>
+                    <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança Digital</h3><p>Sistemas de CFTV inteligentes e proteção contra invasões.</p></div>
+                    <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Import & Export</h3><p>Logística global rápida para equipamentos tecnológicos.</p></div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section id="contacto" class="section">
+            <div class="container">
+                <h2>Fale Connosco</h2>
+                <div class="contact-card-form">
+                    <h3>Solicitar Orçamento ao NOC</h3>
+                    <form id="leadForm">
+                        <input type="text" id="leadName" placeholder="Nome ou Empresa" required>
+                        <input type="tel" id="leadPhone" placeholder="WhatsApp / Telemóvel" required>
+                        <select id="leadInterest">
+                            <option value="Starlink/Redes">Starlink & Redes</option>
+                            <option value="Websites">Websites de Elite</option>
+                            <option value="Drones">Serviços de Drone</option>
+                            <option value="Consultoria">Consultoria TI</option>
+                        </select>
+                        <button type="submit" class="btn-submit">ENVIAR SOLICITAÇÃO</button>
+                    </form>
+                    <div id="formStatus"></div>
+                </div>
+
+                <div class="contact-grid">
+                    <a href="https://wa.me/258846166104" class="contact-btn whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+                    <a href="tel:258870018297" class="contact-btn call"><i class="fa-solid fa-phone"></i> Ligar</a>
+                    <a href="mailto:contato@rozaytech.com" class="contact-btn email"><i class="fa-solid fa-envelope"></i> Email</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <p>© 2026 Rozay Tech Solutions</p>
-        <div class="visitor-counter"><i class="fa-solid fa-eye"></i> <span id="visits">1041</span> visitas</div>
-        <a href="login.html" class="noc-link">Acesso NOC</a>
+        <div class="container">
+            <p>© 2026 Rozay Tech Solutions — Tecnologia em Movimento</p>
+            <div class="visitor-counter"><i class="fa-solid fa-eye"></i> <span id="visits">1041</span> visitas</div>
+            <div class="noc-access">
+                <a href="login.html">Acesso NOC</a>
+            </div>
+        </div>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        const config = { apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U", authDomain: "rozaytech-noc.firebaseapp.com", databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com", projectId: "rozaytech-noc", storageBucket: "rozaytech-noc.firebasestorage.app", messagingSenderId: "129382246448", appId: "1:129382246448:web:f0ce1b7fca23eed17da5f5" };
-        const app = initializeApp(config); const db = getDatabase(app);
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U",
+            authDomain: "rozaytech-noc.firebaseapp.com",
+            databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com",
+            projectId: "rozaytech-noc",
+            storageBucket: "rozaytech-noc.firebasestorage.app",
+            messagingSenderId: "129382246448",
+            appId: "1:129382246448:web:f0ce1b7fca23eed17da5f5"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
         document.getElementById('leadForm').onsubmit = async (e) => {
-            e.preventDefault(); const s = document.getElementById('status');
+            e.preventDefault();
+            const status = document.getElementById('formStatus');
             try {
-                await push(ref(db, 'leads'), { nome: document.getElementById('n').value, telf: document.getElementById('t').value, data: new Date().toLocaleString('pt-MZ') });
-                s.innerText = "✓ Enviado!"; s.className = "success"; e.target.reset();
-            } catch (err) { s.innerText = "Erro."; s.className = "error"; }
+                await push(ref(db, 'leads'), {
+                    nome: document.getElementById('leadName').value,
+                    telefone: document.getElementById('leadPhone').value,
+                    interesse: document.getElementById('leadInterest').value,
+                    data: new Date().toLocaleString('pt-MZ')
+                });
+                status.innerText = "✓ Enviado com sucesso!";
+                status.className = "status-success";
+                e.target.reset();
+            } catch (err) {
+                status.innerText = "Erro ao enviar.";
+                status.className = "status-error";
+            }
         };
     </script>
     <script src="script.js"></script>
