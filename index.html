@@ -3,164 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rozay Tech Solutions | Engenharia & Conectividade</title>
-    
+    <title>Rozay Tech Solutions | Hub de Engenharia Digital</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Cpath d='M30,30 h30 a15,15 0 0,1 0,30 h-30 v15 m15,-15 l15,15' stroke='%232563eb' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
-    <meta name="description" content="Especialistas em Starlink, Redes PtP e Engenharia Digital em Moçambique.">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
     <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div id="loader">
-        <div class="loader-content">
-            <div class="speed-line"></div>
-            <div class="speed-line"></div>
-            <div class="speed-line"></div>
-            <div class="node-icon">
-                <i class="fa-solid fa-circle-nodes"></i>
-            </div>
-            <div class="loader-status">
-                <div class="progress-container">
-                    <div id="loaderProgress"></div>
-                </div>
-                <div class="loader-text">SYNCING DATA: <span id="loaderPercent">0%</span></div>
-            </div>
+        <div class="loader-box">
+            <div class="flash-bolt"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <div class="loader-bar"><div id="loaderProgress"></div></div>
+            <p id="loaderPercent">0%</p>
         </div>
     </div>
 
     <header class="topbar">
-        <div class="container topbar-inner">
+        <div class="container topbar-content">
             <div class="logo-box">Rozay<span>Tech</span></div>
-            <div class="header-controls">
-                <button id="themeToggle" class="control-btn"><i class="fa-solid fa-moon"></i></button>
-                <div id="calendar" class="digital-clock">00:00:00</div>
+            <div class="header-right">
+                <button id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+                <div id="calendar">00:00:00</div>
             </div>
         </div>
     </header>
 
-    <nav class="main-nav">
-        <div class="container nav-items">
-            <a href="#sobre">SOBRE</a>
-            <a href="#servicos">SERVIÇOS</a>
-            <a href="#contacto">CONTACTO</a>
+    <nav class="navbar"><div class="container nav-links"><a href="#sobre">Sobre Nós</a><a href="#servicos">Serviços</a><a href="#contacto">Contacto</a></div></nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="badge">Engenharia Digital & Conectividade</div>
+            <h1>Soluções de Engenharia para o Mercado Moderno</h1>
+            <p>Infraestrutura de redes de elite e operações audiovisuais com drones.</p>
         </div>
-    </nav>
+    </section>
 
-    <main>
-        <section class="hero-section">
-            <div class="container">
-                <span class="top-badge">Hub de Engenharia Digital</span>
-                <h1>Soluções de Engenharia para o Mercado Moderno</h1>
-                <p>Infraestrutura de redes de elite, presença digital estratégica e operações audiovisuais com drones.</p>
-                <div class="hero-btns">
-                    <a href="#contacto" class="btn-primary">Solicitar Auditoria</a>
-                </div>
+    <section id="sobre" class="section">
+        <div class="container text-left">
+            <h2>Sobre Nós</h2>
+            <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores</strong>. Atuamos como parceiro estratégico para inovação digital.</p>
+        </div>
+    </section>
+
+    <section id="servicos" class="section bg-light">
+        <div class="container">
+            <div class="cards">
+                <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Starlink e Links PtP.</p></div>
+                <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Plataformas Web e ERP.</p></div>
+                <div class="card"><i class="fa-solid fa-drone"></i><h3>Serviços de Drone</h3><p>Produção audiovisual e inspeções.</p></div>
+                <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria TI</h3><p>Gestão de infraestrutura.</p></div>
+                <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança</h3><p>CFTV e proteção de dados.</p></div>
+                <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Logística</h3><p>Importação de hardware.</p></div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="servicos" class="services-area">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Especialidades Técnicas</h2>
-                    <div class="line"></div>
-                </div>
-                <div class="services-grid">
-                    <div class="service-card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Starlink Business e Links PtP de alta performance.</p></div>
-                    <div class="service-card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Sistemas web otimizados e plataformas ERP.</p></div>
-                    <div class="service-card"><i class="fa-solid fa-plane-up"></i><h3>Drones & AV</h3><p>Inspeções técnicas e mapeamento aéreo.</p></div>
-                    <div class="service-card"><i class="fa-solid fa-microchip"></i><h3>Consultoria IT</h3><p>Suporte especializado e gestão de infraestrutura.</p></div>
-                    <div class="service-card"><i class="fa-solid fa-shield-virus"></i><h3>Cibersegurança</h3><p>Proteção de dados e auditoria de vulnerabilidades.</p></div>
-                    <div class="service-card"><i class="fa-solid fa-truck-fast"></i><h3>Import & Export</h3><p>Logística global de hardware especializado.</p></div>
-                </div>
+    <section id="contacto" class="section">
+        <div class="container">
+            <h2>Fale Connosco</h2>
+            <div class="card lead-container">
+                <form id="leadForm">
+                    <input type="text" id="n" placeholder="Nome / Empresa" required>
+                    <input type="tel" id="t" placeholder="WhatsApp" required>
+                    <button type="submit" class="btn-send">Enviar para o NOC</button>
+                </form>
+                <div id="status"></div>
             </div>
-        </section>
 
-        <section id="contacto" class="contact-area">
-            <div class="container">
-                <div class="contact-wrapper">
-                    <div class="lead-form-box">
-                        <h3>Contactar o NOC</h3>
-                        <form id="leadForm">
-                            <div class="input-group">
-                                <label>Nome/Empresa</label>
-                                <input type="text" id="leadName" required placeholder="Ex: Rozay Tech">
-                            </div>
-                            <div class="input-group">
-                                <label>WhatsApp</label>
-                                <input type="tel" id="leadPhone" required placeholder="+258 ...">
-                            </div>
-                            <button type="submit" class="submit-btn">Enviar Requisição</button>
-                        </form>
-                        <div id="formStatus" class="status-msg"></div>
-                    </div>
-
-                    <div class="quick-contacts">
-                        <a href="https://wa.me/258846166104" class="c-btn wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
-                        <a href="tel:258870018297" class="c-btn phone"><i class="fa-solid fa-phone"></i> Ligar</a>
-                        <a href="mailto:contato@rozaytech.com" class="c-btn mail"><i class="fa-solid fa-envelope"></i> Email</a>
-                    </div>
-                </div>
+            <div class="contact-grid">
+                <a href="https://wa.me/258846166104" class="contact-card whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+                <a href="tel:258870018297" class="contact-card call"><i class="fa-solid fa-phone"></i> Ligar</a>
+                <a href="mailto:contato@rozaytech.com" class="contact-card email"><i class="fa-solid fa-envelope"></i> Email</a>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <footer>
-        <div class="container footer-content">
-            <p>© 2026 Rozay Tech Solutions — Tecnologia em Movimento</p>
-            <div class="stats-footer">
-                <i class="fa-solid fa-signal"></i> Online | <i class="fa-solid fa-eye"></i> <span id="visits">1041</span> Visitas
-            </div>
-            <div class="admin-access">
-                <a href="login.html">NOC LOGIN</a>
-            </div>
-        </div>
+        <p>© 2026 Rozay Tech Solutions</p>
+        <div class="visitor-counter"><i class="fa-solid fa-eye"></i> <span id="visits">1041</span> visitas</div>
+        <a href="login.html" class="noc-link">Acesso NOC</a>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U",
-            authDomain: "rozaytech-noc.firebaseapp.com",
-            databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com",
-            projectId: "rozaytech-noc",
-            storageBucket: "rozaytech-noc.firebasestorage.app",
-            messagingSenderId: "129382246448",
-            appId: "1:129382246448:web:f0ce1b7fca23eed17da5f5"
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
+        const config = { apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U", authDomain: "rozaytech-noc.firebaseapp.com", databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com", projectId: "rozaytech-noc", storageBucket: "rozaytech-noc.firebasestorage.app", messagingSenderId: "129382246448", appId: "1:129382246448:web:f0ce1b7fca23eed17da5f5" };
+        const app = initializeApp(config); const db = getDatabase(app);
         document.getElementById('leadForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const status = document.getElementById('formStatus');
-            btn.disabled = true;
-            btn.innerText = "A Processar...";
-
+            e.preventDefault(); const s = document.getElementById('status');
             try {
-                await push(ref(db, 'leads'), {
-                    nome: document.getElementById('leadName').value,
-                    telefone: document.getElementById('leadPhone').value,
-                    data: new Date().toLocaleString('pt-MZ'),
-                    origem: "Website"
-                });
-                status.innerText = "✓ Pedido enviado com sucesso!";
-                status.style.color = "#10b981";
-                e.target.reset();
-            } catch (err) {
-                status.innerText = "✕ Erro na ligação ao Firebase.";
-                status.style.color = "#ef4444";
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Enviar Requisição";
-            }
+                await push(ref(db, 'leads'), { nome: document.getElementById('n').value, telf: document.getElementById('t').value, data: new Date().toLocaleString('pt-MZ') });
+                s.innerText = "✓ Enviado!"; s.className = "success"; e.target.reset();
+            } catch (err) { s.innerText = "Erro."; s.className = "error"; }
         };
     </script>
     <script src="script.js"></script>
