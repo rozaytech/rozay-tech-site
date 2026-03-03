@@ -3,221 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rozay Tech | NOC & Connectivity Solutions</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <title>Rozay Tech | NOC & Connectivity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
     <style>
-        :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #ffffff;
-            --text-dim: #94a3b8;
-            --primary: #2563eb;
-            --accent: #10b981;
-            --border: rgba(255,255,255,0.1);
-        }
+        :root { --primary: #2563eb; --bg: #0f172a; --card: #1e293b; --text: #ffffff; }
+        [data-theme="light"] { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
 
-        [data-theme="light"] {
-            --bg: #f1f5f9;
-            --card: #ffffff;
-            --text: #0f172a;
-            --text-dim: #64748b;
-            --primary: #2563eb;
-            --border: rgba(0,0,0,0.1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: 0.3s ease; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-        html { scroll-behavior: smooth; }
-
-        /* HEADER */
-        header {
-            padding: 15px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            background: rgba(var(--bg), 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo { font-size: 26px; font-weight: 900; letter-spacing: -1px; }
-        .logo span { color: var(--primary); }
-
-        .nav-right { display: flex; align-items: center; gap: 20px; }
-        .time-box { font-family: monospace; font-size: 16px; font-weight: 700; color: var(--primary); background: var(--border); padding: 5px 12px; border-radius: 8px; }
         
-        .theme-toggle { background: none; border: none; color: var(--text); cursor: pointer; font-size: 18px; }
+        nav { padding: 20px 8%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-size: 24px; font-weight: 900; letter-spacing: -1px; }
+        .logo span { color: var(--primary); }
+        .nav-tools { display: flex; align-items: center; gap: 20px; }
+        #clock { font-family: monospace; color: var(--primary); font-weight: 700; font-size: 16px; }
 
-        /* HERO SECTION */
-        .hero {
-            padding: 180px 8% 100px;
-            text-align: center;
-            background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.1), transparent);
-        }
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 10%; background: radial-gradient(circle at center, rgba(37, 99, 235, 0.15) 0%, var(--bg) 100%); }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; margin-bottom: 20px; line-height: 1; }
+        .hero p { font-size: 1.2rem; color: #94a3b8; max-width: 700px; margin-bottom: 40px; }
+        
+        .btn-main { background: var(--primary); color: white; padding: 20px 40px; border-radius: 50px; text-decoration: none; font-weight: 800; border: none; cursor: pointer; display: inline-block; box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3); }
+        .btn-main:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(37, 99, 235, 0.5); }
 
-        .hero h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; line-height: 1; margin-bottom: 25px; }
-        .hero p { font-size: 1.25rem; color: var(--text-dim); max-width: 800px; margin: 0 auto 40px; }
+        /* GRID DE SERVIÇOS - OS 6 ORIGINAIS */
+        .services-section { padding: 100px 8%; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .service-card { background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
+        .service-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .service-card i { font-size: 35px; color: var(--primary); margin-bottom: 20px; }
+        .service-card h3 { font-size: 22px; margin-bottom: 15px; }
+        .service-card p { color: #94a3b8; font-size: 15px; }
 
-        /* SERVICES SECTION */
-        .section-title { text-align: center; margin-bottom: 50px; font-size: 32px; font-weight: 800; }
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            padding: 0 8% 100px;
-        }
-
-        .service-card {
-            background: var(--card);
-            padding: 40px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            text-align: left;
-        }
-
-        .service-card i { font-size: 40px; color: var(--primary); margin-bottom: 20px; }
-        .service-card h3 { margin-bottom: 15px; font-size: 22px; }
-
-        /* ABOUT & CONTACT SECTION */
-        .dual-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 50px;
-            padding: 100px 8%;
-            background: var(--card);
-        }
-
-        .about-box, .contact-box { flex: 1; min-width: 300px; }
-        .contact-links { margin-top: 30px; }
-        .contact-link { display: flex; align-items: center; gap: 15px; color: var(--text); text-decoration: none; margin-bottom: 20px; font-weight: 600; }
-        .contact-link i { width: 40px; height: 40px; background: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 10px; color: white; }
-
-        /* FORMULÁRIO */
-        .lead-container { padding: 100px 8%; display: flex; justify-content: center; background: var(--bg); }
-        .lead-card {
-            background: var(--card);
-            padding: 50px;
-            border-radius: 30px;
-            width: 100%;
-            max-width: 600px;
-            border: 1px solid var(--border);
-        }
-
-        input, select, textarea {
-            width: 100%; padding: 16px; margin-bottom: 20px; border-radius: 12px;
-            border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 16px;
-        }
-
-        .btn-send {
-            width: 100%; padding: 20px; background: var(--primary); color: white;
-            border: none; border-radius: 12px; font-weight: 800; font-size: 18px; cursor: pointer;
-        }
-
-        /* FOOTER */
-        footer {
-            padding: 60px 8% 30px;
-            background: #000;
-            color: #666;
-            text-align: center;
-            border-top: 1px solid #222;
-        }
-
-        .footer-bottom { margin-top: 40px; font-size: 14px; }
-        .restricted-link { color: #444; text-decoration: none; margin-top: 10px; display: inline-block; font-size: 12px; }
-        .restricted-link:hover { color: var(--primary); }
-
-        @media (max-width: 768px) { .hero { padding-top: 140px; } }
+        /* FORMULÁRIO LEADS */
+        .leads-section { padding: 100px 8%; display: flex; justify-content: center; background: rgba(0,0,0,0.2); }
+        .lead-card { background: var(--card); padding: 50px; border-radius: 32px; width: 100%; max-width: 550px; border: 1px solid rgba(255,255,255,0.05); }
+        .lead-card h2 { text-align: center; margin-bottom: 30px; font-weight: 900; }
+        input, select, textarea { width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg); color: white; outline: none; font-size: 16px; }
+        
+        footer { padding: 60px 8% 30px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+        .restricted { text-decoration: none; color: #475569; font-size: 12px; display: block; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <header>
+    <nav>
         <div class="logo">Rozay<span>Tech</span></div>
-        <div class="nav-right">
-            <div id="real-time" class="time-box">00:00:00</div>
-            <button class="theme-toggle" id="theme-btn"><i class="fa-solid fa-moon"></i></button>
+        <div class="nav-tools">
+            <div id="clock">00:00:00</div>
+            <button onclick="toggleTheme()" style="background:none; border:none; color:var(--text); cursor:pointer; font-size:18px;"><i class="fa-solid fa-circle-half-stroke"></i></button>
         </div>
-    </header>
+    </nav>
 
     <section class="hero">
-        <h1>Conectividade que Impulsiona o Futuro.</h1>
-        <p>Líderes em gestão de infraestrutura crítica e soluções Starlink em Moçambique. O seu negócio online, 24 horas por dia, 7 dias por semana.</p>
-        <a href="#leads" class="btn-send" style="max-width: 280px; text-decoration: none; display: inline-block;">Solicitar Orçamento</a>
+        <h1>Conectividade que nunca dorme.</h1>
+        <p>Líderes em gestão de infraestrutura crítica e soluções Starlink em Moçambique. O seu negócio online, 24/7.</p>
+        <a href="#leads" class="btn-main">Pedir Orçamento</a>
     </section>
 
-    <h2 class="section-title">Nossos Serviços Elite</h2>
-    <div class="services-grid">
-        <div class="service-card">
-            <i class="fa-solid fa-satellite"></i>
-            <h3>Starlink Business</h3>
-            <p>Instalação e otimização de alta performance para empresas em zonas remotas.</p>
-        </div>
-        <div class="service-card">
-            <i class="fa-solid fa-tower-broadcast"></i>
-            <h3>Links Ponto a Ponto</h3>
-            <p>Interligação de sedes e estaleiros via rádio frequência de baixa latência.</p>
-        </div>
-        <div class="service-card">
-            <i class="fa-solid fa-shield-halved"></i>
-            <h3>Gestão NOC 24/7</h3>
-            <p>Monitorização proativa. Detetamos falhas antes mesmo de você notar.</p>
-        </div>
-    </div>
-
-    <div class="dual-section">
-        <div class="about-box">
-            <h2 style="margin-bottom: 20px;">Sobre a Rozay Tech</h2>
-            <p>Nascida para resolver os desafios de conectividade mais complexos, a Rozay Tech combina engenharia de ponta com monitorização em tempo real. Não somos apenas um provedor, somos o seu parceiro estratégico de infraestrutura.</p>
-        </div>
-        <div class="contact-box" id="contacto">
-            <h2 style="margin-bottom: 20px;">Fale Connosco</h2>
-            <div class="contact-links">
-                <a href="https://wa.me/258840000000" class="contact-link"><i class="fa-brands fa-whatsapp"></i> WhatsApp Business</a>
-                <a href="tel:+258840000000" class="contact-link"><i class="fa-solid fa-phone"></i> Chamada Direta</a>
-                <a href="mailto:info@rozaytech.com" class="contact-link"><i class="fa-solid fa-envelope"></i> info@rozaytech.com</a>
+    <section class="services-section">
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fa-solid fa-satellite"></i>
+                <h3>Starlink Business</h3>
+                <p>Instalação profissional e otimização de links de satélite para máxima performance empresarial.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-tower-broadcast"></i>
+                <h3>Links Ponto a Ponto</h3>
+                <p>Interligação de sedes e estaleiros via rádio frequência com baixa latência e alta largura de banda.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Monitorização NOC 24/7</h3>
+                <p>Gestão proativa da sua rede. Detetamos e resolvemos falhas antes mesmo de você notar.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-network-wired"></i>
+                <h3>Redes Estruturadas</h3>
+                <p>Desenho e implementação de infraestrutura de rede local (LAN) robusta e escalável.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-video"></i>
+                <h3>CFTV Avançado</h3>
+                <p>Sistemas de videovigilância IP com acesso remoto e monitorização em tempo real.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-code"></i>
+                <h3>Soluções Web & ERP</h3>
+                <p>Desenvolvimento de plataformas customizadas para gestão de ativos e faturamento.</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <section id="leads" class="lead-container">
+    <section id="leads" class="leads-section">
         <div class="lead-card">
-            <h2 style="text-align: center; margin-bottom: 30px;">Agendar Auditoria</h2>
+            <h2>Solicitar Auditoria</h2>
             <form id="leadForm">
-                <input type="text" id="name" placeholder="Nome Completo / Empresa" required>
-                <input type="tel" id="phone" placeholder="Seu Contacto (WhatsApp)" required>
-                <select id="service">
-                    <option value="Starlink">Starlink Business</option>
-                    <option value="PtP">Link Ponto a Ponto</option>
-                    <option value="NOC">Gestão NOC 24/7</option>
-                    <option value="Outro">Outras Soluções</option>
+                <input type="text" id="n" placeholder="Nome / Empresa" required>
+                <input type="tel" id="t" placeholder="WhatsApp" required>
+                <select id="s">
+                    <option value="Starlink Business">Starlink Business</option>
+                    <option value="Links PtP">Links Ponto a Ponto</option>
+                    <option value="Gestão NOC">Gestão NOC 24/7</option>
+                    <option value="Redes/CFTV">Redes & CFTV</option>
+                    <option value="Software">Software & ERP</option>
                 </select>
-                <textarea id="details" rows="4" placeholder="Descreva brevemente a sua necessidade ou localização..."></textarea>
-                <button type="submit" class="btn-send" id="submitBtn">Enviar Solicitação</button>
-                <div id="statusMsg" style="margin-top:20px; text-align:center; display:none;"></div>
+                <textarea id="d" rows="3" placeholder="Localização ou detalhes do projeto..."></textarea>
+                <button type="submit" class="btn-main" style="width:100%">Enviar Solicitação</button>
             </form>
+            <div id="status" style="margin-top:20px; text-align:center; display:none; font-weight:700;"></div>
         </div>
     </section>
 
     <footer>
-        <div class="logo" style="margin-bottom: 20px;">Rozay<span>Tech</span></div>
-        <p>Soluções de Engenharia e Conectividade para Moçambique.</p>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Rozay Tech Solutions. Todos os direitos reservados.</p>
-            <a href="login.html" class="restricted-link"><i class="fa-solid fa-key"></i> Acesso Restrito ao Sistema NOC</a>
-        </div>
+        <p>&copy; 2026 Rozay Tech Solutions. Moçambique.</p>
+        <a href="login.html" class="restricted"><i class="fa-solid fa-key"></i> Acesso Restrito ao Sistema</a>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        const firebaseConfig = {
+        const config = {
             apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U",
             authDomain: "rozaytech-noc.firebaseapp.com",
             databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com",
@@ -226,57 +134,39 @@
             messagingSenderId: "129382246448",
             appId: "1:129382246448:web:f0ce1b7fca23eed17da5f5"
         };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(config);
         const db = getDatabase(app);
 
-        // RELÓGIO
-        setInterval(() => {
-            document.getElementById('real-time').innerText = new Date().toLocaleTimeString('pt-MZ');
-        }, 1000);
+        // Relógio PT-MZ
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-MZ'); }, 1000);
 
-        // THEME TOGGLE
-        const themeBtn = document.getElementById('theme-btn');
-        themeBtn.onclick = () => {
-            if (document.body.getAttribute('data-theme') === 'light') {
-                document.body.removeAttribute('data-theme');
-                themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            } else {
-                document.body.setAttribute('data-theme', 'light');
-                themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-            }
+        // Dark/Light Mode
+        window.toggleTheme = () => {
+            const b = document.body;
+            b.hasAttribute('data-theme') ? b.removeAttribute('data-theme') : b.setAttribute('data-theme', 'light');
         };
 
-        // FORMULÁRIO
+        // Envio para o NOC Dashboard
         document.getElementById('leadForm').onsubmit = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const status = document.getElementById('statusMsg');
-            btn.innerText = "A Enviar...";
-            btn.disabled = true;
-
-            const data = {
-                nome: document.getElementById('name').value,
-                telefone: document.getElementById('phone').value,
-                interesse: document.getElementById('service').value,
-                detalhes: document.getElementById('details').value,
-                data: new Date().toLocaleString('pt-MZ'),
-                status: 'Pendente'
-            };
-
+            const s = document.getElementById('status');
+            const b = e.target.querySelector('button');
+            b.innerText = "A Enviar...";
+            
             try {
-                await push(ref(db, 'leads'), data);
-                status.style.display = 'block';
-                status.style.color = '#10b981';
-                status.innerText = "Solicitação recebida! Entraremos em contacto brevemente.";
+                await push(ref(db, 'leads'), {
+                    nome: document.getElementById('n').value,
+                    telefone: document.getElementById('t').value,
+                    interesse: document.getElementById('s').value,
+                    detalhes: document.getElementById('d').value,
+                    data: new Date().toLocaleString('pt-MZ')
+                });
+                s.innerText = "Solicitação recebida pelo NOC!"; s.style.display = "block"; s.style.color = "#10b981";
                 e.target.reset();
             } catch {
-                status.style.display = 'block';
-                status.style.color = '#ef4444';
-                status.innerText = "Erro na conexão. Tente novamente.";
+                s.innerText = "Erro na conexão."; s.style.display = "block"; s.style.color = "#ef4444";
             } finally {
-                btn.innerText = "Enviar Solicitação";
-                btn.disabled = false;
+                b.innerText = "Enviar Solicitação";
             }
         };
     </script>
