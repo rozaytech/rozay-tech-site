@@ -3,258 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rozay Tech | Soluções de Conectividade Elite</title>
+    <title>Rozay Tech | Conectividade de Elite</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --dark-bg: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #ffffff;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #ffffff;
             --text-dim: #94a3b8;
-            --success: #10b981;
+            --primary: #2563eb;
+            --border: rgba(255,255,255,0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-dim: #64748b;
+            --primary: #2563eb;
+            --border: rgba(0,0,0,0.1);
         }
 
-        /* --- NAVEGAÇÃO --- */
-        nav {
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.3s, color 0.3s; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        /* HEADER & NAV */
+        header {
+            padding: 20px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
         }
 
-        .logo { font-size: 24px; font-weight: 900; letter-spacing: -1px; }
+        .logo { font-size: 24px; font-weight: 900; }
         .logo span { color: var(--primary); }
 
-        .nav-links a {
-            color: var(--text-dim);
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .time-box { font-size: 14px; font-weight: 600; color: var(--primary); }
+        
+        .theme-toggle, .login-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
-            transition: 0.3s;
-            padding: 8px 16px;
-            border-radius: 8px;
         }
 
-        .nav-links a:hover {
-            color: white;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .btn-login {
-            border: 1px solid var(--primary);
-            color: var(--primary) !important;
-        }
-
-        /* --- HERO SECTION --- */
+        /* HERO */
         .hero {
-            height: 100vh;
+            height: 90vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 0 5%;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            margin-top: 60px;
+            padding: 0 10%;
+            margin-top: 50px;
         }
 
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            max-width: 900px;
-        }
+        .hero h1 { font-size: clamp(2rem, 8vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; color: var(--text-dim); max-width: 700px; margin-bottom: 40px; }
 
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-dim);
-            max-width: 700px;
-            margin-bottom: 40px;
-        }
-
-        .btn-main {
-            background: var(--primary);
-            color: white;
-            padding: 18px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 16px;
-            transition: 0.3s;
-            border: none;
-            cursor: pointer;
-            display: inline-block;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-main:hover {
-            transform: translateY(-3px);
-            background: var(--primary-hover);
-            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.5);
-        }
-
-        /* --- FORMULÁRIO SECTION --- */
-        .contact-container {
-            padding: 100px 5%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
+        /* LEAD FORM */
+        .lead-section { padding: 80px 5%; display: flex; justify-content: center; }
         .lead-card {
-            background: var(--card-bg);
+            background: var(--card);
+            padding: 40px;
+            border-radius: 24px;
             width: 100%;
-            max-width: 550px;
-            padding: 50px;
-            border-radius: 32px;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            max-width: 500px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
-        .lead-card h2 {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .lead-card p {
-            color: var(--text-dim);
-            text-align: center;
-            margin-bottom: 35px;
-            font-size: 15px;
-        }
-
-        .form-group { margin-bottom: 20px; }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-dim);
-        }
-
+        .lead-card h2 { margin-bottom: 25px; text-align: center; }
         input, select, textarea {
             width: 100%;
             padding: 15px;
+            margin-bottom: 15px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(15, 23, 42, 0.5);
-            color: white;
-            font-size: 15px;
-            font-family: inherit;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
             outline: none;
-            transition: 0.3s;
         }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            background: rgba(15, 23, 42, 0.8);
-        }
-
-        .btn-submit {
+        .btn-send {
             width: 100%;
+            padding: 18px;
             background: var(--primary);
             color: white;
-            padding: 16px;
-            border-radius: 12px;
             border: none;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-submit:hover { background: var(--primary-hover); }
-
-        #statusMsg {
-            margin-top: 20px;
-            padding: 15px;
             border-radius: 12px;
-            text-align: center;
-            display: none;
-            font-weight: 600;
+            font-weight: 800;
+            cursor: pointer;
         }
 
-        /* --- RESPONSIVIDADE --- */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .lead-card { padding: 30px; }
-        }
+        #msgStatus { margin-top: 15px; text-align: center; display: none; padding: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <nav>
+    <header>
         <div class="logo">Rozay<span>Tech</span></div>
-        <div class="nav-links">
-            <a href="login.html" class="btn-login"><i class="fa-solid fa-lock"></i> NOC Login</a>
+        <div class="nav-right">
+            <div id="real-time" class="time-box">00:00:00</div>
+            <button class="theme-toggle" id="theme-btn"><i class="fa-solid fa-moon"></i></button>
+            <a href="login.html" class="login-btn"><i class="fa-solid fa-lock"></i> Login</a>
         </div>
-    </nav>
+    </header>
 
     <section class="hero">
-        <h1>Conectividade que nunca dorme.</h1>
-        <p>A Rozay Tech oferece gestão de infraestrutura de rede 24/7. Monitorizamos o seu sinal em tempo real para que a sua empresa nunca pare.</p>
-        <a href="#leads" class="btn-main">Solicitar Auditoria Gratuita</a>
+        <h1>O seu NOC de confiança em Moçambique.</h1>
+        <p>Monitorização de rede 24/7 e suporte especializado. Garantimos que a sua empresa esteja sempre online.</p>
+        <a href="#leads" class="btn-send" style="max-width: 250px; text-decoration: none; text-align: center;">Pedir Orçamento</a>
     </section>
 
-    <section id="leads" class="contact-container">
+    <section id="leads" class="lead-section">
         <div class="lead-card">
-            <h2>Fale com um Especialista</h2>
-            <p>Deixe os seus dados e o nosso NOC entrará em contacto para analisar a viabilidade na sua zona.</p>
-            
+            <h2>Auditoria Gratuita</h2>
             <form id="leadForm">
-                <div class="form-group">
-                    <label>Nome ou Empresa</label>
-                    <input type="text" id="clientName" placeholder="Ex: Restaurante Central" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Telemóvel (WhatsApp)</label>
-                    <input type="tel" id="clientPhone" placeholder="Ex: 84XXXXXXX" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Serviço de Interesse</label>
-                    <select id="interest">
-                        <option value="Starlink Business">Starlink Business</option>
-                        <option value="Link Ponto a Ponto (PtP)">Link Ponto a Ponto (PtP)</option>
-                        <option value="Redes Estruturadas">Redes Estruturadas</option>
-                        <option value="Consultoria NOC">Gestão & NOC 24/7</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Mensagem ou Localização</label>
-                    <textarea id="clientMsg" rows="3" placeholder="Conte-nos brevemente o que precisa..."></textarea>
-                </div>
-
-                <button type="submit" class="btn-submit" id="submitBtn">Enviar Solicitação</button>
-                <div id="statusMsg"></div>
+                <input type="text" id="name" placeholder="Nome / Empresa" required>
+                <input type="tel" id="phone" placeholder="WhatsApp" required>
+                <select id="service">
+                    <option value="Starlink">Starlink Business</option>
+                    <option value="PtP">Link Ponto a Ponto</option>
+                    <option value="NOC">Gestão NOC 24/7</option>
+                </select>
+                <textarea id="details" rows="3" placeholder="Localização do site..."></textarea>
+                <button type="submit" class="btn-send" id="submitBtn">Enviar Solicitação</button>
+                <div id="msgStatus"></div>
             </form>
         </div>
     </section>
@@ -263,7 +153,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Configuração Firebase (A mesma que usas no Dash)
         const firebaseConfig = {
             apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U",
             authDomain: "rozaytech-noc.firebaseapp.com",
@@ -277,38 +166,54 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // RELÓGIO EM TEMPO REAL
+        setInterval(() => {
+            document.getElementById('real-time').innerText = new Date().toLocaleTimeString('pt-MZ');
+        }, 1000);
+
+        // DARK/LIGHT MODE
+        const themeBtn = document.getElementById('theme-btn');
+        themeBtn.onclick = () => {
+            const current = document.body.getAttribute('data-theme');
+            if (current === 'light') {
+                document.body.removeAttribute('data-theme');
+                themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            } else {
+                document.body.setAttribute('data-theme', 'light');
+                themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            }
+        };
+
+        // ENVIO DO FORMULÁRIO
         document.getElementById('leadForm').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            const msg = document.getElementById('statusMsg');
+            const status = document.getElementById('msgStatus');
+            btn.innerText = "A enviar...";
             
-            btn.innerText = "A processar...";
-            btn.disabled = true;
-
-            const newLead = {
-                nome: document.getElementById('clientName').value,
-                telefone: document.getElementById('clientPhone').value,
-                interesse: document.getElementById('interest').value,
-                detalhes: document.getElementById('clientMsg').value,
+            const data = {
+                nome: document.getElementById('name').value,
+                telefone: document.getElementById('phone').value,
+                interesse: document.getElementById('service').value,
+                detalhes: document.getElementById('details').value,
                 data: new Date().toLocaleString('pt-MZ'),
                 status: 'Pendente'
             };
 
             try {
-                await push(ref(db, 'leads'), newLead);
-                msg.style.display = 'block';
-                msg.style.background = 'rgba(16, 185, 129, 0.2)';
-                msg.style.color = '#10b981';
-                msg.innerText = "Sucesso! O nosso NOC recebeu o seu pedido.";
+                await push(ref(db, 'leads'), data);
+                status.style.display = 'block';
+                status.style.background = '#10b98122';
+                status.style.color = '#10b981';
+                status.innerText = "Solicitação enviada com sucesso!";
                 e.target.reset();
-            } catch (err) {
-                msg.style.display = 'block';
-                msg.style.background = 'rgba(239, 68, 68, 0.2)';
-                msg.style.color = '#ef4444';
-                msg.innerText = "Erro ao enviar. Tente novamente.";
+            } catch {
+                status.style.display = 'block';
+                status.style.background = '#ef444422';
+                status.style.color = '#ef4444';
+                status.innerText = "Erro ao enviar. Tente novamente.";
             } finally {
                 btn.innerText = "Enviar Solicitação";
-                btn.disabled = false;
             }
         };
     </script>
