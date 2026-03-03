@@ -1,149 +1,134 @@
 /**
- * ROZAY TECH SOLUTIONS - Script Principal v2.5
- * Localização: Moçambique
- * Funcionalidades: Loader, Relógio, Tema, Visitas, ScrollReveal, Smooth Scroll e Leads.
+ * ROZAY TECH SOLUTIONS - SISTEMA CENTRAL
+ * Desenvolvido para estabilidade e performance.
  */
 
-/* 1. SISTEMA DE PRE-LOADER (ANIMADO) */
+/* =========================================
+   1. SISTEMA DE LOADER (SPEEDLINE ANIMATION)
+   ========================================= */
 window.addEventListener('load', () => {
     let progress = 0;
-    const progressLimit = 100;
-    const loaderPercent = document.getElementById('loaderPercent');
-    const loaderProgress = document.getElementById('loaderProgress');
+    const progressEl = document.getElementById('loaderProgress');
+    const percentEl = document.getElementById('loaderPercent');
     const loader = document.getElementById('loader');
 
-    // Simulação de carregamento de recursos
-    const interval = setInterval(() => {
-        // Incremento aleatório para parecer natural
-        progress += Math.floor(Math.random() * 12) + 5;
-        
-        if (progress >= progressLimit) {
-            progress = progressLimit;
-            clearInterval(interval);
+    const loadingSequence = setInterval(() => {
+        // Incremento técnico
+        progress += Math.floor(Math.random() * 15) + 2;
+
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(loadingSequence);
             
-            // Efeito de saída suave
+            // Fade-out do sistema
             setTimeout(() => {
-                if (loader) {
+                if(loader) {
                     loader.style.opacity = '0';
-                    loader.style.transition = 'opacity 0.6s ease';
+                    loader.style.transition = 'opacity 0.8s ease-out';
                     setTimeout(() => {
                         loader.style.display = 'none';
-                    }, 600);
+                        initScrollReveal(); // Inicia animações após o loader
+                    }, 800);
                 }
-            }, 500);
+            }, 400);
         }
 
-        // Atualização visual da barra e do texto
-        if (loaderProgress) {
-            loaderProgress.style.width = progress + '%';
-        }
-        if (loaderPercent) {
-            loaderPercent.innerText = progress + '%';
-        }
-    }, 120);
+        if(progressEl) progressEl.style.width = progress + '%';
+        if(percentEl) percentEl.innerText = progress + '%';
+    }, 90);
 });
 
-/* 2. RELÓGIO DIGITAL (MAPUTO TIME - 24H) */
-function startRealTimeClock() {
-    const calendarEl = document.getElementById('calendar');
+/* =========================================
+   2. DIGITAL CLOCK (LED STYLE)
+   ========================================= */
+function initClock() {
+    const clockDisplay = document.getElementById('calendar');
     
-    function update() {
-        if (!calendarEl) return;
-        const agora = new Date();
-        const horas = String(agora.getHours()).padStart(2, '0');
-        const minutos = String(agora.getMinutes()).padStart(2, '0');
-        const segundos = String(agora.getSeconds()).padStart(2, '0');
+    function tick() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
         
-        calendarEl.innerText = `${horas}:${minutos}:${segundos}`;
-    }
-
-    setInterval(update, 1000);
-    update(); // Execução imediata
-}
-startRealTimeClock();
-
-/* 3. GESTÃO DE TEMA (DARK / LIGHT MODE) */
-const themeToggle = document.getElementById('themeToggle');
-if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        // Alterna a classe no body
-        document.body.classList.toggle('light-theme');
-        
-        // Troca o ícone (Lua/Sol)
-        const icon = themeToggle.querySelector('i');
-        if (document.body.classList.contains('light-theme')) {
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-            localStorage.setItem('rozay_theme', 'light');
-        } else {
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
-            localStorage.setItem('rozay_theme', 'dark');
+        if(clockDisplay) {
+            clockDisplay.innerText = `${h}:${m}:${s}`;
         }
-    });
-}
-
-// Persistência do tema ao recarregar a página
-if (localStorage.getItem('rozay_theme') === 'light') {
-    document.body.classList.add('light-theme');
-    const icon = themeToggle?.querySelector('i');
-    if (icon) {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-    }
-}
-
-/* 4. CONTADOR DE VISITAS ÚNICAS */
-function initVisitorCounter() {
-    let visits = localStorage.getItem('rozay_visits') || 0;
-    // Só incrementa se for uma nova sessão (opcional)
-    if (!sessionStorage.getItem('session_start')) {
-        visits = parseInt(visits) + 1;
-        localStorage.setItem('rozay_visits', visits);
-        sessionStorage.setItem('session_start', 'true');
     }
     
-    const visitEl = document.getElementById('visits');
-    if (visitEl) {
-        visitEl.innerText = visits;
-    }
+    setInterval(tick, 1000);
+    tick();
 }
-initVisitorCounter();
+initClock();
 
-/* 5. ANIMAÇÕES DE ENTRADA (SCROLL REVEAL) */
-if (typeof ScrollReveal !== 'undefined') {
-    const sr = ScrollReveal({
-        origin: 'bottom',
-        distance: '50px',
-        duration: 1200,
-        delay: 200,
-        reset: false // Não repete para não cansar o utilizador
-    });
+/* =========================================
+   3. THEME MANAGER (DARK/LIGHT PERSISTENTE)
+   ========================================= */
+const themeBtn = document.getElementById('themeToggle');
+const body = document.body;
 
-    sr.reveal('.hero h1', { delay: 100, origin: 'left' });
-    sr.reveal('.hero p', { delay: 300, origin: 'left' });
-    sr.reveal('.badge', { delay: 100, scale: 0.9 });
-    sr.reveal('.card', { interval: 150, rotate: { x: 10, y: 0, z: 0 } });
-    sr.reveal('.section h2', { delay: 100, origin: 'top' });
-    sr.reveal('.contact-grid a', { interval: 100, scale: 0.8 });
-    sr.reveal('.card form', { delay: 400 });
+const savedTheme = localStorage.getItem('rozay_theme');
+if (savedTheme === 'light') {
+    body.classList.add('light-theme');
+    updateThemeIcon(true);
 }
 
-/* 6. NAVEGAÇÃO SUAVE (SMOOTH SCROLL) */
-document.querySelectorAll('.nav-links a, .hero a').forEach(link => {
-    link.addEventListener('click', function(e) {
-        const href = this.getAttribute('href');
-        if (href.startsWith('#')) {
-            e.preventDefault();
-            const target = document.querySelector(href);
-            if (target) {
-                window.scrollTo({
-                    top: target.offsetTop - 80, // Compensação da topbar fixa
-                    behavior: 'smooth'
-                });
-            }
-        }
-    });
+themeBtn?.addEventListener('click', () => {
+    const isLight = body.classList.toggle('light-theme');
+    localStorage.setItem('rozay_theme', isLight ? 'light' : 'dark');
+    updateThemeIcon(isLight);
 });
 
-console.log("Rozay Tech Solutions: Sistemas operacional.");
+function updateThemeIcon(isLight) {
+    const icon = themeBtn?.querySelector('i');
+    if(icon) {
+        icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+}
+
+/* =========================================
+   4. VISITOR COUNTER (BASE 1041)
+   ========================================= */
+function manageVisitors() {
+    const BASE_COUNT = 1041;
+    let currentVisits = localStorage.getItem('rozay_total_visits');
+    
+    if (!currentVisits) {
+        currentVisits = BASE_COUNT;
+    } else {
+        // Apenas incrementa se for uma nova sessão no browser
+        if (!sessionStorage.getItem('rozay_session_active')) {
+            currentVisits = parseInt(currentVisits) + 1;
+            sessionStorage.setItem('rozay_session_active', 'true');
+        }
+    }
+    
+    localStorage.setItem('rozay_total_visits', currentVisits);
+    const visitDisplay = document.getElementById('visits');
+    if(visitDisplay) visitDisplay.innerText = currentVisits;
+}
+manageVisitors();
+
+/* =========================================
+   5. SCROLL REVEAL (ENGINEERING STYLE)
+   ========================================= */
+function initScrollReveal() {
+    if (typeof ScrollReveal !== 'undefined') {
+        const sr = ScrollReveal({
+            origin: 'bottom',
+            distance: '40px',
+            duration: 1000,
+            delay: 100,
+            reset: false
+        });
+
+        sr.reveal('.hero-section h1', { delay: 100, origin: 'top' });
+        sr.reveal('.service-card', { interval: 150, scale: 0.9 });
+        sr.reveal('.lead-form-box', { origin: 'left' });
+        sr.reveal('.quick-contacts a', { interval: 100, origin: 'right' });
+    }
+}
+
+/* =========================================
+   6. FORM VALIDATION & UI
+   ========================================= */
+console.log("%c Rozay Tech NOC Systems Active ", "color: #2563eb; font-weight: bold; font-size: 14px;");
