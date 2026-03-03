@@ -21,10 +21,10 @@
         <div class="sidebar-logo">Rozay<span>Admin</span></div>
         <nav class="side-nav">
             <a href="#" id="nav-resumo" onclick="navigateTo('resumo', this)" class="active"><i class="fa-solid fa-chart-pie"></i> Painel Geral</a>
-            <a href="#" id="nav-clientes" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-server"></i> Gestão de Clientes</a>
+            <a href="#" id="nav-clientes" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-server"></i> Clientes</a>
             <a href="#" id="nav-infra" onclick="navigateTo('infra', this)"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
             <div class="nav-divider"></div>
-            <a href="index.html" class="back-link"><i class="fa-solid fa-house"></i> Voltar ao Site</a>
+            <a href="index.html" class="back-link"><i class="fa-solid fa-house"></i> Site Público</a>
             <a href="#" onclick="logout()" class="logout-link"><i class="fa-solid fa-power-off"></i> Sair</a>
         </nav>
     </aside>
@@ -32,13 +32,13 @@
     <main class="main-content">
         <header class="dash-header">
             <div class="header-info">
-                <h1>Monitorização em Tempo Real</h1>
+                <h1 id="welcome-msg">A carregar...</h1>
                 <p id="current-time-dash"></p>
             </div>
             <div class="user-profile">
                 <div class="user-info-text">
                     <span id="logged-user-name">Usuário</span>
-                    <small>Engenheiro de Redes</small>
+                    <small>NOC Engineering</small>
                 </div>
                 <div class="user-avatar" id="user-initial">R</div>
             </div>
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="chart-container">
-                <h4>Estatísticas de Rede</h4>
+                <h4>Visão Geral da Rede</h4>
                 <canvas id="meuGrafico"></canvas>
             </div>
         </section>
@@ -68,13 +68,13 @@
         <section id="content-clientes" class="dash-section" style="display: none;">
             <div class="table-section">
                 <div class="table-header-flex">
-                    <h3>Base de Dados de Clientes</h3>
-                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                    <h3>Gestão de Inventário</h3>
+                    <button onclick="gerarRelatorioPDF()" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
                 </div>
                 <div class="table-responsive">
                     <table class="dash-table">
                         <thead>
-                            <tr><th>Cliente</th><th>Serviço</th><th>Morada</th><th>Estado</th><th>Ações</th></tr>
+                            <tr><th>Cliente</th><th>Tecnologia</th><th>Localização</th><th>Estado</th><th>Ações</th></tr>
                         </thead>
                         <tbody id="clientTableBody"></tbody>
                     </table>
@@ -85,9 +85,10 @@
         <section id="content-infra" class="dash-section" style="display: none;">
             <div class="infra-box">
                 <i class="fa-solid fa-microchip"></i>
-                <h3>Módulo de Análise RF <span id="infra-user-name"></span> v1.0</h3>
-                <p>Aguardando telemetria dos satélites...</p>
+                <h3>Módulo de Análise RF <span id="infra-user-name"></span> v1.1</h3>
+                <p>Status: Aguardando telemetria dos satélites Starlink...</p>
                 <div class="progress-bar-infra"><div class="progress-fill"></div></div>
+                <small style="color: #94a3b8; margin-top: 10px; display: block;">Nota: Conexão direta via API pendente de licença.</small>
             </div>
         </section>
     </main>
@@ -96,21 +97,22 @@
 
     <div id="modalCliente" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="modalTitle">Novo Registro</h3>
+            <h3 id="modalTitle">Nova Instalação</h3>
             <form id="formCliente">
-                <input type="hidden" id="editIndex"> <input type="text" id="nome" placeholder="Nome do Cliente" required>
+                <input type="hidden" id="editIndex">
+                <input type="text" id="nome" placeholder="Nome do Cliente" required>
                 <select id="tech">
                     <option value="Starlink">Starlink Business</option>
                     <option value="Cabeamento">Cabeamento Estruturado</option>
                     <option value="PtP">Ponto-a-Ponto (PtP)</option>
                 </select>
-                <input type="text" id="local" placeholder="Morada / Localização" required>
+                <input type="text" id="local" placeholder="Província / Cidade / Morada" required>
                 <select id="status">
-                    <option value="online">Ativo / Online</option>
-                    <option value="offline">Inativo / Alerta</option>
+                    <option value="online">Online / Ativo</option>
+                    <option value="offline">Offline / Alerta</option>
                 </select>
-                <button type="submit" class="btn-save">Confirmar Dados</button>
-                <button type="button" onclick="toggleModal()" class="btn-cancel">Fechar</button>
+                <button type="submit" class="btn-save">Guardar Sistema</button>
+                <button type="button" onclick="toggleModal()" class="btn-cancel">Cancelar</button>
             </form>
         </div>
     </div>
