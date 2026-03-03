@@ -6,25 +6,17 @@
     <title>Rozay Tech Solutions | Hub de Engenharia Digital</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Cpath d='M30,30 h30 a15,15 0 0,1 0,30 h-30 v15 m15,-15 l15,15' stroke='%232563eb' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
     <meta name="description" content="Especialistas em Starlink, Redes PtP, Websites e Engenharia Digital em Moçambique.">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
-    
     <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="loader">
         <div class="loader-box">
-            <div class="flash-animation">
-                <i class="fa-solid fa-bolt-lightning"></i>
-                <div class="light-ray"></div>
-            </div>
-            <div class="loader-bar-bg">
-                <div id="loaderProgress"></div>
-            </div>
+            <div class="loader-character"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <div class="loader-bar"><div id="loaderProgress"></div></div>
             <p id="loaderPercent">0%</p>
-            <span class="loader-status">ESTABELECENDO CONEXÃO...</span>
+            <p class="loader-msg">CONECTANDO AO HUB...</p>
         </div>
     </div>
 
@@ -32,90 +24,82 @@
         <div class="container topbar-content">
             <div class="logo-box">Rozay<span>Tech</span></div>
             <div class="header-right">
-                <button id="themeToggle" title="Alternar Tema"><i class="fa-solid fa-moon"></i></button>
-                <div id="calendar" class="led-clock">00:00:00</div>
+                <button id="themeToggle" title="Trocar Tema"><i class="fa-solid fa-moon"></i></button>
+                <div id="calendar">00:00:00</div>
             </div>
         </div>
     </header>
 
-    <nav class="navbar">
-        <div class="container nav-links">
-            <a href="#sobre">SOBRE NÓS</a>
-            <a href="#servicos">SERVIÇOS</a>
-            <a href="#contacto">CONTACTO</a>
+    <nav class="navbar"><div class="container nav-links"><a href="#sobre">Sobre Nós</a><a href="#servicos">Serviços</a><a href="#contacto">Contacto</a></div></nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="badge">Hub de Engenharia Digital: Conectividade, Audiovisual & Gestão Global</div>
+            <h1>Soluções de Engenharia para o Mercado Moderno</h1>
+            <p>Infraestrutura de redes de elite, presença digital estratégica e operações audiovisuais com drones.</p>
         </div>
-    </nav>
+    </section>
 
-    <main class="main-content">
-        <section class="hero">
-            <div class="container">
-                <div class="badge">ENGENHARIA DIGITAL • CONECTIVIDADE • GESTÃO GLOBAL</div>
-                <h1>Soluções de Engenharia para o Mercado Moderno</h1>
-                <p>Infraestrutura de redes de elite, presença digital estratégica e operações audiovisuais com drones de alta precisão.</p>
-            </div>
-        </section>
+    <section id="sobre" class="section">
+        <div class="container text-left">
+            <h2>Sobre Nós</h2>
+            <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores e Redes</strong>. Atuamos como o parceiro estratégico para empresas que buscam robustez digital e inovação.</p>
+            <p>Unimos competência técnica com visão de negócio, desde o desenho de redes críticas até ao desenvolvimento de <strong>websites de alta conversão</strong> e logística global.</p>
+        </div>
+    </section>
 
-        <section id="sobre" class="section">
-            <div class="container text-left">
-                <h2>Sobre Nós</h2>
-                <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores e Redes</strong>. Atuamos como o parceiro estratégico para empresas que buscam robustez digital e inovação.</p>
-                <p>Unimos competência técnica com visão de negócio, desde o desenho de redes críticas até ao desenvolvimento de websites de alta conversão e logística global.</p>
-            </div>
-        </section>
-
-        <section id="servicos" class="section bg-light">
-            <div class="container">
-                <h2>Nossas Especialidades</h2>
-                <div class="cards">
-                    <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Instalação Starlink, Redes PtP e gestão avançada de Firewalls.</p></div>
-                    <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Criação de sites profissionais, rápidos e otimizados.</p></div>
-                    <div class="card">
-                        <i class="fa-solid fa-plane-up"></i>
-                        <h3>Serviços de Drone</h3>
-                        <p>Inspeções técnicas, cobertura de eventos e produção audiovisual profissional.</p>
-                    </div>
-                    <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria de TI</h3><p>Gestão de parques informáticos e suporte remoto especializado.</p></div>
-                    <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança Digital</h3><p>Sistemas de CFTV inteligentes e proteção contra invasões.</p></div>
-                    <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Import & Export</h3><p>Logística global rápida para equipamentos tecnológicos.</p></div>
+    <section id="servicos" class="section bg-light">
+        <div class="container">
+            <h2>Nossas Especialidades</h2>
+            <div class="cards">
+                <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Instalação Starlink, Redes Ponto a Ponto (PtP) e gestão avançada de Firewalls.</p></div>
+                <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Criação de sites profissionais, rápidos e otimizados para converter visitantes.</p></div>
+                <div class="card">
+                    <svg class="drone-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 50px; height: 50px; fill: var(--primary); margin-bottom: 20px;">
+                        <path d="M304 64c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm80 80c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM176 144c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM432 288c0-13.3-10.7-24-24-24H334.3c-11.5-27-33.8-48.4-61.6-58.4c-5.2-1.9-10.7-3.1-16.4-3.5c-30.8-2.2-59.4 12.3-77.1 36.9c-5.6 7.7-10.1 16.2-13.3 25.1H104c-13.3 0-24 10.7-24 24s10.7 24 24 24h61.9c3.2 8.9 7.7 17.3 13.3 25.1c17.7 24.6 46.3 39.1 77.1 36.9c5.6-.4 11.2-1.6 16.4-3.5c27.8-10 50.1-31.4 61.6-58.4H408c13.3 0 24-10.7 24-24zm-176 48c-26.5 0-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48s-21.5 48-48 48z"/>
+                    </svg>
+                    <h3>Serviços de Drone</h3>
+                    <p>Inspeções técnicas, cobertura de eventos e produção audiovisual profissional.</p>
                 </div>
+                <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria de TI</h3><p>Gestão de parques informáticos, suporte remoto e manutenção especializada.</p></div>
+                <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança Digital</h3><p>Sistemas de CFTV inteligentes e proteção de dados contra invasões.</p></div>
+                <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Import & Export</h3><p>Logística global rápida para equipamentos tecnológicos e mercadorias.</p></div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="contacto" class="section">
-            <div class="container">
-                <h2>Fale Connosco</h2>
-                <div class="contact-card-form">
-                    <h3>Solicitar Orçamento ao NOC</h3>
-                    <form id="leadForm">
-                        <input type="text" id="leadName" placeholder="Nome ou Empresa" required>
-                        <input type="tel" id="leadPhone" placeholder="WhatsApp / Telemóvel" required>
-                        <select id="leadInterest">
-                            <option value="Starlink/Redes">Starlink & Redes</option>
-                            <option value="Websites">Websites de Elite</option>
-                            <option value="Drones">Serviços de Drone</option>
-                            <option value="Consultoria">Consultoria TI</option>
-                        </select>
-                        <button type="submit" class="btn-submit">ENVIAR SOLICITAÇÃO</button>
-                    </form>
-                    <div id="formStatus"></div>
-                </div>
-
-                <div class="contact-grid">
-                    <a href="https://wa.me/258846166104" class="contact-btn whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
-                    <a href="tel:258870018297" class="contact-btn call"><i class="fa-solid fa-phone"></i> Ligar</a>
-                    <a href="mailto:contato@rozaytech.com" class="contact-btn email"><i class="fa-solid fa-envelope"></i> Email</a>
-                </div>
+    <section id="contacto" class="section">
+        <div class="container">
+            <h2>Fale Connosco</h2>
+            
+            <div class="card lead-card">
+                <h3>Solicitar Orçamento Automático</h3>
+                <form id="leadForm">
+                    <input type="text" id="leadName" placeholder="Nome ou Empresa" required>
+                    <input type="tel" id="leadPhone" placeholder="WhatsApp / Telemóvel" required>
+                    <select id="leadInterest">
+                        <option value="Starlink/Redes">Starlink & Redes</option>
+                        <option value="Websites">Websites de Elite</option>
+                        <option value="Drones">Serviços de Drone</option>
+                    </select>
+                    <button type="submit" class="btn-submit">Enviar ao NOC</button>
+                </form>
+                <p id="formStatus"></p>
             </div>
-        </section>
-    </main>
+
+            <div class="contact-grid">
+                <a href="https://wa.me/258846166104" class="contact-card whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+                <a href="tel:258870018297" class="contact-card call"><i class="fa-solid fa-phone"></i> Ligar</a>
+                <a href="mailto:contato@rozaytech.com" class="contact-card email"><i class="fa-solid fa-envelope"></i> Email</a>
+            </div>
+        </div>
+    </section>
 
     <footer>
-        <div class="container">
-            <p>© 2026 Rozay Tech Solutions — Tecnologia em Movimento</p>
-            <div class="visitor-counter"><i class="fa-solid fa-eye"></i> <span id="visits">1041</span> visitas</div>
-            <div class="noc-access">
-                <a href="login.html">Acesso NOC</a>
-            </div>
+        <p>© 2026 Rozay Tech Solutions — Tecnologia em Movimento</p>
+        <div class="visitor-counter"><i class="fa-solid fa-eye"></i> <span id="visits">1041</span> visitas</div>
+        <div style="margin-top: 20px; opacity: 0.1;">
+            <a href="login.html" style="color: inherit; text-decoration: none; font-size: 10px;">Acesso NOC</a>
         </div>
     </footer>
 
@@ -135,7 +119,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        document.getElementById('leadForm').onsubmit = async (e) => {
+        document.getElementById('leadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const status = document.getElementById('formStatus');
             try {
@@ -145,14 +129,14 @@
                     interesse: document.getElementById('leadInterest').value,
                     data: new Date().toLocaleString('pt-MZ')
                 });
-                status.innerText = "✓ Enviado com sucesso!";
-                status.className = "status-success";
+                status.innerText = "Sucesso! O NOC recebeu o seu pedido.";
+                status.style.color = "#10b981";
                 e.target.reset();
             } catch (err) {
                 status.innerText = "Erro ao enviar.";
-                status.className = "status-error";
+                status.style.color = "#ef4444";
             }
-        };
+        });
     </script>
     <script src="script.js"></script>
 </body>
