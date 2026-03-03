@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rozay Tech Solutions | Hub de Engenharia Digital</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Cpath d='M30,30 h30 a15,15 0 0,1 0,30 h-30 v15 m15,-15 l15,15' stroke='%232563eb' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+    <meta name="description" content="Especialistas em Starlink, Redes PtP, Websites e Engenharia Digital em Moçambique.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="stylesheet" href="style.css">
@@ -22,33 +23,28 @@
         <div class="container topbar-content">
             <div class="logo-box">Rozay<span>Tech</span></div>
             <div class="header-right">
-                <button id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+                <button id="themeToggle" title="Trocar Tema"><i class="fa-solid fa-moon"></i></button>
                 <div id="calendar" class="led-clock">00:00:00</div>
             </div>
         </div>
     </header>
 
-    <nav class="navbar">
-        <div class="container nav-links">
-            <a href="#sobre">Sobre Nós</a>
-            <a href="#servicos">Serviços</a>
-            <a href="#contacto">Contacto</a>
-        </div>
-    </nav>
+    <nav class="navbar"><div class="container nav-links"><a href="#sobre">Sobre Nós</a><a href="#servicos">Serviços</a><a href="#contacto">Contacto</a></div></nav>
 
-    <main class="main-container">
+    <main class="main-content">
         <section class="hero">
             <div class="container">
-                <div class="badge">Hub de Engenharia Digital</div>
+                <div class="badge">Hub de Engenharia Digital: Conectividade, Audiovisual & Gestão Global</div>
                 <h1>Soluções de Engenharia para o Mercado Moderno</h1>
-                <p>Infraestrutura de redes de elite, presença digital estratégica e operações com drones.</p>
+                <p>Infraestrutura de redes de elite, presença digital estratégica e operações audiovisuais com drones.</p>
             </div>
         </section>
 
         <section id="sobre" class="section">
             <div class="container text-left">
                 <h2>Sobre Nós</h2>
-                <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores</strong>. Garantimos robustez técnica em cada projeto.</p>
+                <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores e Redes</strong>. Atuamos como o parceiro estratégico para inovação.</p>
+                <p>Unimos competência técnica com visão de negócio para o desenvolvimento de <strong>websites de alta conversão</strong> e infraestrutura.</p>
             </div>
         </section>
 
@@ -56,12 +52,12 @@
             <div class="container">
                 <h2>Nossas Especialidades</h2>
                 <div class="cards">
-                    <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Starlink, Redes PtP e Firewalls.</p></div>
-                    <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Plataformas rápidas e otimizadas.</p></div>
-                    <div class="card"><i class="fa-solid fa-plane-up"></i><h3>Drones</h3><p>Inspeções e audiovisual técnico.</p></div>
-                    <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria TI</h3><p>Gestão de parques informáticos.</p></div>
-                    <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança</h3><p>CFTV e proteção de dados.</p></div>
-                    <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Logística</h3><p>Importação rápida de hardware.</p></div>
+                    <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Internet</h3><p>Instalação Starlink, Redes PtP e gestão de Firewalls.</p></div>
+                    <div class="card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Criação de sites profissionais, rápidos e otimizados.</p></div>
+                    <div class="card"><i class="fa-solid fa-plane-up" style="font-size:35px; color:var(--primary)"></i><h3>Serviços de Drone</h3><p>Inspeções técnicas e produção audiovisual profissional.</p></div>
+                    <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria de TI</h3><p>Gestão de parques informáticos e suporte especializado.</p></div>
+                    <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança Digital</h3><p>Sistemas de CFTV inteligentes e proteção de dados.</p></div>
+                    <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Import & Export</h3><p>Logística global rápida para equipamentos tecnológicos.</p></div>
                 </div>
             </div>
         </section>
@@ -69,61 +65,42 @@
         <section id="contacto" class="section">
             <div class="container">
                 <h2>Fale Connosco</h2>
-                
-                <div class="dashboard-form">
+                <div class="form-container">
                     <form id="leadForm">
-                        <div class="input-group">
-                            <input type="text" id="leadName" placeholder="Nome / Empresa" required>
-                            <input type="text" id="leadLoc" placeholder="Localização" required>
+                        <div class="f-row"><input type="text" id="ln" placeholder="Nome/Empresa" required><input type="text" id="ll" placeholder="Localização" required></div>
+                        <div class="f-row"><input type="tel" id="lw" placeholder="WhatsApp" required>
+                            <select id="ls"><option value="Redes">Redes/Starlink</option><option value="Web">Websites</option><option value="Drones">Drones</option></select>
                         </div>
-                        <div class="input-group">
-                            <input type="tel" id="leadPhone" placeholder="WhatsApp" required>
-                            <select id="leadService">
-                                <option value="Redes">Starlink & Redes</option>
-                                <option value="Web">Websites</option>
-                                <option value="Drones">Drones</option>
-                                <option value="TI">Consultoria TI</option>
-                            </select>
-                        </div>
-                        <button type="submit" id="btnSubmit">Enviar para o NOC</button>
-                        <p id="formStatus"></p>
+                        <button type="submit" id="lb">Enviar para o NOC</button>
+                        <p id="fs"></p>
                     </form>
                 </div>
-
-                <div class="mini-socials">
-                    <a href="https://wa.me/258846166104" class="btn-icon wa" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                    <a href="tel:258870018297" class="btn-icon ph" title="Ligar"><i class="fa-solid fa-phone"></i></a>
-                    <a href="mailto:adamgyadamo@gmail.com" class="btn-icon em" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                <div class="mini-grid">
+                    <a href="https://wa.me/258846166104" class="m-btn wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="tel:258870018297" class="m-btn ph"><i class="fa-solid fa-phone"></i></a>
+                    <a href="mailto:adamgyadamo@gmail.com" class="m-btn em"><i class="fa-solid fa-envelope"></i></a>
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>© 2026 Rozay Tech Solutions</p>
+        <p>© 2026 Rozay Tech Solutions — Tecnologia em Movimento</p>
         <div class="visitor-counter"><i class="fa-solid fa-eye"></i> <span id="visits">1041</span> visitas</div>
-        <a href="login.html" class="noc-link">Acesso NOC</a>
+        <div class="noc-link"><a href="login.html">Acesso NOC</a></div>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        const fbConfig = { apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U", authDomain: "rozaytech-noc.firebaseapp.com", databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com", projectId: "rozaytech-noc", storageBucket: "rozaytech-noc.firebasestorage.app", messagingSenderId: "129382246448", appId: "1:129382246448:web:f0ce1b7fca23eed17da5f5" };
-        const app = initializeApp(fbConfig); const db = getDatabase(app);
+        const conf = { apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U", authDomain: "rozaytech-noc.firebaseapp.com", databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com", projectId: "rozaytech-noc", storageBucket: "rozaytech-noc.firebasestorage.app", messagingSenderId: "129382246448", appId: "1:129382246448:web:f0ce1b7fca23eed17da5f5" };
+        const app = initializeApp(conf); const db = getDatabase(app);
         document.getElementById('leadForm').onsubmit = async (e) => {
-            e.preventDefault(); const b = document.getElementById('btnSubmit'); const s = document.getElementById('formStatus');
-            b.disabled = true; b.innerText = "Sincronizando...";
+            e.preventDefault(); const s = document.getElementById('fs');
             try {
-                await push(ref(db, 'leads'), {
-                    nome: document.getElementById('leadName').value,
-                    local: document.getElementById('leadLoc').value,
-                    whatsapp: document.getElementById('leadPhone').value,
-                    servico: document.getElementById('leadService').value,
-                    data: new Date().toLocaleString('pt-MZ')
-                });
-                s.innerText = "✓ Enviado ao Dashboard!"; s.style.color = "#10b981"; e.target.reset();
-            } catch (err) { s.innerText = "Erro de conexão."; s.style.color = "#ef4444"; }
-            finally { b.disabled = false; b.innerText = "Enviar para o NOC"; }
+                await push(ref(db, 'leads'), { nome: document.getElementById('ln').value, local: document.getElementById('ll').value, whatsapp: document.getElementById('lw').value, servico: document.getElementById('ls').value, data: new Date().toLocaleString('pt-MZ') });
+                s.innerText = "✓ Enviado!"; s.style.color="#10b981"; e.target.reset();
+            } catch (err) { s.innerText = "Erro."; s.style.color="#ef4444"; }
         };
     </script>
     <script src="script.js"></script>

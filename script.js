@@ -1,21 +1,17 @@
-// 1. LOADER FLASH SPEED
+// 1. LOADER FLASH
 window.addEventListener('load', () => {
     let p = 0;
-    const bar = document.getElementById('loaderProgress');
-    const txt = document.getElementById('loaderPercent');
-    const ldr = document.getElementById('loader');
-
     const inv = setInterval(() => {
         p += Math.floor(Math.random() * 20) + 10;
         if (p >= 100) {
             p = 100; clearInterval(inv);
             setTimeout(() => {
-                ldr.style.opacity = '0';
-                setTimeout(() => ldr.style.display = 'none', 500);
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
             }, 200);
         }
-        if (bar) bar.style.width = p + '%';
-        if (txt) txt.innerText = p + '%';
+        document.getElementById('loaderProgress').style.width = p + '%';
+        document.getElementById('loaderPercent').innerText = p + '%';
     }, 100);
 });
 
@@ -30,8 +26,7 @@ setInterval(tick, 1000); tick();
 const tBtn = document.getElementById('themeToggle');
 tBtn.addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
-    const isL = document.body.classList.contains('light-theme');
-    tBtn.innerHTML = isL ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    tBtn.innerHTML = document.body.classList.contains('light-theme') ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
 });
 
 // 4. CONTADOR 1041
