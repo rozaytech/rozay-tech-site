@@ -11,7 +11,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// --- NAVEGAÇÃO E INTERFACE ---
+// --- 1. NAVEGAÇÃO ENTRE ABAS ---
 const navLinks = document.querySelectorAll('.nav-link');
 const tabs = document.querySelectorAll('.tab-content');
 
@@ -20,7 +20,6 @@ navLinks.forEach(link => {
         const target = this.getAttribute('data-target');
         navLinks.forEach(l => l.classList.remove('active'));
         tabs.forEach(t => t.classList.remove('active'));
-        
         this.classList.add('active');
         document.getElementById(target).classList.add('active');
         document.getElementById('sidebar').classList.remove('open');
@@ -31,7 +30,7 @@ navLinks.forEach(link => {
 document.getElementById('menuToggle').onclick = () => document.getElementById('sidebar').classList.add('open');
 document.getElementById('closeMenu').onclick = () => document.getElementById('sidebar').classList.remove('open');
 
-// Relógio e Saudação
+// --- 2. RELÓGIO E MONITOR RF ---
 setInterval(() => {
     const now = new Date();
     document.getElementById('live-clock').innerText = now.toLocaleString('pt-MZ');
@@ -39,83 +38,105 @@ setInterval(() => {
     const greet = document.getElementById('greeting');
     greet.innerText = hrs < 12 ? "Bom dia, Admin!" : hrs < 18 ? "Boa tarde, Admin!" : "Boa noite, Admin!";
     
-    // Monitor RF Simulado
+    // Simulação RF
     if(document.getElementById('rf-pwr')) {
         document.getElementById('rf-pwr').innerText = (-(40 + Math.random())).toFixed(1);
-        document.getElementById('rf-ms').innerText = Math.floor(12 + Math.random() * 6);
+        document.getElementById('rf-ms').innerText = Math.floor(12 + Math.random() * 5);
     }
 }, 1000);
 
-// --- DADOS FIREBASE ---
-
-// Clientes & Redes
+// --- 3. SINCRONIZAÇÃO DE CLIENTES ---
 onValue(ref(db, 'clientes'), (snap) => {
     const tbody = document.getElementById('tbody-clientes');
+    if(!tbody) return;
     tbody.innerHTML = "";
     let totalMT = 0;
     let offlineCount = 0;
 
     if(snap.exists()){
         Object.entries(snap.val()).forEach(([id, c]) => {
-            totalMT += parseFloat(c.valor || 0);
+            const valor = parseFloat(c.valor || 0);
+            totalMT += valor;
             if(c.status === 'offline') offlineCount++;
             
             tbody.innerHTML += `
                 <tr>
-                    <td><strong>${c.nome}</strong></td>
-                    <td>${c.tecnologia}</td>
-                    <td>MT ${parseFloat(c.valor).toLocaleString()}</td>
-                    <td><span class="status-badge ${c.status}">${c.status.toUpperCase()}</span></td>
+                    <td><strong>${c.nome || 'Sem Nome'}</strong></td>
+                    <td>${c.tecnologia || '---'}</td>
+                    <td>MT ${valor.toLocaleString()}</td>
+                    <td><span class="status-badge ${c.status || 'online'}">${(c.status || 'online').toUpperCase()}</span></td>
                     <td>
-                        <button onclick="editData('clientes/${id}')" class="btn-edit">✏️</button>
-                        <button onclick="deleteData('clientes/${id}', '${c.nome}')" class="btn-del">🗑️</button>
+                        <button onclick="deleteData('clientes/${id}', '${c.nome}')" style="border:none; background:none; cursor:pointer;">🗑️</button>
                     </td>
                 </tr>`;
         });
     }
     document.getElementById('stat-clientes').innerText = snap.exists() ? Object.keys(snap.val()).length : 0;
-    document.getElementById('stat-receita').innerText = "MT " + totalMT.toLocaleString();
     
-    // Alerta de Sistema
+    // Atualizar Alerta de Status
     const alertBox = document.getElementById('system-alert');
     if(offlineCount > 0) {
-        alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${offlineCount} Clientes Offline`;
-        alertBox.style.background = "#fee2e2"; alertBox.style.color = "#ef4444";
+        alertBox.className = "status-alert offline";
+        alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${offlineCount} Clientes Offline`;
     } else {
+        alertBox.className = "status-alert";
         alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Sistema Online`;
-        alertBox.style.background = "#dcfce7"; alertBox.style.color = "#10b981";
     }
 });
 
-// Logs do Sistema
+// --- 4. SINCRONIZAÇÃO DE FATURAÇÃO ---
+onValue(ref(db, 'faturacao'), (snap) => {
+    const tbody = document.getElementById('tbody-faturacao');
+    if(!tbody) return;
+    tbody.innerHTML = "";
+    let totalGlobal = 0;
+
+    if(snap.exists()){
+        Object.entries(snap.val()).forEach(([id, f]) => {
+            const v = parseFloat(f.valor || 0);
+            totalGlobal += v;
+            tbody.innerHTML += `
+                <tr>
+                    <td>${f.cliente || '---'}</td>
+                    <td>${f.servico || '---'}</td>
+                    <td>MT ${v.toLocaleString()}</td>
+                    <td>${f.responsavel || 'Admin'}</td>
+                    <td>${f.pago ? '✅ Sim' : '❌ Não'}</td>
+                    <td><button onclick="deleteData('faturacao/${id}', 'Fatura')" style="border:none; background:none;">🗑️</button></td>
+                </tr>`;
+        });
+    }
+    document.getElementById('total-global-val').innerText = "MT " + totalGlobal.toLocaleString();
+    document.getElementById('stat-receita').innerText = "MT " + totalGlobal.toLocaleString();
+});
+
+// --- 5. SINCRONIZAÇÃO DE LOGS (CORREÇÃO DO UNDEFINED) ---
 onValue(ref(db, 'logs'), (snap) => {
     const tbody = document.getElementById('tbody-logs');
+    if(!tbody) return;
     tbody.innerHTML = "";
     if(snap.exists()){
-        Object.values(snap.val()).reverse().forEach(log => {
-            tbody.innerHTML += `<tr><td>${log.data}</td><td>${log.responsavel}</td><td>${log.acao}</td><td>${log.detalhes}</td></tr>`;
+        const logs = Object.values(snap.val()).reverse();
+        logs.forEach(log => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><small>${log.data || '---'}</small></td>
+                    <td><strong>${log.responsavel || 'Sistema'}</strong></td>
+                    <td>${log.acao || 'Ação'}</td>
+                    <td>${log.detalhes || '---'}</td>
+                </tr>`;
         });
     }
 });
 
-// Função para Registar Logs
-async function registrarLog(acao, detalhes) {
-    await push(ref(db, 'logs'), {
-        data: new Date().toLocaleString(),
-        responsavel: "Admin",
-        acao: acao,
-        detalhes: detalhes
-    });
-}
-
-// --- GRÁFICOS ---
+// --- 6. GRÁFICO ---
 const ctx = document.getElementById('serviceChart').getContext('2d');
 new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: ['Starlink', 'Redes Wireless', 'Consultoria', 'Drones'],
+        labels: ['Starlink', 'Wireless', 'Consultoria', 'Drones'],
         datasets: [{
-            data: [45, 25, 15, 15],
+            data: [40, 25, 20, 15],
             backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444'],
             borderWidth: 0
         }]
@@ -123,10 +144,15 @@ new Chart(ctx, {
     options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
 });
 
-// --- FUNÇÕES EXPORTADAS ---
+// --- 7. FUNÇÕES GLOBAIS ---
 window.deleteData = (path, name) => {
-    if(confirm("Deseja apagar " + name + "?")) {
+    if(confirm("Deseja apagar: " + name + "?")) {
         remove(ref(db, path));
-        registrarLog("Eliminar", "Eliminou o registo de " + name);
+        push(ref(db, 'logs'), {
+            data: new Date().toLocaleString(),
+            responsavel: "Admin",
+            acao: "ELIMINAR",
+            detalhes: "Removeu " + name
+        });
     }
-}
+};
