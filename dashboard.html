@@ -5,58 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RozayAdmin | NOC Master</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
     <style>
-        /* CSS INTEGRADO PARA GARANTIR A ESTÉTICA */
-        :root { --primary: #2563eb; --dark: #0f172a; --bg: #f4f7fe; --white: #ffffff; }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: var(--bg); color: var(--dark); overflow-x: hidden; }
+        :root { --primary: #2563eb; --dark: #0f172a; --bg: #f4f7fe; --white: #fff; --success: #10b981; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); display: flex; color: var(--dark); }
 
         /* SIDEBAR */
-        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: var(--dark); transition: 0.3s; z-index: 1000; padding: 25px; }
-        .sidebar.active { left: 0; }
-        .logo-admin { color: #fff; font-size: 22px; font-weight: bold; margin-bottom: 40px; display: block; text-decoration: none; }
+        .sidebar { width: 280px; height: 100vh; background: var(--dark); padding: 25px; position: fixed; transition: 0.3s; z-index: 1000; }
+        .logo-admin { color: #fff; font-size: 22px; font-weight: 800; margin-bottom: 40px; display: block; text-decoration: none; }
         .logo-admin span { color: var(--primary); }
-        .nav-item { display: flex; align-items: center; color: rgba(255,255,255,0.7); text-decoration: none; padding: 12px; border-radius: 10px; margin-bottom: 10px; transition: 0.3s; }
-        .nav-item i { margin-right: 15px; width: 20px; }
-        .nav-item.active, .nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .nav-item { display: flex; align-items: center; color: rgba(255,255,255,0.6); text-decoration: none; padding: 12px; border-radius: 12px; margin-bottom: 8px; cursor: pointer; border: none; background: none; width: 100%; font-size: 14px; }
+        .nav-item i { margin-right: 12px; width: 20px; }
+        .nav-item.active { background: rgba(255,255,255,0.1); color: #fff; }
         .badge-count { background: #ff4757; color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-left: auto; }
 
-        /* MAIN CONTENT */
-        .main-dash { padding: 25px; transition: 0.3s; }
-        .dash-header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
-        .menu-toggle { background: var(--primary); color: #fff; border: none; width: 45px; height: 45px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        /* CONTENT */
+        .main-content { flex: 1; margin-left: 280px; padding: 30px; transition: 0.3s; }
+        .header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* CARDS & RF MONITOR */
+        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--white); padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
+        .rf-value { font-size: 24px; font-weight: 800; color: var(--primary); }
+        .rf-label { font-size: 12px; opacity: 0.6; text-transform: uppercase; }
+
+        /* TABLES */
+        .card-table { background: var(--white); padding: 25px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; font-size: 11px; color: #94a3b8; text-transform: uppercase; border-bottom: 1px solid #eee; }
+        td { padding: 15px; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
         
-        .welcome-text h1 { font-size: 24px; margin-bottom: 5px; }
-        .live-date { font-size: 14px; opacity: 0.6; }
+        .btn-pdf { background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .btn-pdf:hover { background: #edf2f7; }
+        .link-wa { color: var(--success); text-decoration: none; font-weight: 700; }
 
-        /* CARDS */
-        .card { background: var(--white); padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        
-        /* PROFILE CARD */
-        .profile-card { display: flex; align-items: center; justify-content: space-between; max-width: 350px; }
-        .user-info strong { display: block; font-size: 18px; }
-        .user-info span { font-size: 13px; opacity: 0.6; }
-        .avatar-circle { width: 50px; height: 50px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; }
-
-        /* TABLE */
-        .table-card h3 { margin-bottom: 20px; font-size: 18px; }
-        .table-responsive { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 500px; }
-        th { text-align: left; padding: 15px 10px; font-size: 12px; text-transform: uppercase; color: #94a3b8; border-bottom: 1px solid #eee; }
-        td { padding: 15px 10px; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
-        
-        .td-service { font-weight: bold; color: var(--dark); }
-        .td-date { font-size: 11px; opacity: 0.5; margin-top: 4px; }
-        .td-name { font-weight: 600; }
-        .td-loc { font-size: 12px; opacity: 0.7; margin-top: 4px; }
-        .link-atender { color: var(--primary); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-
-        /* FAB */
-        .fab-add { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--primary); color: #fff; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
-
-        @media (max-width: 768px) {
-            .profile-card { max-width: 100%; }
+        @media (max-width: 992px) {
+            .sidebar { left: -280px; }
+            .sidebar.open { left: 0; }
+            .main-content { margin-left: 0; }
         }
     </style>
 </head>
@@ -65,50 +56,58 @@
     <aside class="sidebar" id="sidebar">
         <a href="#" class="logo-admin">Rozay<span>Admin</span></a>
         <nav>
-            <a href="index.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Voltar ao Site</a>
-            <a href="#" class="nav-item active"><i class="fa-solid fa-chart-pie"></i> Painel Geral</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-bolt"></i> Novas Vendas <span class="badge-count" id="countBadge">0</span></a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-users"></i> Clientes & Redes</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</a>
-            <a href="#" class="nav-item logout" style="margin-top: 50px; color: #ff4757;"><i class="fa-solid fa-power-off"></i> Sair</a>
+            <button class="nav-item active" onclick="showTab('painel')"><i class="fa-solid fa-chart-pie"></i> Painel Geral</button>
+            <button class="nav-item" onclick="showTab('vendas')"><i class="fa-solid fa-bolt"></i> Novas Vendas <span class="badge-count" id="countBadge">0</span></button>
+            <button class="nav-item" onclick="showTab('infra')"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura (RF)</button>
+            <button class="nav-item" onclick="showTab('audit')"><i class="fa-solid fa-clipboard-check"></i> Auditoria</button>
+            <button class="nav-item" onclick="showTab('factura')"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</button>
+            <hr style="opacity:0.1; margin: 20px 0;">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Sair do NOC</a>
         </nav>
     </aside>
 
-    <main class="main-dash">
-        <header class="dash-header">
-            <button class="menu-toggle" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
-            <div class="welcome-text">
-                <h1 id="greeting">Boa tarde, Admin!</h1>
-                <p class="live-date" id="liveClock">--/--/-- • 00:00:00</p>
+    <main class="main-content">
+        <header class="header-dash">
+            <div>
+                <h1 id="greet">NOC Control</h1>
+                <p id="clock" style="opacity:0.5; font-size:13px;"></p>
+            </div>
+            <div style="display:flex; align-items:center; gap:15px;">
+                <div style="text-align:right"><strong style="display:block">Admin</strong><small>NOC Master</small></div>
+                <div style="width:45px; height:45px; background:var(--primary); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">A</div>
             </div>
         </header>
 
-        <div class="card profile-card">
-            <div class="user-info">
-                <strong>Admin</strong>
-                <span>NOC Master</span>
-            </div>
-            <div class="avatar-circle">A</div>
-        </div>
-
-        <div class="card table-card">
-            <h3>Interessados no Site (Leads)</h3>
-            <div class="table-responsive">
-                <table>
+        <div id="painel" class="tab-content active">
+            <div class="card-table">
+                <div class="table-header">
+                    <h3>Interessados pelo Site (Leads)</h3>
+                    <button class="btn-pdf" onclick="exportPDF('leadsTable', 'Relatorio_Leads_Site')"><i class="fa-solid fa-file-pdf"></i> Exportar Leads</button>
+                </div>
+                <table id="leadsTable">
                     <thead>
-                        <tr>
-                            <th>Interesse / Data</th>
-                            <th>Cliente / Localização</th>
-                            <th>Ação</th>
-                        </tr>
+                        <tr><th>Serviço / Data</th><th>Cliente / Local</th><th>Ação</th></tr>
                     </thead>
-                    <tbody id="leadsTable"></tbody>
+                    <tbody id="leadsBody"></tbody>
                 </table>
             </div>
-            <div id="loaderTable" style="text-align:center; padding:20px; opacity:0.5; font-size:12px;">Sincronizando...</div>
         </div>
 
-        <button class="fab-add"><i class="fa-solid fa-plus"></i></button>
+        <div id="infra" class="tab-content">
+            <div class="grid-stats">
+                <div class="stat-card"><div class="rf-label">Power Level (dBm)</div><div class="rf-value" id="rf-power">-42.5</div></div>
+                <div class="stat-card"><div class="rf-label">Signal Quality (SNR)</div><div class="rf-value" id="rf-snr">28 dB</div></div>
+                <div class="stat-card"><div class="rf-label">Latency (ms)</div><div class="rf-value" id="rf-ping">12 ms</div></div>
+            </div>
+            <div class="card-table">
+                <h3>Monitorização de Torres P2P</h3>
+                <p style="opacity:0.5">Sincronizado com NOC Central...</p>
+            </div>
+        </div>
+
+        <div id="audit" class="tab-content"><div class="card-table"><h3>Relatórios de Auditoria Técnica</h3></div></div>
+        <div id="factura" class="tab-content"><div class="card-table"><h3>Gestão de Faturação e Cobrança</h3></div></div>
+
     </main>
 
     <script type="module">
@@ -125,53 +124,54 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Sidebar Toggle
-        const menuBtn = document.getElementById('menuBtn');
-        const sidebar = document.getElementById('sidebar');
-        menuBtn.onclick = (e) => {
-            e.stopPropagation();
-            sidebar.classList.toggle('active');
+        // NAVEGAÇÃO ENTRE ABAS
+        window.showTab = (tabId) => {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
-        document.onclick = () => sidebar.classList.remove('active');
 
-        // Relógio
+        // RELÓGIO E SAUDAÇÃO
         setInterval(() => {
-            document.getElementById('liveClock').innerText = new Date().toLocaleString('pt-MZ');
+            const n = new Date();
+            document.getElementById('clock').innerText = n.toLocaleString('pt-MZ');
+            const h = n.getHours();
+            document.getElementById('greet').innerText = h < 12 ? "Bom dia, Admin" : h < 18 ? "Boa tarde, Admin" : "Boa noite, Admin";
+            
+            // SIMULAÇÃO MONITOR RF (VARIAÇÃO REAL)
+            document.getElementById('rf-power').innerText = (-(Math.random() * 5 + 40)).toFixed(1) + " dBm";
+            document.getElementById('rf-ping').innerText = Math.floor(Math.random() * 10 + 10) + " ms";
         }, 1000);
 
-        // Firebase Data
-        const tableBody = document.getElementById('leadsTable');
+        // LEITURA DE LEADS (FIREBASE)
+        const leadsBody = document.getElementById('leadsBody');
         const badge = document.getElementById('countBadge');
-        const loader = document.getElementById('loaderTable');
 
         onValue(ref(db, 'leads'), (snapshot) => {
-            tableBody.innerHTML = "";
-            loader.style.display = "none";
+            leadsBody.innerHTML = "";
             if (snapshot.exists()) {
-                const entries = Object.entries(snapshot.val()).reverse();
-                badge.innerText = entries.length;
-                entries.forEach(([id, lead]) => {
-                    tableBody.innerHTML += `
+                const data = Object.entries(snapshot.val()).reverse();
+                badge.innerText = data.length;
+                data.forEach(([id, lead]) => {
+                    leadsBody.innerHTML += `
                         <tr>
-                            <td>
-                                <div class="td-service">${lead.servico || 'Redes'}</div>
-                                <div class="td-date">${lead.data || ''}</div>
-                            </td>
-                            <td>
-                                <div class="td-name">${lead.nome || 'RCAS'}</div>
-                                <div class="td-loc"><i class="fa-solid fa-location-dot"></i> ${lead.local || 'Pemba'}</div>
-                            </td>
-                            <td>
-                                <a href="https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}" target="_blank" class="link-atender">
-                                    <i class="fa-brands fa-whatsapp"></i> Atender
-                                </a>
-                            </td>
+                            <td><strong>${lead.servico || 'Redes'}</strong><br><small style="opacity:0.5">${lead.data || ''}</small></td>
+                            <td>${lead.nome || '---'}<br><small><i class="fa-solid fa-location-dot"></i> ${lead.local || 'Pemba'}</small></td>
+                            <td><a href="https://wa.me/${lead.whatsapp?.replace(/\D/g,'')}" target="_blank" class="link-wa">Atender</a></td>
                         </tr>`;
                 });
-            } else {
-                tableBody.innerHTML = "<tr><td colspan='3' style='text-align:center; padding:30px;'>Sem leads ativos.</td></tr>";
             }
         });
+
+        // EXPORTAÇÃO PDF
+        window.exportPDF = (tableId, title) => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("ROZAY TECH SOLUTIONS - NOC REPORT", 14, 15);
+            doc.autoTable({ html: `#${tableId}`, theme: 'grid', headStyles: {fillColor: [37, 99, 235]} });
+            doc.save(`${title}.pdf`);
+        }
     </script>
 </body>
 </html>
