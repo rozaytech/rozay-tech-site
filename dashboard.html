@@ -3,51 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RozayAdmin | NOC Master</title>
+    <title>RozayAdmin | NOC Master System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
     <style>
-        :root { --primary: #2563eb; --dark: #0f172a; --bg: #f4f7fe; --white: #fff; --success: #10b981; }
+        :root { --primary: #2563eb; --dark: #0f172a; --bg: #f4f7fe; --white: #fff; --success: #10b981; --accent: #3b82f6; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); display: flex; color: var(--dark); }
+        body { background: var(--bg); display: flex; color: var(--dark); min-height: 100vh; }
 
         /* SIDEBAR */
-        .sidebar { width: 280px; height: 100vh; background: var(--dark); padding: 25px; position: fixed; transition: 0.3s; z-index: 1000; }
-        .logo-admin { color: #fff; font-size: 22px; font-weight: 800; margin-bottom: 40px; display: block; text-decoration: none; }
+        .sidebar { width: 260px; background: var(--dark); padding: 25px; position: fixed; height: 100vh; z-index: 1000; transition: 0.3s; }
+        .logo-admin { color: #fff; font-size: 20px; font-weight: 800; margin-bottom: 40px; text-decoration: none; display: block; }
         .logo-admin span { color: var(--primary); }
-        .nav-item { display: flex; align-items: center; color: rgba(255,255,255,0.6); text-decoration: none; padding: 12px; border-radius: 12px; margin-bottom: 8px; cursor: pointer; border: none; background: none; width: 100%; font-size: 14px; }
-        .nav-item i { margin-right: 12px; width: 20px; }
-        .nav-item.active { background: rgba(255,255,255,0.1); color: #fff; }
-        .badge-count { background: #ff4757; color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-left: auto; }
+        .nav-item { display: flex; align-items: center; color: rgba(255,255,255,0.5); text-decoration: none; padding: 12px; border-radius: 12px; margin-bottom: 5px; cursor: pointer; border: none; background: none; width: 100%; font-size: 14px; transition: 0.2s; }
+        .nav-item i { margin-right: 12px; width: 18px; text-align: center; }
+        .nav-item.active, .nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .badge-count { background: #ef4444; color: #fff; font-size: 10px; padding: 2px 7px; border-radius: 10px; margin-left: auto; font-weight: bold; }
 
-        /* CONTENT */
-        .main-content { flex: 1; margin-left: 280px; padding: 30px; transition: 0.3s; }
+        /* MAIN CONTENT */
+        .main-content { flex: 1; margin-left: 260px; padding: 30px; width: calc(100% - 260px); }
         .header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .tab-content { display: none; }
+        
+        /* SECTIONS */
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* CARDS & RF MONITOR */
-        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: var(--white); padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
-        .rf-value { font-size: 24px; font-weight: 800; color: var(--primary); }
-        .rf-label { font-size: 12px; opacity: 0.6; text-transform: uppercase; }
+        /* KPI CARDS (RESUMO BONITO) */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .kpi-card { background: var(--white); padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #edf2f7; }
+        .kpi-card i { font-size: 20px; color: var(--primary); margin-bottom: 10px; display: block; }
+        .kpi-val { font-size: 24px; font-weight: 800; margin: 5px 0; }
+        .kpi-label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* TABLES */
-        .card-table { background: var(--white); padding: 25px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
-        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .card-panel { background: var(--white); padding: 25px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px; font-size: 11px; color: #94a3b8; text-transform: uppercase; border-bottom: 1px solid #eee; }
-        td { padding: 15px; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
+        th { text-align: left; padding: 12px; font-size: 11px; color: #94a3b8; text-transform: uppercase; border-bottom: 2px solid #f1f5f9; }
+        td { padding: 15px 12px; border-bottom: 1px solid #f8fafc; font-size: 14px; }
         
-        .btn-pdf { background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; }
-        .btn-pdf:hover { background: #edf2f7; }
-        .link-wa { color: var(--success); text-decoration: none; font-weight: 700; }
+        .btn-action { background: var(--bg); border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; text-decoration: none; color: var(--dark); transition: 0.2s; }
+        .btn-action:hover { background: var(--primary); color: #fff; }
+
+        /* RF MONITOR SPECIFIC */
+        .rf-box { display: flex; align-items: baseline; gap: 5px; }
+        .rf-unit { font-size: 12px; opacity: 0.5; }
 
         @media (max-width: 992px) {
-            .sidebar { left: -280px; }
+            .sidebar { left: -260px; }
             .sidebar.open { left: 0; }
-            .main-content { margin-left: 0; }
+            .main-content { margin-left: 0; width: 100%; }
         }
     </style>
 </head>
@@ -56,8 +63,9 @@
     <aside class="sidebar" id="sidebar">
         <a href="#" class="logo-admin">Rozay<span>Admin</span></a>
         <nav>
-            <button class="nav-item active" onclick="showTab('painel')"><i class="fa-solid fa-chart-pie"></i> Painel Geral</button>
+            <button class="nav-item active" onclick="showTab('painel')"><i class="fa-solid fa-house"></i> Painel Geral</button>
             <button class="nav-item" onclick="showTab('vendas')"><i class="fa-solid fa-bolt"></i> Novas Vendas <span class="badge-count" id="countBadge">0</span></button>
+            <button class="nav-item" onclick="showTab('clientes')"><i class="fa-solid fa-users"></i> Clientes & Redes</button>
             <button class="nav-item" onclick="showTab('infra')"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura (RF)</button>
             <button class="nav-item" onclick="showTab('audit')"><i class="fa-solid fa-clipboard-check"></i> Auditoria</button>
             <button class="nav-item" onclick="showTab('factura')"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</button>
@@ -70,43 +78,67 @@
         <header class="header-dash">
             <div>
                 <h1 id="greet">NOC Control</h1>
-                <p id="clock" style="opacity:0.5; font-size:13px;"></p>
+                <p id="clock" style="opacity:0.5; font-size:13px; font-family: monospace;"></p>
             </div>
-            <div style="display:flex; align-items:center; gap:15px;">
-                <div style="text-align:right"><strong style="display:block">Admin</strong><small>NOC Master</small></div>
-                <div style="width:45px; height:45px; background:var(--primary); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">A</div>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div style="text-align:right"><strong style="display:block">Admin</strong><small style="color:var(--primary)">NOC Master</small></div>
+                <div style="width:40px; height:40px; background:var(--primary); color:#fff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:bold;">A</div>
             </div>
         </header>
 
         <div id="painel" class="tab-content active">
-            <div class="card-table">
+            <div class="kpi-grid">
+                <div class="kpi-card"><i class="fa-solid fa-users"></i><div class="kpi-val" id="kpi-leads">0</div><div class="kpi-label">Leads Totais</div></div>
+                <div class="kpi-card"><i class="fa-solid fa-wallet"></i><div class="kpi-val">MT 45.200</div><div class="kpi-label">Faturação Estimada</div></div>
+                <div class="kpi-card"><i class="fa-solid fa-signal"></i><div class="kpi-val" id="kpi-rf">98%</div><div class="kpi-label">Uptime Rede</div></div>
+                <div class="kpi-card"><i class="fa-solid fa-check-double"></i><div class="kpi-val">12</div><div class="kpi-label">Projectos Concluídos</div></div>
+            </div>
+            
+            <div class="card-panel">
                 <div class="table-header">
-                    <h3>Interessados pelo Site (Leads)</h3>
-                    <button class="btn-pdf" onclick="exportPDF('leadsTable', 'Relatorio_Leads_Site')"><i class="fa-solid fa-file-pdf"></i> Exportar Leads</button>
+                    <h3>Atividade Recente (Site)</h3>
+                    <button class="btn-action" onclick="exportPDF('leadsTable', 'Atividade_NOC')">Gerar PDF</button>
                 </div>
                 <table id="leadsTable">
-                    <thead>
-                        <tr><th>Serviço / Data</th><th>Cliente / Local</th><th>Ação</th></tr>
-                    </thead>
-                    <tbody id="leadsBody"></tbody>
+                    <thead><tr><th>Serviço</th><th>Cliente</th><th>Data</th><th>Status</th></tr></thead>
+                    <tbody id="leadsBodyGeneral"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="vendas" class="tab-content">
+            <div class="card-panel">
+                <div class="table-header"><h3>Gestão de Novos Leads</h3></div>
+                <table>
+                    <thead><tr><th>Interesse</th><th>Nome/Empresa</th><th>Localização</th><th>Ação</th></tr></thead>
+                    <tbody id="leadsBodyFull"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="clientes" class="tab-content">
+            <div class="card-panel">
+                <div class="table-header"><h3>Base de Clientes Ativos</h3></div>
+                <table>
+                    <thead><tr><th>Cliente</th><th>Plano/Serviço</th><th>IP Estático</th><th>Vencimento</th></tr></thead>
+                    <tbody>
+                        <tr><td>RCAS Pemba</td><td>Starlink Pro</td><td>192.168.88.10</td><td>15/03</td></tr>
+                        <tr><td>Adamo Tech</td><td>P2P Wireless</td><td>10.0.0.52</td><td>20/03</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
 
         <div id="infra" class="tab-content">
-            <div class="grid-stats">
-                <div class="stat-card"><div class="rf-label">Power Level (dBm)</div><div class="rf-value" id="rf-power">-42.5</div></div>
-                <div class="stat-card"><div class="rf-label">Signal Quality (SNR)</div><div class="rf-value" id="rf-snr">28 dB</div></div>
-                <div class="stat-card"><div class="rf-label">Latency (ms)</div><div class="rf-value" id="rf-ping">12 ms</div></div>
-            </div>
-            <div class="card-table">
-                <h3>Monitorização de Torres P2P</h3>
-                <p style="opacity:0.5">Sincronizado com NOC Central...</p>
+            <div class="kpi-grid">
+                <div class="kpi-card"><div class="kpi-label">Signal (dBm)</div><div class="rf-box"><span class="kpi-val" id="rf-pwr">-45</span><span class="rf-unit">dBm</span></div></div>
+                <div class="kpi-card"><div class="kpi-label">SNR</div><div class="rf-box"><span class="kpi-val">32</span><span class="rf-unit">dB</span></div></div>
+                <div class="kpi-card"><div class="kpi-label">Latency</div><div class="rf-box"><span class="kpi-val" id="rf-ms">15</span><span class="rf-unit">ms</span></div></div>
             </div>
         </div>
 
-        <div id="audit" class="tab-content"><div class="card-table"><h3>Relatórios de Auditoria Técnica</h3></div></div>
-        <div id="factura" class="tab-content"><div class="card-table"><h3>Gestão de Faturação e Cobrança</h3></div></div>
+        <div id="audit" class="tab-content"><div class="card-panel"><h3>Logs de Auditoria do Sistema</h3><p>Nenhuma anomalia detectada nas últimas 24h.</p></div></div>
+        <div id="factura" class="tab-content"><div class="card-panel"><h3>Relatório Financeiro</h3><p>Total Pendente: MT 12.000,00</p></div></div>
 
     </main>
 
@@ -132,44 +164,54 @@
             event.currentTarget.classList.add('active');
         }
 
-        // RELÓGIO E SAUDAÇÃO
+        // RELÓGIO E RF SIMULATION
         setInterval(() => {
             const n = new Date();
             document.getElementById('clock').innerText = n.toLocaleString('pt-MZ');
-            const h = n.getHours();
-            document.getElementById('greet').innerText = h < 12 ? "Bom dia, Admin" : h < 18 ? "Boa tarde, Admin" : "Boa noite, Admin";
             
-            // SIMULAÇÃO MONITOR RF (VARIAÇÃO REAL)
-            document.getElementById('rf-power').innerText = (-(Math.random() * 5 + 40)).toFixed(1) + " dBm";
-            document.getElementById('rf-ping').innerText = Math.floor(Math.random() * 10 + 10) + " ms";
+            // Simulação RF
+            if(document.getElementById('rf-pwr')) {
+                document.getElementById('rf-pwr').innerText = (-(Math.random() * 4 + 42)).toFixed(1);
+                document.getElementById('rf-ms').innerText = Math.floor(Math.random() * 5 + 12);
+            }
         }, 1000);
 
-        // LEITURA DE LEADS (FIREBASE)
-        const leadsBody = document.getElementById('leadsBody');
+        // FIREBASE SYNC
         const badge = document.getElementById('countBadge');
+        const kpiLeads = document.getElementById('kpi-leads');
 
         onValue(ref(db, 'leads'), (snapshot) => {
-            leadsBody.innerHTML = "";
+            const bodyGeneral = document.getElementById('leadsBodyGeneral');
+            const bodyFull = document.getElementById('leadsBodyFull');
+            bodyGeneral.innerHTML = ""; bodyFull.innerHTML = "";
+
             if (snapshot.exists()) {
                 const data = Object.entries(snapshot.val()).reverse();
                 badge.innerText = data.length;
+                kpiLeads.innerText = data.length;
+
                 data.forEach(([id, lead]) => {
-                    leadsBody.innerHTML += `
+                    // Preenche Tabela Resumida (Painel Geral)
+                    bodyGeneral.innerHTML += `<tr><td>${lead.servico}</td><td>${lead.nome}</td><td>${lead.data.split(',')[0]}</td><td><span style="color:var(--success)">● Novo</span></td></tr>`;
+                    
+                    // Preenche Tabela Completa (Novas Vendas)
+                    bodyFull.innerHTML += `
                         <tr>
-                            <td><strong>${lead.servico || 'Redes'}</strong><br><small style="opacity:0.5">${lead.data || ''}</small></td>
-                            <td>${lead.nome || '---'}<br><small><i class="fa-solid fa-location-dot"></i> ${lead.local || 'Pemba'}</small></td>
-                            <td><a href="https://wa.me/${lead.whatsapp?.replace(/\D/g,'')}" target="_blank" class="link-wa">Atender</a></td>
+                            <td><strong>${lead.servico}</strong></td>
+                            <td>${lead.nome}</td>
+                            <td>${lead.local}</td>
+                            <td><a href="https://wa.me/${lead.whatsapp?.replace(/\D/g,'')}" target="_blank" class="btn-action"><i class="fa-brands fa-whatsapp"></i> Atender</a></td>
                         </tr>`;
                 });
             }
         });
 
-        // EXPORTAÇÃO PDF
+        // PDF EXPORT
         window.exportPDF = (tableId, title) => {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            doc.text("ROZAY TECH SOLUTIONS - NOC REPORT", 14, 15);
-            doc.autoTable({ html: `#${tableId}`, theme: 'grid', headStyles: {fillColor: [37, 99, 235]} });
+            doc.setFontSize(18); doc.text("ROZAY TECH SOLUTIONS - RELATÓRIO NOC", 14, 20);
+            doc.autoTable({ html: `#${tableId}`, margin: { top: 30 }, theme: 'striped' });
             doc.save(`${title}.pdf`);
         }
     </script>
