@@ -1,132 +1,182 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, onValue, push, set, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref, onValue, push, remove, update } 
+from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-const firebaseConfig = { 
-    apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U", 
-    authDomain: "rozaytech-noc.firebaseapp.com", 
-    databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com", 
-    projectId: "rozaytech-noc" 
+const firebaseConfig = {
+apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U",
+authDomain: "rozaytech-noc.firebaseapp.com",
+databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com",
+projectId: "rozaytech-noc",
+storageBucket: "rozaytech-noc.firebasestorage.app",
+messagingSenderId: "129382246448",
+appId: "1:129382246448:web:f0ce1b7fca23eed17da5f5"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const dbRef = ref(db, 'clientes');
+const logsRef = ref(db, 'logs');
 
-// --- NAVEGAÇÃO E INTERFACE ---
-const navLinks = document.querySelectorAll('.nav-link');
-const tabs = document.querySelectorAll('.tab-content');
+// Proteção de Acesso
+if (localStorage.getItem('rozay_auth') !== 'true') window.location.href = "login.html";
 
-navLinks.forEach(link => {
-    link.onclick = function() {
-        const target = this.getAttribute('data-target');
-        navLinks.forEach(l => l.classList.remove('active'));
-        tabs.forEach(t => t.classList.remove('active'));
-        
-        this.classList.add('active');
-        document.getElementById(target).classList.add('active');
-        document.getElementById('sidebar').classList.remove('open');
-    };
+// Pega o nome do utilizador salvo no login
+const loggedUser = localStorage.getItem('rozay_user') || "Admin";
+
+let clientes = {};
+let meuGrafico = null;
+
+// Sincronismo Inicial
+// Escuta Cloud
+onValue(dbRef, (snap) => {
+clientes = snap.val() || {};
+    renderEverything();
+    renderAll();
 });
 
-// Menu Mobile
-document.getElementById('menuToggle').onclick = () => document.getElementById('sidebar').classList.add('open');
-document.getElementById('closeMenu').onclick = () => document.getElementById('sidebar').classList.remove('open');
-
-// Relógio e Saudação
-setInterval(() => {
-    const now = new Date();
-    document.getElementById('live-clock').innerText = now.toLocaleString('pt-MZ');
-    const hrs = now.getHours();
-    const greet = document.getElementById('greeting');
-    greet.innerText = hrs < 12 ? "Bom dia, Admin!" : hrs < 18 ? "Boa tarde, Admin!" : "Boa noite, Admin!";
-    
-    // Monitor RF Simulado
-    if(document.getElementById('rf-pwr')) {
-        document.getElementById('rf-pwr').innerText = (-(40 + Math.random())).toFixed(1);
-        document.getElementById('rf-ms').innerText = Math.floor(12 + Math.random() * 6);
-    }
-}, 1000);
-
-// --- DADOS FIREBASE ---
-
-// Clientes & Redes
-onValue(ref(db, 'clientes'), (snap) => {
-    const tbody = document.getElementById('tbody-clientes');
-    tbody.innerHTML = "";
-    let totalMT = 0;
-    let offlineCount = 0;
-
-    if(snap.exists()){
-        Object.entries(snap.val()).forEach(([id, c]) => {
-            totalMT += parseFloat(c.valor || 0);
-            if(c.status === 'offline') offlineCount++;
-            
-            tbody.innerHTML += `
-                <tr>
-                    <td><strong>${c.nome}</strong></td>
-                    <td>${c.tecnologia}</td>
-                    <td>MT ${parseFloat(c.valor).toLocaleString()}</td>
-                    <td><span class="status-badge ${c.status}">${c.status.toUpperCase()}</span></td>
-                    <td>
-                        <button onclick="editData('clientes/${id}')" class="btn-edit">✏️</button>
-                        <button onclick="deleteData('clientes/${id}', '${c.nome}')" class="btn-del">🗑️</button>
-                    </td>
-                </tr>`;
-        });
-    }
-    document.getElementById('stat-clientes').innerText = snap.exists() ? Object.keys(snap.val()).length : 0;
-    document.getElementById('stat-receita').innerText = "MT " + totalMT.toLocaleString();
-    
-    // Alerta de Sistema
-    const alertBox = document.getElementById('system-alert');
-    if(offlineCount > 0) {
-        alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${offlineCount} Clientes Offline`;
-        alertBox.style.background = "#fee2e2"; alertBox.style.color = "#ef4444";
-    } else {
-        alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Sistema Online`;
-        alertBox.style.background = "#dcfce7"; alertBox.style.color = "#10b981";
-    }
+onValue(logsRef, (snap) => {
+const logs = snap.val() || {};
+    const lbody = document.getElementById("logsTableBody");
+    if(lbody) {
+        lbody.innerHTML = "";
+        Object.values(logs).reverse().slice(0, 15).forEach(l => {
+            lbody.innerHTML += `<tr><td>${l.data}</td><td><strong>${l.user}</strong></td><td>${l.acao}</td><td>${l.msg}</td></tr>`;
+    const tbody = document.getElementById("logsTableBody");
+    if(tbody) {
+        tbody.innerHTML = "";
+        Object.values(logs).reverse().slice(0, 10).forEach(l => {
+            tbody.innerHTML += `<tr><td>${l.data}</td><td>${l.user}</td><td>${l.acao}</td><td>${l.msg}</td></tr>`;
+});
+}
 });
 
-// Logs do Sistema
-onValue(ref(db, 'logs'), (snap) => {
-    const tbody = document.getElementById('tbody-logs');
-    tbody.innerHTML = "";
-    if(snap.exists()){
-        Object.values(snap.val()).reverse().forEach(log => {
-            tbody.innerHTML += `<tr><td>${log.data}</td><td>${log.responsavel}</td><td>${log.acao}</td><td>${log.detalhes}</td></tr>`;
-        });
-    }
+// Interface
+// Navegação
+window.navigateTo = (page, el) => {
+document.querySelectorAll('.dash-section').forEach(s => s.style.display = 'none');
+document.getElementById('content-' + page).style.display = 'block';
+document.querySelectorAll('.side-nav a').forEach(a => a.classList.remove('active'));
+el.classList.add('active');
+if(window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('active');
+if(page === 'resumo') initChart();
+};
+
+document.getElementById('menu-toggle').onclick = () => document.getElementById('sidebar').classList.toggle('active');
+
+window.toggleModal = () => {
+const m = document.getElementById("modalCliente");
+m.style.display = (m.style.display === "flex") ? "none" : "flex";
+};
+
+// CRUD
+document.getElementById("formCliente").onsubmit = function(e) {
+e.preventDefault();
+const key = document.getElementById('editIndex').value;
+const nomeClie = document.getElementById("nome").value;
+const dados = {
+nome: nomeClie,
+tech: document.getElementById("tech").value,
+local: document.getElementById("local").value,
+valor: Number(document.getElementById("valor").value),
+status: document.getElementById("status").value,
+user: loggedUser,
+data: new Date().toLocaleString('pt-MZ')
+};
+
+if(key === "") {
+push(dbRef, dados);
+push(logsRef, { data: dados.data, user: loggedUser, acao: "Adição", msg: `Registou ${nomeClie}` });
+} else {
+update(ref(db, `clientes/${key}`), dados);
+push(logsRef, { data: dados.data, user: loggedUser, acao: "Edição", msg: `Alterou ${nomeClie}` });
+}
+toggleModal();
+    this.reset();
+};
+
+window.prepararEdicao = (key) => {
+    const c = clientes[key];
+    document.getElementById('editIndex').value = key;
+    document.getElementById('nome').value = c.nome;
+    document.getElementById('tech').value = c.tech;
+    document.getElementById('local').value = c.local;
+    document.getElementById('valor').value = c.valor;
+    document.getElementById('status').value = c.status;
+    document.getElementById('modalTitle').innerText = "Editar Registo";
+    toggleModal();
+};
+
+window.eliminar = (key) => {
+if(confirm("Apagar da Cloud?")) {
+const nome = clientes[key].nome;
+remove(ref(db, `clientes/${key}`));
+push(logsRef, { data: new Date().toLocaleString(), user: loggedUser, acao: "Eliminação", msg: `Apagou ${nome}` });
+}
+};
+
+function renderEverything() {
+function renderAll() {
+const tbody = document.getElementById("clientTableBody");
+const fbody = document.getElementById("faturacaoTableBody");
+let total = 0; let off = 0;
+
+if(tbody) tbody.innerHTML = "";
+if(fbody) fbody.innerHTML = "";
+
+Object.keys(clientes).forEach(key => {
+const c = clientes[key];
+total += (c.valor || 0);
+if(c.status === 'offline') off++;
+
+        if(tbody) tbody.innerHTML += `<tr><td><strong>${c.nome}</strong></td><td>${c.tech}</td><td>${c.local}</td><td>${(c.valor || 0).toLocaleString()} MT</td><td><span class="status-badge ${c.status}">${c.status}</span></td><td><button onclick="prepararEdicao('${key}')" class="btn-edit-tbl"><i class="fa-solid fa-pen"></i></button><button onclick="eliminar('${key}')" class="btn-del-tbl"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+        if(fbody) fbody.innerHTML += `<tr><td>${c.nome}</td><td>${c.user}</td><td>${c.data.split(',')[0]}</td><td><strong>${(c.valor || 0).toLocaleString()} MT</strong></td></tr>`;
+        if(tbody) tbody.innerHTML += `<tr><td><strong>${c.nome}</strong></td><td>${c.tech}</td><td>${c.local}</td><td>${(c.valor || 0).toLocaleString()} MT</td><td><span class="status-badge ${c.status}">${c.status}</span></td><td><button onclick="eliminar('${key}')" style="color:red;border:none;background:none;cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+        if(fbody) fbody.innerHTML += `<tr><td>${c.nome}</td><td>${c.user}</td><td>${c.data}</td><td><strong>${(c.valor || 0).toLocaleString()} MT</strong></td></tr>`;
 });
 
-// Função para Registar Logs
-async function registrarLog(acao, detalhes) {
-    await push(ref(db, 'logs'), {
-        data: new Date().toLocaleString(),
-        responsavel: "Admin",
-        acao: acao,
-        detalhes: detalhes
-    });
+document.getElementById("count-total").innerText = Object.keys(clientes).length;
+document.getElementById("count-receita").innerText = total.toLocaleString() + " MT";
+document.getElementById("count-alerts").innerText = off;
+document.getElementById("total-faturacao-header").innerText = total.toLocaleString() + " MT";
+initChart();
 }
 
-// --- GRÁFICOS ---
-const ctx = document.getElementById('serviceChart').getContext('2d');
-new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Starlink', 'Redes Wireless', 'Consultoria', 'Drones'],
-        datasets: [{
-            data: [45, 25, 15, 15],
-            backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444'],
-            borderWidth: 0
-        }]
-    },
-    options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+function initChart() {
+const ctx = document.getElementById('meuGrafico')?.getContext('2d');
+if(!ctx) return;
+if(meuGrafico) meuGrafico.destroy();
+const stats = {};
+Object.values(clientes).forEach(c => stats[c.tech] = (stats[c.tech] || 0) + 1);
+meuGrafico = new Chart(ctx, {
+type: 'doughnut',
+data: { labels: Object.keys(stats), datasets: [{ data: Object.values(stats), backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'] }] },
+options: { responsive: true, maintainAspectRatio: false }
 });
-
-// --- FUNÇÕES EXPORTADAS ---
-window.deleteData = (path, name) => {
-    if(confirm("Deseja apagar " + name + "?")) {
-        remove(ref(db, path));
-        registrarLog("Eliminar", "Eliminou o registo de " + name);
-    }
 }
+
+window.gerarRelatorioPDF = () => {
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
+    doc.setFontSize(18);
+doc.text("ROZAY TECH - RELATÓRIO NOC", 14, 20);
+    doc.setFontSize(10);
+    doc.text("Gerado por: " + loggedUser + " em " + new Date().toLocaleString(), 14, 28);
+    
+const rows = Object.values(clientes).map(c => [c.nome, c.tech, c.local, c.valor + " MT", c.status]);
+    doc.autoTable({ startY: 35, head: [['Cliente', 'Serviço', 'Localização', 'Valor', 'Estado']], body: rows });
+    doc.save("Relatorio_RozayTech.pdf");
+    doc.autoTable({ startY: 30, head: [['Cliente', 'Serviço', 'Local', 'Valor', 'Estado']], body: rows });
+    doc.save("Relatorio_Rozay.pdf");
+};
+
+window.logout = () => { localStorage.clear(); window.location.href = "login.html"; };
+
+// Inicializar UI
+document.getElementById("welcome-msg").innerText = `Olá, ${loggedUser}!`;
+// Inicializar Textos
+document.getElementById("welcome-msg").innerText = `NOC Ativo: ${loggedUser}`;
+document.getElementById("logged-user-name").innerText = loggedUser;
+document.getElementById("user-initial").innerText = loggedUser.charAt(0);
+setInterval(() => document.getElementById("current-time-dash").innerText = new Date().toLocaleString('pt-MZ'), 1000);
+setInterval(() => document.getElementById("current-time-dash").innerText = new Date().toLocaleString(), 1000);
