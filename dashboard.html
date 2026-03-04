@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RozayAdmin | NOC Master</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="dash-style.css"> </head>
+    <link rel="stylesheet" href="dash-style.css">
+</head>
 <body>
 
     <aside class="sidebar" id="sidebar">
@@ -15,7 +16,9 @@
             <a href="#" class="nav-item"><i class="fa-solid fa-bolt"></i> Novas Vendas <span class="badge-count" id="countBadge">0</span></a>
             <a href="#" class="nav-item"><i class="fa-solid fa-users"></i> Clientes & Redes</a>
             <a href="#" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</a>
-            <hr>
+            <a href="#" class="nav-item"><i class="fa-solid fa-clipboard-check"></i> Auditoria</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
+            <hr style="opacity: 0.1; margin: 20px 0;">
             <a href="index.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Voltar ao Site</a>
             <a href="#" class="nav-item logout"><i class="fa-solid fa-power-off"></i> Sair</a>
         </nav>
@@ -26,36 +29,41 @@
             <button class="menu-toggle" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
             <div class="welcome-text">
                 <h1 id="greeting">Boa tarde, Admin!</h1>
-                <p class="live-date" id="liveClock">--/--/-- • 00:00:00</p>
-            </div>
-            <div class="user-profile">
-                <div class="user-info"><span>Admin</span><small>NOC Master</small></div>
-                <div class="avatar">A</div>
+                <p class="live-date" id="liveClock">04/03/2026, 12:33:32</p>
             </div>
         </header>
 
-        <section class="content-body">
-            <div class="card table-card">
-                <div class="card-header">
-                    <h3>Interessados no Site (Leads)</h3>
+        <div class="card profile-card">
+            <div class="profile-content">
+                <div class="user-info">
+                    <strong>Admin</strong>
+                    <span>NOC Master</span>
                 </div>
-                
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Interesse / Data</th>
-                                <th>Cliente / Localização</th>
-                                <th>Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leadsTable">
-                            </tbody>
-                    </table>
-                </div>
-                <div id="loaderTable" class="loader-status">Sincronizando com o Firebase...</div>
+                <div class="avatar-circle">A</div>
             </div>
-        </section>
+        </div>
+
+        <div class="card table-card">
+            <h3>Interessados no Site (Leads)</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Interesse / Data</th>
+                            <th>Cliente / Localização</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leadsTable">
+                        </tbody>
+                </table>
+            </div>
+            <div id="loaderTable" style="text-align:center; padding:20px; color:#94a3b8; font-size:12px;">
+                Sincronizando com o Firebase...
+            </div>
+        </div>
+        
+        <button class="fab-add"><i class="fa-solid fa-plus"></i></button>
     </main>
 
     <script type="module">
@@ -72,16 +80,17 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // 1. Relógio e Saudação
+        // RELÓGIO
         setInterval(() => {
-            const now = new Date();
-            document.getElementById('liveClock').innerText = now.toLocaleString('pt-MZ');
-            const hour = now.getHours();
-            const greet = hour < 12 ? "Bom dia" : hour < 18 ? "Boa tarde" : "Boa noite";
-            document.getElementById('greeting').innerText = `${greet}, Admin!`;
+            document.getElementById('liveClock').innerText = new Date().toLocaleString('pt-MZ');
         }, 1000);
 
-        // 2. Escutar os Leads em tempo real
+        // SIDEBAR TOGGLE
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        menuBtn.onclick = () => sidebar.classList.toggle('active');
+
+        // LEITURA DE DADOS
         const tableBody = document.getElementById('leadsTable');
         const badge = document.getElementById('countBadge');
         const loader = document.getElementById('loaderTable');
@@ -93,23 +102,21 @@
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 const entries = Object.entries(data).reverse();
-                
-                // Atualiza o contador de "Novas Vendas" no menu lateral
                 badge.innerText = entries.length;
 
                 entries.forEach(([id, lead]) => {
                     const row = `
                         <tr>
                             <td>
-                                <span class="badge-tag">${lead.servico || 'Geral'}</span><br>
-                                <small class="text-muted">${lead.data || ''}</small>
+                                <div class="td-service">${lead.servico || 'Redes'}</div>
+                                <div class="td-date">${lead.data || ''}</div>
                             </td>
                             <td>
-                                <div class="client-name">${lead.nome || 'Interessado'}</div>
-                                <div class="client-loc"><i class="fa-solid fa-location-dot"></i> ${lead.local || 'N/A'}</div>
+                                <div class="td-name">${lead.nome || 'RCAS'}</div>
+                                <div class="td-loc"><i class="fa-solid fa-location-dot"></i> ${lead.local || 'Pemba'}</div>
                             </td>
                             <td>
-                                <a href="https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}" target="_blank" class="btn-whatsapp">
+                                <a href="https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}" target="_blank" class="link-atender">
                                     <i class="fa-brands fa-whatsapp"></i> Atender
                                 </a>
                             </td>
@@ -118,15 +125,10 @@
                     tableBody.innerHTML += row;
                 });
             } else {
-                tableBody.innerHTML = "<tr><td colspan='3' class='empty'>Nenhum lead registado.</td></tr>";
+                tableBody.innerHTML = "<tr><td colspan='3' style='text-align:center; padding:20px;'>Sem leads.</td></tr>";
                 badge.innerText = "0";
             }
         });
-
-        // 3. Toggle Menu Mobile
-        document.getElementById('menuBtn').onclick = () => {
-            document.getElementById('sidebar').classList.toggle('active');
-        };
     </script>
 </body>
 </html>
