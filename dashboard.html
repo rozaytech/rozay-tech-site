@@ -2,159 +2,131 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RozayTech | NOC & ERP</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RozayAdmin | NOC Master</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <link rel="stylesheet" href="dash-style.css">
-</head>
+    <link rel="stylesheet" href="dash-style.css"> </head>
 <body>
-    <button id="menu-toggle" class="menu-btn"><i class="fa-solid fa-bars"></i></button>
 
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-logo">Rozay<span>Admin</span></div>
-        <nav class="side-nav">
-            <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar ao Site</a>
-            <div class="nav-divider"></div>
-            <a href="#" onclick="navigateTo('resumo', this)" class="active"><i class="fa-solid fa-chart-pie"></i> Painel Geral</a>
-            <a href="#" onclick="navigateTo('leads', this)" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fa-solid fa-bolt"></i> Novas Vendas <span id="lead-count-badge" style="background:red; color:white; padding: 2px 6px; border-radius: 50%; font-size: 10px; display:none;">0</span></a>
-            <a href="#" onclick="navigateTo('clientes', this)"><i class="fa-solid fa-server"></i> Clientes & Redes</a>
-            <a href="#" onclick="navigateTo('faturacao', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</a>
-            <a href="#" onclick="navigateTo('logs', this)"><i class="fa-solid fa-clipboard-list"></i> Auditoria</a>
-            <a href="#" onclick="navigateTo('infra', this)"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
-            <div class="nav-divider"></div>
-            <a href="#" onclick="logout()" class="logout-link"><i class="fa-solid fa-power-off"></i> Sair</a>
+        <div class="logo-admin">Rozay<span>Admin</span></div>
+        <nav>
+            <a href="#" class="nav-item active"><i class="fa-solid fa-chart-pie"></i> Painel Geral</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-bolt"></i> Novas Vendas <span class="badge-count" id="countBadge">0</span></a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-users"></i> Clientes & Redes</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</a>
+            <hr>
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Voltar ao Site</a>
+            <a href="#" class="nav-item logout"><i class="fa-solid fa-power-off"></i> Sair</a>
         </nav>
     </aside>
 
-    <main class="main-content">
+    <main class="main-dash">
         <header class="dash-header">
-            <div class="header-info">
-                <h1 id="welcome-msg">A carregar...</h1>
-                <p id="current-time-dash"></p>
+            <button class="menu-toggle" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+            <div class="welcome-text">
+                <h1 id="greeting">Boa tarde, Admin!</h1>
+                <p class="live-date" id="liveClock">--/--/-- • 00:00:00</p>
             </div>
             <div class="user-profile">
-                <div class="user-info-text"><span id="logged-user-name">...</span><small>NOC Master</small></div>
-                <div class="user-avatar" id="user-initial">R</div>
+                <div class="user-info"><span>Admin</span><small>NOC Master</small></div>
+                <div class="avatar">A</div>
             </div>
         </header>
 
-        <section id="content-leads" class="dash-section" style="display: none;">
-            <div class="table-section">
-                <div class="table-header-flex">
+        <section class="content-body">
+            <div class="card table-card">
+                <div class="card-header">
                     <h3>Interessados no Site (Leads)</h3>
                 </div>
+                
                 <div class="table-responsive">
-                    <table class="dash-table">
-                        <thead><tr><th>Data</th><th>Cliente</th><th>Telemóvel</th><th>Interesse</th><th>Localização</th><th>Ação</th></tr></thead>
-                        <tbody id="leadsTableBody"></tbody>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Interesse / Data</th>
+                                <th>Cliente / Localização</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadsTable">
+                            </tbody>
                     </table>
                 </div>
-            </div>
-        </section>
-
-        <section id="content-resumo" class="dash-section">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
-                    <div class="stat-data"><h3 id="count-total">0</h3><p>Clientes</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon green"><i class="fa-solid fa-wallet"></i></div>
-                    <div class="stat-data"><h3 id="count-receita">0 MT</h3><p>Receita</p></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <div class="stat-data"><h3 id="count-alerts">0</h3><p>Offline</p></div>
-                </div>
-            </div>
-            <div class="chart-container">
-                <h4>Distribuição de Serviços</h4>
-                <div style="height: 300px;"><canvas id="meuGrafico"></canvas></div>
-            </div>
-        </section>
-
-        <section id="content-clientes" class="dash-section" style="display: none;">
-            <div class="table-section">
-                <div class="table-header-flex">
-                    <h3>Base de Dados Clientes</h3>
-                    <button onclick="gerarRelatorioPDF('clientes')" class="btn-pdf"><i class="fa-solid fa-file-pdf"></i> Exportar Clientes</button>
-                </div>
-                <div class="table-responsive">
-                    <table class="dash-table">
-                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Morada</th><th>Valor</th><th>Estado</th><th>Ações</th></tr></thead>
-                        <tbody id="clientTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="content-faturacao" class="dash-section" style="display: none;">
-            <div class="table-section">
-                <div class="table-header-flex">
-                    <h3>Faturação Total: <span id="total-faturacao-header">0 MT</span></h3>
-                    <button onclick="gerarRelatorioPDF('faturacao')" class="btn-pdf"><i class="fa-solid fa-file-invoice"></i> Exportar Faturação</button>
-                </div>
-                <div class="table-responsive">
-                    <table class="dash-table">
-                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Técnico</th><th>Data Registro</th><th>Valor</th></tr></thead>
-                        <tbody id="faturacaoTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="content-logs" class="dash-section" style="display: none;">
-            <div class="table-section">
-                <h3>Auditoria do Sistema</h3>
-                <div class="table-responsive">
-                    <table class="dash-table">
-                        <thead><tr><th>Data/Hora</th><th>Operador</th><th>Ação</th><th>Detalhes</th></tr></thead>
-                        <tbody id="logsTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="content-infra" class="dash-section" style="display: none;">
-            <div class="infra-box">
-                <i class="fa-solid fa-microchip"></i>
-                <h3>Rozay Analyzer v2.5</h3>
-                <p>Status: Monitorização RF Ativa via Firebase Cloud</p>
-                <div class="progress-bar-infra"><div class="progress-fill"></div></div>
+                <div id="loaderTable" class="loader-status">Sincronizando com o Firebase...</div>
             </div>
         </section>
     </main>
 
-    <button class="btn-float" onclick="toggleModal()"><i class="fa-solid fa-plus"></i></button>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    <div id="modalCliente" class="modal-overlay">
-        <div class="modal-content">
-            <h3 id="modalTitle">Novo Registro</h3>
-            <form id="formCliente">
-                <input type="hidden" id="editIndex">
-                <input type="text" id="nome" placeholder="Nome do Cliente" required>
-                <select id="tech">
-                    <option value="Starlink">Starlink</option>
-                    <option value="PtP">Link PtP</option>
-                    <option value="Cabeamento">Cabeamento</option>
-                    <option value="Drones">Drones</option>
-                    <option value="Websites">Website</option>
-                    <option value="CFTV">CFTV</option>
-                </select>
-                <input type="text" id="local" placeholder="Localização" required>
-                <input type="number" id="valor" placeholder="Valor (MT)" required>
-                <select id="status"><option value="online">Online</option><option value="offline">Offline</option></select>
-                <button type="submit" class="btn-save">Guardar na Cloud</button>
-                <button type="button" onclick="toggleModal()" class="btn-cancel">Fechar</button>
-            </form>
-        </div>
-    </div>
-    <script type="module" src="dash-script.js"></script>
+        const firebaseConfig = { 
+            apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U", 
+            authDomain: "rozaytech-noc.firebaseapp.com", 
+            databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com", 
+            projectId: "rozaytech-noc" 
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // 1. Relógio e Saudação
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('liveClock').innerText = now.toLocaleString('pt-MZ');
+            const hour = now.getHours();
+            const greet = hour < 12 ? "Bom dia" : hour < 18 ? "Boa tarde" : "Boa noite";
+            document.getElementById('greeting').innerText = `${greet}, Admin!`;
+        }, 1000);
+
+        // 2. Escutar os Leads em tempo real
+        const tableBody = document.getElementById('leadsTable');
+        const badge = document.getElementById('countBadge');
+        const loader = document.getElementById('loaderTable');
+
+        onValue(ref(db, 'leads'), (snapshot) => {
+            tableBody.innerHTML = "";
+            loader.style.display = "none";
+
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                const entries = Object.entries(data).reverse();
+                
+                // Atualiza o contador de "Novas Vendas" no menu lateral
+                badge.innerText = entries.length;
+
+                entries.forEach(([id, lead]) => {
+                    const row = `
+                        <tr>
+                            <td>
+                                <span class="badge-tag">${lead.servico || 'Geral'}</span><br>
+                                <small class="text-muted">${lead.data || ''}</small>
+                            </td>
+                            <td>
+                                <div class="client-name">${lead.nome || 'Interessado'}</div>
+                                <div class="client-loc"><i class="fa-solid fa-location-dot"></i> ${lead.local || 'N/A'}</div>
+                            </td>
+                            <td>
+                                <a href="https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}" target="_blank" class="btn-whatsapp">
+                                    <i class="fa-brands fa-whatsapp"></i> Atender
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='3' class='empty'>Nenhum lead registado.</td></tr>";
+                badge.innerText = "0";
+            }
+        });
+
+        // 3. Toggle Menu Mobile
+        document.getElementById('menuBtn').onclick = () => {
+            document.getElementById('sidebar').classList.toggle('active');
+        };
+    </script>
 </body>
 </html>
