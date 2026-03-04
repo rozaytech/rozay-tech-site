@@ -14,69 +14,85 @@
         <div class="loader-box">
             <div class="flash-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
             <div class="loader-bar"><div id="loaderProgress"></div></div>
-            <p id="loaderPercent" style="font-family: 'JetBrains Mono';">0%</p>
+            <p id="loaderPercent">0%</p>
         </div>
     </div>
 
     <header class="topbar">
         <div class="topbar-content">
-            <div class="logo-box">ROZAY<span>TECH</span></div>
-            <div class="header-right" style="display:flex; align-items:center;">
+            <div class="logo-box">Rozay<span>Tech</span></div>
+            <div class="header-right">
                 <button id="themeToggle" title="Trocar Tema"><i class="fa-solid fa-moon"></i></button>
                 <div id="calendar" class="led-clock">00:00:00</div>
             </div>
         </div>
     </header>
 
-    <nav class="navbar"><div class="nav-links"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="#contacto">Contacto</a></div></nav>
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="#sobre">Sobre</a>
+            <a href="#servicos">Serviços</a>
+            <a href="#contacto">Solicitar</a>
+        </div>
+    </nav>
 
     <main class="main-content">
-        <section class="hero">
+        <section id="hero" class="hero">
             <div class="container">
                 <div class="badge">ENGINEERING HUB • MOZAMBIQUE</div>
                 <h1>Soluções de Engenharia para o Mercado Moderno</h1>
-                <p>Infraestrutura de redes, presença digital e operações audiovisuais.</p>
+                <p>Infraestrutura de redes, presença digital e operações audiovisuais de alta performance.</p>
             </div>
         </section>
 
         <section id="sobre" class="section">
             <div class="container">
                 <h2>Sobre Nós</h2>
-                <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores e Redes</strong>. Atuamos como o parceiro estratégico para inovação digital.</p>
-                <p>Unimos precisão técnica com visão de negócio, desde o desenho de infraestruturas críticas até ao desenvolvimento de websites de alta conversão.</p>
+                <div class="sobre-text">
+                    <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores e Redes</strong>. Atuamos como o parceiro estratégico para inovação digital.</p>
+                    <p>Unimos precisão técnica com visão de negócio em todo o espectro tecnológico: desde a implementação de redes críticas e segurança digital, até ao desenvolvimento de websites de alta conversão, operações audiovisuais com drones e logística global de importação.</p>
+                </div>
             </div>
         </section>
 
         <section id="servicos" class="section bg-light">
             <div class="container">
-                <h2>Especialidades</h2>
+                <h2>Serviços</h2>
                 <div class="cards">
                     <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Net</h3><p>Starlink, Redes PtP e gestão avançada de Firewalls.</p></div>
-                    <div class="card"><i class="fa-solid fa-code"></i><h3>Websites</h3><p>Criação de sites profissionais e rápidos.</p></div>
+                    <div class="card"><i class="fa-solid fa-code"></i><h3>Websites</h3><p>Criação de sites profissionais, rápidos e otimizados.</p></div>
                     <div class="card"><i class="fa-solid fa-plane-up"></i><h3>Drones</h3><p>Inspeções técnicas e audiovisual profissional.</p></div>
+                    <div class="card"><i class="fa-solid fa-microchip"></i><h3>Consultoria TI</h3><p>Gestão de infraestrutura e suporte especializado.</p></div>
+                    <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança</h3><p>Sistemas de CFTV inteligentes e proteção de dados.</p></div>
+                    <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Import & Export</h3><p>Logística global rápida para equipamentos tecnológicos.</p></div>
                 </div>
             </div>
         </section>
 
-        <section id="contacto" class="section">
+        <section id="contacto" class="section section-solicitar">
             <div class="container">
-                <h2>Fale com o NOC</h2>
+                <h2>Solicite o Serviço</h2>
                 <div class="form-container">
                     <form id="leadForm">
                         <div class="f-row">
-                            <input type="text" id="ln" placeholder="Nome / Empresa" required>
-                            <input type="text" id="ll" placeholder="Cidade / Província" required>
+                            <div class="input-wrap"><input type="text" id="ln" placeholder="Nome / Empresa" required></div>
+                            <div class="input-wrap"><input type="text" id="ll" placeholder="Cidade / Província" required></div>
                         </div>
                         <div class="f-row">
-                            <input type="tel" id="lw" placeholder="WhatsApp (ex: 84...)" required>
-                            <select id="ls">
-                                <option value="Redes">Starlink & Redes</option>
-                                <option value="Web">Websites de Elite</option>
-                                <option value="Drones">Audiovisual Drone</option>
-                            </select>
+                            <div class="input-wrap"><input type="tel" id="lw" placeholder="WhatsApp (ex: 84...)" required></div>
+                            <div class="input-wrap">
+                                <select id="ls">
+                                    <option value="Redes">Starlink & Redes</option>
+                                    <option value="Web">Websites de Elite</option>
+                                    <option value="Drones">Audiovisual Drone</option>
+                                    <option value="TI">Consultoria TI</option>
+                                    <option value="Segurança">Segurança Digital</option>
+                                    <option value="Import">Import & Export</option>
+                                </select>
+                            </div>
                         </div>
                         <button type="submit" id="lb">SINCRONIZAR SOLICITAÇÃO</button>
-                        <p id="fs" style="text-align:center; margin-top:15px;"></p>
+                        <p id="fs"></p>
                     </form>
                 </div>
                 <div class="mini-grid">
@@ -94,9 +110,7 @@
             <div class="visitor-counter">
                 <i class="fa-solid fa-eye"></i> <span id="visits">1042</span> VISITAS REGISTADAS
             </div>
-            <div class="noc-link">
-                <a href="login.html">Painel de Controlo NOC</a>
-            </div>
+            <div class="noc-link"><a href="login.html">Painel de Controlo NOC</a></div>
         </div>
     </footer>
 
@@ -114,11 +128,10 @@
                     local: document.getElementById('ll').value, 
                     whatsapp: document.getElementById('lw').value, 
                     servico: document.getElementById('ls').value, 
-                    data: new Date().toLocaleString('pt-MZ'),
-                    status: 'pendente'
+                    data: new Date().toLocaleString('pt-MZ')
                 });
-                s.innerText = "✓ Enviado para o Dashboard!"; s.style.color = "#10b981"; e.target.reset();
-            } catch (err) { s.innerText = "Erro na rede."; s.style.color = "#ef4444"; }
+                s.innerText = "✓ Enviado com sucesso!"; s.style.color = "#10b981"; e.target.reset();
+            } catch (err) { s.innerText = "Erro ao enviar."; s.style.color = "#ef4444"; }
         };
     </script>
 </body>
