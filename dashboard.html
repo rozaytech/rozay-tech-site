@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RozayAdmin | Enterprise NOC</title>
+    <title>RozayAdmin | NOC Master v3</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="dash-style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,23 +12,29 @@
 </head>
 <body>
 
+    <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+
     <aside class="sidebar" id="sidebar">
-        <div class="logo-admin">Rozay<span>Admin</span></div>
+        <div class="sidebar-header">
+            <div class="logo-admin">Rozay<span>Admin</span></div>
+            <button class="close-menu" id="closeMenu"><i class="fa-solid fa-xmark"></i></button>
+        </div>
         <nav>
+            <a href="index.html" class="nav-item btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar ao Site</a>
+            <hr>
             <button class="nav-item active" onclick="showTab('painel')"><i class="fa-solid fa-chart-line"></i> Painel Geral</button>
             <button class="nav-item" onclick="showTab('vendas')"><i class="fa-solid fa-bolt"></i> Novas Vendas <span class="badge" id="badge-leads">0</span></button>
             <button class="nav-item" onclick="showTab('clientes')"><i class="fa-solid fa-users"></i> Clientes & Redes</button>
+            <button class="nav-item" onclick="showTab('infra')"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura (RF)</button>
             <button class="nav-item" onclick="showTab('faturacao')"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</button>
-            <button class="nav-item" onclick="showTab('logs')"><i class="fa-solid fa-clipboard-list"></i> Logs do Sistema</button>
-            <hr>
-            <a href="index.html" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Sair do NOC</a>
+            <button class="nav-item" onclick="showTab('logs')"><i class="fa-solid fa-clipboard-list"></i> Logs</button>
         </nav>
     </aside>
 
     <main class="main-content">
         <header class="header">
             <div class="welcome">
-                <h1 id="greeting">Carregando...</h1>
+                <h1 id="greeting">...</h1>
                 <p id="live-clock"></p>
             </div>
             <div class="status-alert" id="system-alert">
@@ -40,86 +46,71 @@
             <div class="kpi-grid">
                 <div class="kpi-card">
                     <i class="fa-solid fa-user-tie"></i>
-                    <div class="kpi-info">
-                        <h3 id="stat-clientes">0</h3>
-                        <p>Clientes Ativos</p>
-                    </div>
+                    <div class="kpi-info"><h3 id="stat-clientes">0</h3><p>Clientes</p></div>
                 </div>
                 <div class="kpi-card">
                     <i class="fa-solid fa-money-bill-trend-up"></i>
-                    <div class="kpi-info">
-                        <h3 id="stat-receita">MT 0,00</h3>
-                        <p>Receita Mensal</p>
-                    </div>
+                    <div class="kpi-info"><h3 id="stat-receita">MT 0</h3><p>Receita</p></div>
                 </div>
             </div>
-
-            <div class="chart-container card">
+            <div class="chart-box card">
                 <h3>Distribuição de Serviços</h3>
-                <canvas id="serviceChart"></canvas>
+                <div class="canvas-holder">
+                    <canvas id="serviceChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="infra" class="tab-content">
+            <div class="kpi-grid">
+                <div class="kpi-card rf">
+                    <div class="kpi-info"><h3><span id="rf-pwr">-45</span> <small>dBm</small></h3><p>Sinal RF</p></div>
+                </div>
+                <div class="kpi-card rf">
+                    <div class="kpi-info"><h3><span id="rf-ms">12</span> <small>ms</small></h3><p>Latência</p></div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Monitoramento de Pontos P2P</h3>
+                <p style="opacity:0.6; font-size:12px;">Link Estável - Pemba Hub</p>
             </div>
         </section>
 
         <section id="clientes" class="tab-content">
             <div class="card">
                 <div class="table-controls">
-                    <button class="btn btn-add" onclick="openModal('modal-cliente')"><i class="fa-solid fa-plus"></i> Novo Cliente</button>
-                    <button class="btn btn-pdf" onclick="generatePDF('table-clientes', 'Relatorio_Clientes')"><i class="fa-solid fa-file-pdf"></i> Exportar</button>
+                    <button class="btn btn-add">Novo Cliente</button>
+                    <button class="btn btn-pdf" onclick="generatePDF('table-clientes', 'Clientes')">PDF</button>
                 </div>
-                <table id="table-clientes">
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Tecnologia</th>
-                            <th>Valor (MT)</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-clientes"></tbody>
-                </table>
+                <div class="table-responsive">
+                    <table id="table-clientes">
+                        <thead><tr><th>Cliente</th><th>Tecnologia</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+                        <tbody id="tbody-clientes"></tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
         <section id="faturacao" class="tab-content">
             <div class="card">
-                <div class="table-controls">
-                    <button class="btn btn-add" onclick="openModal('modal-fatura')"><i class="fa-solid fa-plus"></i> Lançar Valor</button>
+                <div class="table-responsive">
+                    <table id="table-faturacao">
+                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Resp.</th><th>Pago</th><th>Ações</th></tr></thead>
+                        <tbody id="tbody-faturacao"></tbody>
+                    </table>
                 </div>
-                <table id="table-faturacao">
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Serviço</th>
-                            <th>Valor</th>
-                            <th>Responsável</th>
-                            <th>Status Pago</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-faturacao"></tbody>
-                </table>
-                <div class="total-footer">
-                    <strong>TOTAL GLOBAL: </strong>
-                    <span id="total-global">MT 0,00</span>
-                </div>
+                <div class="total-footer"><strong>TOTAL: </strong><span id="total-global">MT 0</span></div>
             </div>
         </section>
 
         <section id="logs" class="tab-content">
             <div class="card">
-                <h3>Histórico de Operações</h3>
-                <table id="table-logs">
-                    <thead>
-                        <tr>
-                            <th>Data/Hora</th>
-                            <th>Responsável</th>
-                            <th>Acção</th>
-                            <th>Detalhes</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-logs"></tbody>
-                </table>
+                <div class="table-responsive">
+                    <table id="table-logs">
+                        <thead><tr><th>Data</th><th>Responsável</th><th>Acção</th><th>Detalhes</th></tr></thead>
+                        <tbody id="tbody-logs"></tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </main>

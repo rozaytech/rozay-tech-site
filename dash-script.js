@@ -11,21 +11,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// 1. Relógio e Saudação Dinâmica
-function updateHeader() {
-    const now = new Date();
-    const hrs = now.getHours();
-    const clock = document.getElementById('live-clock');
-    const greet = document.getElementById('greeting');
-    
-    clock.innerText = now.toLocaleString('pt-MZ');
-    if (hrs < 12) greet.innerText = "Bom dia, Admin!";
-    else if (hrs < 18) greet.innerText = "Boa tarde, Admin!";
-    else greet.innerText = "Boa noite, Admin!";
-}
-setInterval(updateHeader, 1000);
+// Controle do Menu Hambúrguer
+const sidebar = document.getElementById('sidebar');
+const menuToggle = document.getElementById('menuToggle');
+const closeMenu = document.getElementById('closeMenu');
 
-// 2. Navegação entre Abas
+menuToggle.onclick = () => sidebar.classList.add('open');
+closeMenu.onclick = () => sidebar.classList.remove('open');
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => sidebar.classList.remove('open'));
+});
+
+// Relógio e Monitor RF Simulado
+setInterval(() => {
+    const now = new Date();
+    document.getElementById('live-clock').innerText = now.toLocaleString('pt-MZ');
+    const hrs = now.getHours();
+    document.getElementById('greeting').innerText = hrs < 12 ? "Bom dia, Admin!" : hrs < 18 ? "Boa tarde, Admin!" : "Boa noite, Admin!";
+
+    // Atualiza Monitor RF
+    if(document.getElementById('rf-pwr')) {
+        document.getElementById('rf-pwr').innerText = (-(40 + Math.random() * 5)).toFixed(1);
+        document.getElementById('rf-ms').innerText = Math.floor(10 + Math.random() * 8);
+    }
+}, 1000);
+
+// Troca de Abas
 window.showTab = (tabId) => {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -33,88 +44,44 @@ window.showTab = (tabId) => {
     event.currentTarget.classList.add('active');
 };
 
-// 3. Monitoramento de Leads (Novas Vendas)
+// Sincronização Firebase (Exemplo Leads e Clientes)
 onValue(ref(db, 'leads'), (snap) => {
-    const badge = document.getElementById('badge-leads');
-    badge.innerText = snap.exists() ? Object.keys(snap.val()).length : 0;
+    document.getElementById('badge-leads').innerText = snap.exists() ? Object.keys(snap.val()).length : 0;
 });
 
-// 4. Gestão de Clientes e Redes
 onValue(ref(db, 'clientes'), (snap) => {
     const tbody = document.getElementById('tbody-clientes');
-    const statClientes = document.getElementById('stat-clientes');
-    const alertSystem = document.getElementById('system-alert');
     tbody.innerHTML = "";
-    
-    let totalMT = 0;
-    let offlineDetected = false;
-
-    if (snap.exists()) {
+    let total = 0;
+    if(snap.exists()) {
         const data = snap.val();
-        statClientes.innerText = Object.keys(data).length;
-
+        document.getElementById('stat-clientes').innerText = Object.keys(data).length;
         Object.entries(data).forEach(([id, c]) => {
-            totalMT += parseFloat(c.valor);
-            if (c.status === 'offline') offlineDetected = true;
-
-            tbody.innerHTML += `
-                <tr>
-                    <td><strong>${c.nome}</strong></td>
-                    <td>${c.tecnologia}</td>
-                    <td>MT ${parseFloat(c.valor).toLocaleString()}</td>
-                    <td><span class="status-badge ${c.status}">${c.status.toUpperCase()}</span></td>
-                    <td>
-                        <button onclick="editItem('clientes/${id}')" class="btn-edit"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="deleteItem('clientes/${id}', '${c.nome}')" class="btn-del"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>`;
+            total += parseFloat(c.valor || 0);
+            tbody.innerHTML += `<tr>
+                <td>${c.nome}</td>
+                <td>${c.tecnologia || 'Starlink'}</td>
+                <td>MT ${c.valor}</td>
+                <td><span class="badge ${c.status || 'online'}">${(c.status || 'online').toUpperCase()}</span></td>
+                <td><button class="btn-del" onclick="deleteItem('clientes/${id}')"><i class="fa-solid fa-trash"></i></button></td>
+            </tr>`;
         });
     }
-    
-    document.getElementById('stat-receita').innerText = `MT ${totalMT.toLocaleString()}`;
-    if (offlineDetected) {
-        alertSystem.className = "status-alert offline";
-        alertSystem.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Alerta: Clientes Offline`;
-    } else {
-        alertSystem.className = "status-alert";
-        alertSystem.innerHTML = `<i class="fa-solid fa-circle-check"></i> Sistema Online`;
-    }
+    document.getElementById('stat-receita').innerText = "MT " + total.toLocaleString();
+    document.getElementById('total-global').innerText = "MT " + total.toLocaleString();
 });
 
-// 5. Funções de Sistema (PDF e CRUD)
-window.deleteItem = (path, name) => {
-    if (confirm(`Confirmar exclusão de: ${name}?`)) {
-        remove(ref(db, path));
-        logAction("Eliminar", `Removido: ${name}`);
-    }
-};
-
-async function logAction(acao, detalhes) {
-    await push(ref(db, 'logs'), {
-        data: new Date().toLocaleString(),
-        responsavel: "Admin",
-        acao: acao,
-        detalhes: detalhes
-    });
-}
-
-window.generatePDF = (tableId, filename) => {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.text("ROZAY TECH - RELATÓRIO NOC", 14, 15);
-    doc.autoTable({ html: `#${tableId}`, margin: { top: 25 } });
-    doc.save(`${filename}.pdf`);
-};
-
-// 6. Gráfico de Serviços (Exemplo de Distribuição)
+// Gráfico de Pizza (Donut) menor
 const ctx = document.getElementById('serviceChart').getContext('2d');
 new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: ['Starlink', 'Redes Wireless', 'Consultoria', 'Drones'],
+        labels: ['Starlink', 'Wireless', 'Consultoria', 'Drones'],
         datasets: [{
-            data: [40, 30, 20, 10],
-            backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444']
+            data: [45, 25, 20, 10],
+            backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444'],
+            borderWidth: 0
         }]
-    }
+    },
+    options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
 });
