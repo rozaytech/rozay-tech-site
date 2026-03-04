@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RozayAdmin | NOC Master v3</title>
+    <title>RozayAdmin | NOC Master</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="dash-style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
 </head>
 <body>
 
@@ -22,97 +20,76 @@
         <nav>
             <a href="index.html" class="nav-item btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar ao Site</a>
             <hr>
-            <button class="nav-item active" onclick="showTab('painel')"><i class="fa-solid fa-chart-line"></i> Painel Geral</button>
-            <button class="nav-item" onclick="showTab('vendas')"><i class="fa-solid fa-bolt"></i> Novas Vendas <span class="badge" id="badge-leads">0</span></button>
-            <button class="nav-item" onclick="showTab('clientes')"><i class="fa-solid fa-users"></i> Clientes & Redes</button>
-            <button class="nav-item" onclick="showTab('infra')"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura (RF)</button>
-            <button class="nav-item" onclick="showTab('faturacao')"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</button>
-            <button class="nav-item" onclick="showTab('logs')"><i class="fa-solid fa-clipboard-list"></i> Logs</button>
+            <button class="nav-link active" data-target="painel"><i class="fa-solid fa-chart-line"></i> Painel Geral</button>
+            <button class="nav-link" data-target="vendas"><i class="fa-solid fa-bolt"></i> Novas Vendas</button>
+            <button class="nav-link" data-target="clientes"><i class="fa-solid fa-users"></i> Clientes & Redes</button>
+            <button class="nav-link" data-target="infra"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</button>
+            <button class="nav-link" data-target="faturacao"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</button>
+            <button class="nav-link" data-target="logs"><i class="fa-solid fa-clipboard-list"></i> Logs</button>
         </nav>
     </aside>
 
     <main class="main-content">
         <header class="header">
             <div class="welcome">
-                <h1 id="greeting">...</h1>
-                <p id="live-clock"></p>
+                <h1 id="greeting">Boa tarde, Admin!</h1>
+                <p id="live-clock">--/--/----, --:--:--</p>
             </div>
-            <div class="status-alert" id="system-alert">
-                <i class="fa-solid fa-circle-check"></i> Sistema Online
-            </div>
+            <div class="status-alert" id="system-alert">Sistema Online</div>
         </header>
 
-        <section id="painel" class="tab-content active">
+        <div id="painel" class="tab-content active">
             <div class="kpi-grid">
-                <div class="kpi-card">
-                    <i class="fa-solid fa-user-tie"></i>
-                    <div class="kpi-info"><h3 id="stat-clientes">0</h3><p>Clientes</p></div>
-                </div>
-                <div class="kpi-card">
-                    <i class="fa-solid fa-money-bill-trend-up"></i>
-                    <div class="kpi-info"><h3 id="stat-receita">MT 0</h3><p>Receita</p></div>
-                </div>
+                <div class="kpi-card"><i class="fa-solid fa-user-tie"></i><div class="kpi-info"><h3 id="stat-clientes">0</h3><p>Clientes</p></div></div>
+                <div class="kpi-card"><i class="fa-solid fa-money-bill-trend-up"></i><div class="kpi-info"><h3 id="stat-receita">MT 0</h3><p>Receita</p></div></div>
             </div>
             <div class="chart-box card">
                 <h3>Distribuição de Serviços</h3>
-                <div class="canvas-holder">
-                    <canvas id="serviceChart"></canvas>
-                </div>
+                <div class="canvas-holder"><canvas id="serviceChart"></canvas></div>
             </div>
-        </section>
+        </div>
 
-        <section id="infra" class="tab-content">
+        <div id="infra" class="tab-content">
             <div class="kpi-grid">
-                <div class="kpi-card rf">
-                    <div class="kpi-info"><h3><span id="rf-pwr">-45</span> <small>dBm</small></h3><p>Sinal RF</p></div>
-                </div>
-                <div class="kpi-card rf">
-                    <div class="kpi-info"><h3><span id="rf-ms">12</span> <small>ms</small></h3><p>Latência</p></div>
-                </div>
+                <div class="kpi-card rf"><div class="kpi-info"><h3><span id="rf-pwr">-41.3</span> <small>dBm</small></h3><p>Sinal RF</p></div></div>
+                <div class="kpi-card rf"><div class="kpi-info"><h3><span id="rf-ms">16</span> <small>ms</small></h3><p>Latência</p></div></div>
             </div>
-            <div class="card">
-                <h3>Monitoramento de Pontos P2P</h3>
-                <p style="opacity:0.6; font-size:12px;">Link Estável - Pemba Hub</p>
-            </div>
-        </section>
+            <div class="card"><h3>Monitoramento de Pontos P2P</h3><p>Link Estável - Pemba Hub</p></div>
+        </div>
 
-        <section id="clientes" class="tab-content">
+        <div id="clientes" class="tab-content">
             <div class="card">
-                <div class="table-controls">
-                    <button class="btn btn-add">Novo Cliente</button>
-                    <button class="btn btn-pdf" onclick="generatePDF('table-clientes', 'Clientes')">PDF</button>
-                </div>
+                <div class="table-header"><h3>Base de Clientes</h3> <button class="btn-add">Novo Cliente</button></div>
                 <div class="table-responsive">
-                    <table id="table-clientes">
+                    <table>
                         <thead><tr><th>Cliente</th><th>Tecnologia</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
                         <tbody id="tbody-clientes"></tbody>
                     </table>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section id="faturacao" class="tab-content">
+        <div id="faturacao" class="tab-content">
             <div class="card">
+                <h3>Resumo Financeiro</h3>
                 <div class="table-responsive">
-                    <table id="table-faturacao">
-                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Resp.</th><th>Pago</th><th>Ações</th></tr></thead>
+                    <table>
+                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Pago</th></tr></thead>
                         <tbody id="tbody-faturacao"></tbody>
                     </table>
                 </div>
-                <div class="total-footer"><strong>TOTAL: </strong><span id="total-global">MT 0</span></div>
+                <div class="total-box"><strong>Total: </strong><span id="total-global">MT 0</span></div>
             </div>
-        </section>
+        </div>
 
-        <section id="logs" class="tab-content">
-            <div class="card">
-                <div class="table-responsive">
-                    <table id="table-logs">
-                        <thead><tr><th>Data</th><th>Responsável</th><th>Acção</th><th>Detalhes</th></tr></thead>
-                        <tbody id="tbody-logs"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+        <div id="logs" class="tab-content">
+            <div class="card"><h3>Histórico do Sistema</h3><div id="tbody-logs"></div></div>
+        </div>
+
+        <div id="vendas" class="tab-content">
+            <div class="card"><h3>Interessados no Site</h3><div id="tbody-leads"></div></div>
+        </div>
+
     </main>
 
     <script type="module" src="dash-script.js"></script>

@@ -1,45 +1,30 @@
-:root { --primary: #2563eb; --dark: #0f172a; --bg: #f4f7fe; --white: #fff; --success: #10b981; --danger: #ef4444; }
+/* ... (Seu CSS anterior aqui) ... */
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: var(--bg); color: var(--dark); display: flex; overflow-x: hidden; }
-
-/* SIDEBAR & TOGGLE */
-.menu-toggle { position: fixed; top: 15px; left: 15px; z-index: 2000; background: var(--primary); color: #fff; border: none; width: 40px; height: 40px; border-radius: 8px; display: none; cursor: pointer; }
-.close-menu { background: none; border: none; color: #fff; font-size: 24px; display: none; }
-
-.sidebar { width: 260px; height: 100vh; background: var(--dark); padding: 25px; position: fixed; transition: 0.3s; z-index: 1500; }
-.sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.logo-admin { color: #fff; font-size: 22px; font-weight: 800; }
-.logo-admin span { color: var(--primary); }
-
-.nav-item { display: flex; align-items: center; width: 100%; padding: 12px; color: #94a3b8; border: none; background: none; cursor: pointer; border-radius: 10px; font-size: 14px; text-decoration: none; margin-bottom: 5px; }
-.nav-item.active { background: var(--primary); color: #fff; }
-.btn-back { background: rgba(255,255,255,0.05); color: #fff; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
-
-/* CONTENT */
-.main-content { margin-left: 260px; padding: 30px; width: 100%; transition: 0.3s; }
-.header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; margin-top: 10px; }
-
-.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px; }
-.kpi-card { background: var(--white); padding: 20px; border-radius: 15px; display: flex; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-.kpi-card i { font-size: 24px; color: var(--primary); margin-right: 15px; }
-.kpi-card.rf { border-left: 4px solid var(--primary); }
-
-.card { background: var(--white); padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); margin-bottom: 20px; }
-.chart-box { max-width: 500px; margin: 0 auto; }
-.canvas-holder { position: relative; height: 250px; width: 100%; }
-
-.table-responsive { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; min-width: 500px; }
-th { text-align: left; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 12px; border-bottom: 1px solid #eee; }
-td { padding: 12px; border-bottom: 1px solid #f9f9f9; font-size: 13px; }
-
-/* MOBILE ADJUSTS */
-@media (max-width: 992px) {
-    .menu-toggle { display: block; }
-    .sidebar { left: -260px; }
-    .sidebar.open { left: 0; }
-    .close-menu { display: block; }
-    .main-content { margin-left: 0; padding: 20px; padding-top: 70px; }
-    .header { flex-direction: column; gap: 10px; }
+/* CRUCIAL: Esconde as seções que não estão ativas */
+.tab-content {
+    display: none; 
+    animation: fadeIn 0.3s ease;
 }
+
+.tab-content.active {
+    display: block !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajuste do Gráfico para não "explodir" */
+.chart-box { max-width: 450px; margin: 20px auto; }
+.canvas-holder { height: 300px; width: 100%; }
+
+/* Estilo dos botões do menu */
+.nav-link {
+    display: flex; align-items: center; width: 100%; padding: 12px;
+    color: #94a3b8; border: none; background: none; cursor: pointer;
+    border-radius: 10px; font-size: 14px; margin-bottom: 5px; transition: 0.2s;
+}
+.nav-link i { margin-right: 12px; width: 20px; }
+.nav-link.active { background: #2563eb; color: #fff; }
+.nav-link:hover { background: rgba(255,255,255,0.1); color: #fff; }
