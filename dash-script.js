@@ -1,60 +1,132 @@
-// --- LÓGICA DE NAVEGAÇÃO (TABS) ---
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, onValue, push, set, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+const firebaseConfig = { 
+    apiKey: "AIzaSyAe-UYZc4-K94cfrSTDqkG8_UjBjFpJ_-U", 
+    authDomain: "rozaytech-noc.firebaseapp.com", 
+    databaseURL: "https://rozaytech-noc-default-rtdb.firebaseio.com", 
+    projectId: "rozaytech-noc" 
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// --- NAVEGAÇÃO E INTERFACE ---
 const navLinks = document.querySelectorAll('.nav-link');
-const sections = document.querySelectorAll('.tab-content');
+const tabs = document.querySelectorAll('.tab-content');
 
 navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        const target = link.getAttribute('data-target');
-
-        // 1. Remove classe ativa de todos os botões
-        navLinks.forEach(btn => btn.classList.remove('active'));
-        // 2. Adiciona ao botão clicado
-        link.classList.add('active');
-
-        // 3. Esconde todas as seções
-        sections.forEach(section => section.classList.remove('active'));
-        // 4. Mostra a seção alvo
+    link.onclick = function() {
+        const target = this.getAttribute('data-target');
+        navLinks.forEach(l => l.classList.remove('active'));
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        this.classList.add('active');
         document.getElementById(target).classList.add('active');
-
-        // Fechar menu mobile ao clicar (opcional)
         document.getElementById('sidebar').classList.remove('open');
-    });
+    };
 });
 
-// --- CONTROLE DO MENU HAMBÚRGUER ---
-const sidebar = document.getElementById('sidebar');
-const menuToggle = document.getElementById('menuToggle');
-const closeMenu = document.getElementById('closeMenu');
+// Menu Mobile
+document.getElementById('menuToggle').onclick = () => document.getElementById('sidebar').classList.add('open');
+document.getElementById('closeMenu').onclick = () => document.getElementById('sidebar').classList.remove('open');
 
-menuToggle.onclick = () => sidebar.classList.add('open');
-closeMenu.onclick = () => sidebar.classList.remove('open');
-
-// --- RELÓGIO E SAUDAÇÃO ---
-function updateTime() {
+// Relógio e Saudação
+setInterval(() => {
     const now = new Date();
     document.getElementById('live-clock').innerText = now.toLocaleString('pt-MZ');
     const hrs = now.getHours();
     const greet = document.getElementById('greeting');
-    if(hrs < 12) greet.innerText = "Bom dia, Admin!";
-    else if(hrs < 18) greet.innerText = "Boa tarde, Admin!";
-    else greet.innerText = "Boa noite, Admin!";
-}
-setInterval(updateTime, 1000);
+    greet.innerText = hrs < 12 ? "Bom dia, Admin!" : hrs < 18 ? "Boa tarde, Admin!" : "Boa noite, Admin!";
+    
+    // Monitor RF Simulado
+    if(document.getElementById('rf-pwr')) {
+        document.getElementById('rf-pwr').innerText = (-(40 + Math.random())).toFixed(1);
+        document.getElementById('rf-ms').innerText = Math.floor(12 + Math.random() * 6);
+    }
+}, 1000);
 
-// --- INICIALIZAÇÃO DO GRÁFICO (CHART.JS) ---
+// --- DADOS FIREBASE ---
+
+// Clientes & Redes
+onValue(ref(db, 'clientes'), (snap) => {
+    const tbody = document.getElementById('tbody-clientes');
+    tbody.innerHTML = "";
+    let totalMT = 0;
+    let offlineCount = 0;
+
+    if(snap.exists()){
+        Object.entries(snap.val()).forEach(([id, c]) => {
+            totalMT += parseFloat(c.valor || 0);
+            if(c.status === 'offline') offlineCount++;
+            
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${c.nome}</strong></td>
+                    <td>${c.tecnologia}</td>
+                    <td>MT ${parseFloat(c.valor).toLocaleString()}</td>
+                    <td><span class="status-badge ${c.status}">${c.status.toUpperCase()}</span></td>
+                    <td>
+                        <button onclick="editData('clientes/${id}')" class="btn-edit">✏️</button>
+                        <button onclick="deleteData('clientes/${id}', '${c.nome}')" class="btn-del">🗑️</button>
+                    </td>
+                </tr>`;
+        });
+    }
+    document.getElementById('stat-clientes').innerText = snap.exists() ? Object.keys(snap.val()).length : 0;
+    document.getElementById('stat-receita').innerText = "MT " + totalMT.toLocaleString();
+    
+    // Alerta de Sistema
+    const alertBox = document.getElementById('system-alert');
+    if(offlineCount > 0) {
+        alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${offlineCount} Clientes Offline`;
+        alertBox.style.background = "#fee2e2"; alertBox.style.color = "#ef4444";
+    } else {
+        alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Sistema Online`;
+        alertBox.style.background = "#dcfce7"; alertBox.style.color = "#10b981";
+    }
+});
+
+// Logs do Sistema
+onValue(ref(db, 'logs'), (snap) => {
+    const tbody = document.getElementById('tbody-logs');
+    tbody.innerHTML = "";
+    if(snap.exists()){
+        Object.values(snap.val()).reverse().forEach(log => {
+            tbody.innerHTML += `<tr><td>${log.data}</td><td>${log.responsavel}</td><td>${log.acao}</td><td>${log.detalhes}</td></tr>`;
+        });
+    }
+});
+
+// Função para Registar Logs
+async function registrarLog(acao, detalhes) {
+    await push(ref(db, 'logs'), {
+        data: new Date().toLocaleString(),
+        responsavel: "Admin",
+        acao: acao,
+        detalhes: detalhes
+    });
+}
+
+// --- GRÁFICOS ---
 const ctx = document.getElementById('serviceChart').getContext('2d');
 new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: ['Starlink', 'Wireless', 'Consultoria', 'Drones'],
+        labels: ['Starlink', 'Redes Wireless', 'Consultoria', 'Drones'],
         datasets: [{
-            data: [40, 25, 20, 15],
+            data: [45, 25, 15, 15],
             backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444'],
             borderWidth: 0
         }]
     },
-    options: {
-        maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom' } }
-    }
+    options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
 });
+
+// --- FUNÇÕES EXPORTADAS ---
+window.deleteData = (path, name) => {
+    if(confirm("Deseja apagar " + name + "?")) {
+        remove(ref(db, path));
+        registrarLog("Eliminar", "Eliminou o registo de " + name);
+    }
+}

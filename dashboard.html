@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RozayAdmin | NOC Master</title>
+    <title>RozayAdmin | Enterprise NOC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="dash-style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
 </head>
 <body>
 
@@ -25,71 +27,120 @@
             <button class="nav-link" data-target="clientes"><i class="fa-solid fa-users"></i> Clientes & Redes</button>
             <button class="nav-link" data-target="infra"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</button>
             <button class="nav-link" data-target="faturacao"><i class="fa-solid fa-file-invoice-dollar"></i> Faturação</button>
-            <button class="nav-link" data-target="logs"><i class="fa-solid fa-clipboard-list"></i> Logs</button>
+            <button class="nav-link" data-target="logs"><i class="fa-solid fa-clipboard-list"></i> Logs do Sistema</button>
         </nav>
     </aside>
 
     <main class="main-content">
         <header class="header">
             <div class="welcome">
-                <h1 id="greeting">Boa tarde, Admin!</h1>
-                <p id="live-clock">--/--/----, --:--:--</p>
+                <h1 id="greeting">...</h1>
+                <p id="live-clock"></p>
             </div>
-            <div class="status-alert" id="system-alert">Sistema Online</div>
+            <div class="status-alert" id="system-alert">
+                <i class="fa-solid fa-circle-check"></i> Sistema Online
+            </div>
         </header>
 
-        <div id="painel" class="tab-content active">
+        <section id="painel" class="tab-content active">
             <div class="kpi-grid">
-                <div class="kpi-card"><i class="fa-solid fa-user-tie"></i><div class="kpi-info"><h3 id="stat-clientes">0</h3><p>Clientes</p></div></div>
-                <div class="kpi-card"><i class="fa-solid fa-money-bill-trend-up"></i><div class="kpi-info"><h3 id="stat-receita">MT 0</h3><p>Receita</p></div></div>
+                <div class="kpi-card">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <div class="kpi-info"><h3 id="stat-clientes">0</h3><p>Clientes Ativos</p></div>
+                </div>
+                <div class="kpi-card">
+                    <i class="fa-solid fa-money-bill-trend-up"></i>
+                    <div class="kpi-info"><h3 id="stat-receita">MT 0</h3><p>Receita Mensal</p></div>
+                </div>
             </div>
-            <div class="chart-box card">
+            <div class="chart-container card">
                 <h3>Distribuição de Serviços</h3>
                 <div class="canvas-holder"><canvas id="serviceChart"></canvas></div>
             </div>
-        </div>
+        </section>
 
-        <div id="infra" class="tab-content">
-            <div class="kpi-grid">
-                <div class="kpi-card rf"><div class="kpi-info"><h3><span id="rf-pwr">-41.3</span> <small>dBm</small></h3><p>Sinal RF</p></div></div>
-                <div class="kpi-card rf"><div class="kpi-info"><h3><span id="rf-ms">16</span> <small>ms</small></h3><p>Latência</p></div></div>
-            </div>
-            <div class="card"><h3>Monitoramento de Pontos P2P</h3><p>Link Estável - Pemba Hub</p></div>
-        </div>
-
-        <div id="clientes" class="tab-content">
+        <section id="clientes" class="tab-content">
             <div class="card">
-                <div class="table-header"><h3>Base de Clientes</h3> <button class="btn-add">Novo Cliente</button></div>
+                <div class="table-controls">
+                    <button class="btn btn-primary" onclick="openModal('modal-cliente')">Adicionar Cliente</button>
+                    <button class="btn btn-secondary" onclick="exportPDF('table-clientes', 'Relatorio_Clientes')">Gerar PDF</button>
+                </div>
                 <div class="table-responsive">
-                    <table>
-                        <thead><tr><th>Cliente</th><th>Tecnologia</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+                    <table id="table-clientes">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Tecnologia (Serviço)</th>
+                                <th>Valor (MT)</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
                         <tbody id="tbody-clientes"></tbody>
                     </table>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="faturacao" class="tab-content">
+        <section id="faturacao" class="tab-content">
             <div class="card">
-                <h3>Resumo Financeiro</h3>
+                <div class="table-controls">
+                    <button class="btn btn-primary" onclick="openModal('modal-fatura')">Lançar Fatura</button>
+                </div>
                 <div class="table-responsive">
-                    <table>
-                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Pago</th></tr></thead>
+                    <table id="table-faturacao">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Serviço</th>
+                                <th>Valor</th>
+                                <th>Responsável</th>
+                                <th>Valor Pago</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
                         <tbody id="tbody-faturacao"></tbody>
                     </table>
                 </div>
-                <div class="total-box"><strong>Total: </strong><span id="total-global">MT 0</span></div>
+                <div class="total-global-box">
+                    <strong>TOTAL GLOBAL: </strong>
+                    <span id="total-global-val">MT 0,00</span>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div id="logs" class="tab-content">
-            <div class="card"><h3>Histórico do Sistema</h3><div id="tbody-logs"></div></div>
-        </div>
+        <section id="infra" class="tab-content">
+            <div class="kpi-grid">
+                <div class="kpi-card rf">
+                    <div class="kpi-info"><h3><span id="rf-pwr">-41.0</span> <small>dBm</small></h3><p>Sinal RF (Pemba Hub)</p></div>
+                </div>
+                <div class="kpi-card rf">
+                    <div class="kpi-info"><h3><span id="rf-ms">15</span> <small>ms</small></h3><p>Latência Média</p></div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Monitoramento de Pontos P2P</h3>
+                <div id="rf-graph-placeholder" style="height: 100px; background: #f8fafc; border-radius: 10px; display:flex; align-items:center; justify-content:center; color: #cbd5e1;">[ Gráfico de Estabilidade de Link ]</div>
+            </div>
+        </section>
 
-        <div id="vendas" class="tab-content">
-            <div class="card"><h3>Interessados no Site</h3><div id="tbody-leads"></div></div>
-        </div>
-
+        <section id="logs" class="tab-content">
+            <div class="card">
+                <div class="table-responsive">
+                    <table id="table-logs">
+                        <thead>
+                            <tr>
+                                <th>Data e Hora</th>
+                                <th>Responsável</th>
+                                <th>Acção</th>
+                                <th>Detalhes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-logs"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script type="module" src="dash-script.js"></script>
