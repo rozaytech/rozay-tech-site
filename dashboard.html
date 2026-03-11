@@ -11,9 +11,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
-    <div class="status-banner">SISTEMA NOC ONLINE - PEMBA, MZ</div>
+    <div class="status-banner">SISTEMA NOC ONLINE - PEMBA, MOÇAMBIQUE</div>
+    
+    <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo-box">Rozay<span>Admin</span></div>
             <div class="tagline">Engineering Hub</div>
@@ -23,50 +25,48 @@
             <a href="#" class="nav-item" data-sec="clientes"><i class="fa-solid fa-users"></i> Clientes</a>
             <a href="#" class="nav-item" data-sec="infra"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
             <a href="#" class="nav-item" data-sec="logs"><i class="fa-solid fa-code"></i> Auditoria</a>
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 10px 0;">
+            <a href="https://rozay-tech-site.vercel.app" class="nav-item" style="color:var(--success)"><i class="fa-solid fa-globe"></i> Site Público</a>
         </nav>
         <div class="sidebar-footer">
-            <button id="btnLogout" class="logout-btn"><i class="fa-solid fa-power-off"></i> Sair do Sistema</button>
+            <button id="btnLogout" class="logout-btn"><i class="fa-solid fa-power-off"></i> Sair</button>
         </div>
     </aside>
 
     <main class="content-area">
         <header class="top-bar">
-            <h1 id="greeting">Boa tarde, Faume</h1>
-            <div id="clock" style="font-family: 'JetBrains Mono'; color: var(--accent);">00:00:00</div>
+            <h1 id="greeting">...</h1>
+            <div id="clock" style="font-family: 'JetBrains Mono'; color: var(--accent); font-weight: bold;">00:00:00</div>
         </header>
 
         <div class="scroll-content">
             <section id="sec-home" class="spa-section active">
                 <div class="stats-grid">
-                    <div class="card kpi-accent">
+                    <div class="card">
                         <h3>Clientes Ativos</h3>
                         <p class="value" id="count-clients">0</p>
-                        <small style="color:var(--success)">+ 100% Sincronizado</small>
+                        <button onclick="exportPDF()" class="btn-pdf" style="margin-top:10px; font-size:12px;"><i class="fa-solid fa-file-pdf"></i> Exportar Relatório</button>
                     </div>
-                    <div class="card kpi-accent">
-                        <h3>Faturação Total</h3>
+                    <div class="card">
+                        <h3>Faturação Bruta</h3>
                         <p class="value" id="total-revenue">0.00 MT</p>
-                        <small>Mensal Bruto</small>
+                        <small style="color:var(--success)">Atualizado em tempo real</small>
                     </div>
                 </div>
-                <div class="card" style="max-height: 400px;">
-                    <canvas id="mainChart"></canvas>
-                </div>
+                <div class="card"><canvas id="mainChart"></canvas></div>
             </section>
 
             <section id="sec-clientes" class="spa-section">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h2>Gestão de Contratos</h2>
-                    <div>
-                        <button onclick="openModal()" class="nav-item" style="background:var(--accent); color:white; border:none; cursor:pointer;">+ Novo Cliente</button>
-                    </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h2>Serviços & Contratos</h2>
+                    <button onclick="openModal()" class="nav-item" style="background:var(--accent); color:white; border:none; cursor:pointer; padding:10px 20px;">+ Novo Registro</button>
                 </div>
                 <div class="table-container">
-                    <table>
+                    <table id="table-to-export">
                         <thead>
                             <tr>
                                 <th>Cliente</th>
-                                <th>Tecnologia</th>
+                                <th>Serviço</th>
                                 <th>Valor (MT)</th>
                                 <th>Status</th>
                                 <th>Ações</th>
@@ -78,23 +78,23 @@
             </section>
 
             <section id="sec-infra" class="spa-section">
-                <h2>Monitorização RF Starlink & P2P</h2>
-                <div class="rf-grid">
-                    <div class="rf-card">
-                        <h3>Sinal Backhaul (Pemba)</h3>
-                        <div class="rf-value"><span class="pulse"></span><span id="rf-val">-64</span> dBm</div>
-                        <p><small>Estabilidade: Ótima</small></p>
+                <h2>NOC: Monitorização RF</h2>
+                <div class="stats-grid">
+                    <div class="card">
+                        <h3>Starlink Backhaul</h3>
+                        <p class="value" id="rf-val" style="color:var(--success)">-64 dBm</p>
+                        <small>Localização: Hub Central Pemba</small>
                     </div>
-                    <div class="rf-card">
-                        <h3>Latência de Rede</h3>
-                        <div class="rf-value" id="ping-val" style="color:var(--accent)">22ms</div>
-                        <p><small>Destino: Google DNS</small></p>
+                    <div class="card">
+                        <h3>Ping Global</h3>
+                        <p class="value" id="ping-val" style="color:var(--accent)">20ms</p>
+                        <small>Gateway: Starlink Ground Station</small>
                     </div>
                 </div>
             </section>
 
             <section id="sec-logs" class="spa-section">
-                <h2>Logs do Sistema (Firebase)</h2>
+                <h2>Auditoria de Operações</h2>
                 <div class="terminal" id="terminal-logs"></div>
             </section>
         </div>
@@ -102,22 +102,31 @@
 
     <div id="modal-client" class="modal">
         <div class="modal-content">
-            <h3 id="modal-title">Configurar Cliente</h3>
+            <h3>Novo Registro de Serviço</h3>
             <form id="form-client">
-                <input type="hidden" id="edit-id">
-                <input type="text" id="name" placeholder="Nome Completo" required>
+                <input type="text" id="name" placeholder="Nome do Cliente" required>
                 <select id="tech">
-                    <option value="Starlink Professional">Starlink Professional</option>
-                    <option value="PtP AirFiber">PtP AirFiber</option>
-                    <option value="Fiber Home">Fiber Home</option>
+                    <optgroup label="Redes & Conectividade">
+                        <option value="Starlink Professional">Starlink High-Speed</option>
+                        <option value="Redes PtP AirFiber">Redes PtP AirFiber</option>
+                        <option value="Gestão de Firewalls">Gestão Avançada de Firewalls</option>
+                        <option value="Cabeamento Estruturado">Cabeamento Estruturado</option>
+                    </optgroup>
+                    <optgroup label="Desenvolvimento & Outros">
+                        <option value="Websites Profissionais">Criação de Websites</option>
+                        <option value="Drones Audiovisual">Drones: Audiovisual/Técnico</option>
+                        <option value="Consultoria TI">Consultoria & Suporte</option>
+                        <option value="Segurança CFTV">Segurança & CFTV Inteligente</option>
+                        <option value="Import & Export Tech">Logística Import/Export</option>
+                    </optgroup>
                 </select>
-                <input type="number" id="price" placeholder="Valor Mensal (MT)" required>
+                <input type="number" id="price" placeholder="Valor do Contrato (MT)" required>
                 <select id="status">
-                    <option value="online">Activo (Online)</option>
-                    <option value="offline">Suspenso (Offline)</option>
+                    <option value="online">Activo</option>
+                    <option value="offline">Inactivo</option>
                 </select>
-                <button type="submit" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:10px; font-weight:700;">Gravar no Banco de Dados</button>
-                <button type="button" onclick="closeModal()" style="width:100%; background:transparent; border:none; color:var(--text-dim); margin-top:10px; cursor:pointer;">Cancelar</button>
+                <button type="submit" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:10px; font-weight:bold;">Sincronizar</button>
+                <button type="button" onclick="closeModal()" style="width:100%; margin-top:10px; background:none; color:var(--text-dim); border:none; cursor:pointer;">Cancelar</button>
             </form>
         </div>
     </div>
