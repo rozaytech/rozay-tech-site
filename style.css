@@ -2,14 +2,14 @@
 
 :root {
     --bg: #ffffff; --text: #0f172a; --accent: #2563eb; 
-    --glass: rgba(255, 255, 255, 0.8); --border: #e2e8f0;
-    --neon: rgba(37, 99, 235, 0.4); --mesh: rgba(37, 99, 235, 0.05);
+    --glass: rgba(255, 255, 255, 0.85); --border: #e2e8f0;
+    --neon: rgba(37, 99, 235, 0.4); --mesh: rgba(37, 99, 235, 0.08);
 }
 
 .dark-theme {
     --bg: #020617; --text: #f8fafc; --accent: #3b82f6; 
-    --glass: rgba(15, 23, 42, 0.7); --border: #1e293b;
-    --neon: rgba(59, 130, 246, 0.6); --mesh: rgba(59, 130, 246, 0.08);
+    --glass: rgba(15, 23, 42, 0.75); --border: #1e293b;
+    --neon: rgba(59, 130, 246, 0.6); --mesh: rgba(59, 130, 246, 0.12);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,7 +20,7 @@ body {
     line-height: 1.6; overflow-x: hidden;
 }
 
-/* NOVO FUNDO DINÂMICO */
+/* FUNDO DINÂMICO VIBRANTE */
 .mesh-bg {
     position: fixed; inset: 0; z-index: -1;
     background: radial-gradient(at 0% 0%, var(--mesh) 0px, transparent 50%),
@@ -41,15 +41,16 @@ body {
 .navbar { background: var(--glass); padding: 15px 0; border-bottom: 1px solid var(--border); text-align: center; backdrop-filter: blur(10px); }
 .nav-links a { color: var(--text); text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; text-transform: uppercase; }
 
-/* CARDS DE TÍTULO (Glassmorphism) */
+/* CARDS DE TÍTULO */
 .glass-title-card, .section-header-card, .contact-glass-box {
     background: var(--glass);
     padding: 40px;
     border-radius: 24px;
     border: 1px solid var(--border);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px);
     display: inline-block;
     width: 100%;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
 }
 .glass-title-card { margin-top: 40px; }
 .section-header-card { padding: 20px 40px; margin-bottom: 40px; width: auto; }
@@ -71,11 +72,11 @@ h2 { font-size: clamp(24px, 5vw, 32px); font-weight: 900; text-transform: upperc
     box-shadow: 0 10px 30px var(--neon);
     border-color: var(--accent);
 }
-.card:hover i { transform: scale(1.2); text-shadow: 0 0 15px var(--accent); }
+.card:hover i { transform: scale(1.15); text-shadow: 0 0 15px var(--accent); }
 
 /* CONTACT BOX & TRIANGLE */
-.contact-glass-box { margin-top: 60px; max-width: 900px; }
-.contact-triangle-container { display: flex; justify-content: center; margin-top: 30px; }
+.contact-glass-box { margin-top: 80px; max-width: 900px; }
+.contact-triangle-container { display: flex; justify-content: center; margin-top: 35px; }
 .contact-triangle { display: flex; flex-direction: column; align-items: center; gap: 15px; }
 .base-row { display: flex; gap: 20px; }
 
@@ -93,7 +94,6 @@ footer { padding: 80px 0; border-top: 1px solid var(--border); background: var(-
 .noc-link a { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: bold; }
 
 @media (max-width: 768px) {
-    h1 { font-size: 2rem; }
+    h1 { font-size: 1.8rem; }
     .topbar-content { flex-direction: column; gap: 15px; }
-    .nav-links a { margin: 0 8px; font-size: 12px; }
 }

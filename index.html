@@ -7,9 +7,12 @@
     
     <meta property="og:title" content="Rozay Tech Solutions | Hub de Engenharia Digital">
     <meta property="og:description" content="Engenharia Digital e Logística de Alta Performance em Pemba.">
-    <meta property="og:image" content="https://rozay-tech-site.vercel.app/og-image.png">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/566/566312.png">
+    <meta property="og:url" content="https://rozay-tech-site.vercel.app/">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#020617">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Cpath d='M30,30 h30 a15,15 0 0,1 0,30 h-30 v15 m15,-15 l15,15' stroke='%232563eb' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
@@ -101,14 +104,18 @@
         <div class="container">
             <p>© 2026 ROZAY TECH SOLUTIONS — TECNOLOGIA EM MOVIMENTO</p>
             <div class="visitor-counter"><i class="fa-solid fa-eye"></i> <span id="visits">1042</span> VISITAS REGISTADAS</div>
-            <div class="noc-link"><a href="login.html"><i class="fa-solid fa-lock"></i> Acesso Restrito ao NOC</a></div>
+            <div class="noc-link"><a href="login.html"><i class="fa-solid fa-lock"></i> Acesso Restrito</a></div>
         </div>
     </footer>
 
     <script src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('Service Worker Registado'))
+                .catch(err => console.log('Erro no SW', err));
+            });
         }
     </script>
 </body>

@@ -1,21 +1,23 @@
 {
-  "name": "Rozay Tech NOC",
-  "short_name": "RozayNOC",
-  "start_url": "login.html",
+  "name": "Rozay Tech Solutions",
+  "short_name": "RozayTech",
+  "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#2563eb",
-  "description": "Sistema de Gestão de Redes e Faturação Rozay Tech",
+  "background_color": "#020617",
+  "theme_color": "#3b82f6",
+  "description": "Engenharia Digital, Redes Starlink e Logística Global",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/566/566312.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "https://cdn-icons-png.flaticon.com/512/566/566312.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
