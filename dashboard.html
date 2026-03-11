@@ -3,123 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rozay Tech | NOC & ERP Dashboard</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Cpath d='M30,30 h30 a15,15 0 0,1 0,30 h-30 v15 m15,-15 l15,15' stroke='%232563eb' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+    <title>Rozay Tech | NOC Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="dash-style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
-<body class="noc-theme">
-    <div id="loader-global" class="loader-overlay"><div class="spinner"></div></div>
+<body>
+    <div class="status-banner">SISTEMA NOC ONLINE - PEMBA, MZ</div>
 
-    <div id="status-banner" class="status-banner online">
-        <i class="fa-solid fa-circle-check"></i> <span id="banner-text">SISTEMA ONLINE - MOZAMBIQUE</span>
-    </div>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-box">Rozay<span>Admin</span></div>
+            <div class="tagline">Engineering Hub</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-sec="home"><i class="fa-solid fa-house"></i> Geral</a>
+            <a href="#" class="nav-item" data-sec="clientes"><i class="fa-solid fa-users"></i> Clientes</a>
+            <a href="#" class="nav-item" data-sec="infra"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
+            <a href="#" class="nav-item" data-sec="logs"><i class="fa-solid fa-code"></i> Auditoria</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button id="btnLogout" class="logout-btn"><i class="fa-solid fa-power-off"></i> Sair do Sistema</button>
+        </div>
+    </aside>
 
-    <div class="dash-container">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo-box">Rozay<span>Tech</span></div>
-                <p class="tagline">Engineering Hub</p>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item active" data-sec="home"><i class="fa-solid fa-chart-pie"></i> Geral</a>
-                <a href="#" class="nav-item" data-sec="clientes"><i class="fa-solid fa-users"></i> Clientes</a>
-                <a href="#" class="nav-item" data-sec="financeiro"><i class="fa-solid fa-money-bill-transfer"></i> Faturação</a>
-                <a href="#" class="nav-item" data-sec="infra"><i class="fa-solid fa-tower-broadcast"></i> Infraestrutura</a>
-                <a href="#" class="nav-item" data-sec="logs"><i class="fa-solid fa-fingerprint"></i> Auditoria</a>
-                <hr>
-                <a href="index.html" class="nav-item return-site"><i class="fa-solid fa-arrow-left"></i> Voltar ao Site</a>
-            </nav>
-            <div class="sidebar-footer">
-                <button id="btnLogout" class="logout-btn"><i class="fa-solid fa-power-off"></i> Sair</button>
-            </div>
-        </aside>
+    <main class="content-area">
+        <header class="top-bar">
+            <h1 id="greeting">Boa tarde, Faume</h1>
+            <div id="clock" style="font-family: 'JetBrains Mono'; color: var(--accent);">00:00:00</div>
+        </header>
 
-        <main class="content-area">
-            <header class="top-bar">
-                <div class="header-left">
-                    <button id="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
-                    <h1 id="greeting">Boa tarde, Admin</h1>
+        <div class="scroll-content">
+            <section id="sec-home" class="spa-section active">
+                <div class="stats-grid">
+                    <div class="card kpi-accent">
+                        <h3>Clientes Ativos</h3>
+                        <p class="value" id="count-clients">0</p>
+                        <small style="color:var(--success)">+ 100% Sincronizado</small>
+                    </div>
+                    <div class="card kpi-accent">
+                        <h3>Faturação Total</h3>
+                        <p class="value" id="total-revenue">0.00 MT</p>
+                        <small>Mensal Bruto</small>
+                    </div>
                 </div>
-                <div class="header-right">
-                    <div id="calendar" class="led-clock">Sincronizando...</div>
+                <div class="card" style="max-height: 400px;">
+                    <canvas id="mainChart"></canvas>
                 </div>
-            </header>
+            </section>
 
-            <div class="scroll-content">
-                <section id="sec-home" class="spa-section active">
-                    <div class="stats-grid">
-                        <div class="card kpi">
-                            <h3>Clientes Ativos</h3>
-                            <p class="value" id="count-clients">0</p>
-                            <small>Base Firebase</small>
-                        </div>
-                        <div class="card kpi accent">
-                            <h3>Receita Total</h3>
-                            <p class="value" id="total-revenue">0.00 MT</p>
-                            <small>Mensal Bruto</small>
-                        </div>
-                        <div class="card chart-box">
-                            <canvas id="mainChart"></canvas>
-                        </div>
+            <section id="sec-clientes" class="spa-section">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2>Gestão de Contratos</h2>
+                    <div>
+                        <button onclick="openModal()" class="nav-item" style="background:var(--accent); color:white; border:none; cursor:pointer;">+ Novo Cliente</button>
                     </div>
-                </section>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Tecnologia</th>
+                                <th>Valor (MT)</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="client-list"></tbody>
+                    </table>
+                </div>
+            </section>
 
-                <section id="sec-clientes" class="spa-section">
-                    <div class="panel-header">
-                        <h2>Gestão de Clientes & Redes</h2>
-                        <div class="actions">
-                            <button class="btn-primary" id="btn-add-client">+ Novo Registro</button>
-                            <button class="btn-secondary" id="btn-export-pdf"><i class="fa-solid fa-download"></i> PDF</button>
-                        </div>
+            <section id="sec-infra" class="spa-section">
+                <h2>Monitorização RF Starlink & P2P</h2>
+                <div class="rf-grid">
+                    <div class="rf-card">
+                        <h3>Sinal Backhaul (Pemba)</h3>
+                        <div class="rf-value"><span class="pulse"></span><span id="rf-val">-64</span> dBm</div>
+                        <p><small>Estabilidade: Ótima</small></p>
                     </div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Cliente</th>
-                                    <th>Tecnologia</th>
-                                    <th>Valor (MT)</th>
-                                    <th>Status</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="client-list"></tbody>
-                        </table>
+                    <div class="rf-card">
+                        <h3>Latência de Rede</h3>
+                        <div class="rf-value" id="ping-val" style="color:var(--accent)">22ms</div>
+                        <p><small>Destino: Google DNS</small></p>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <section id="sec-logs" class="spa-section">
-                    <h2>Auditoria de Segurança</h2>
-                    <div class="terminal-logs" id="audit-logs"></div>
-                </section>
-            </div>
-        </main>
-    </div>
+            <section id="sec-logs" class="spa-section">
+                <h2>Logs do Sistema (Firebase)</h2>
+                <div class="terminal" id="terminal-logs"></div>
+            </section>
+        </div>
+    </main>
 
     <div id="modal-client" class="modal">
         <div class="modal-content">
-            <h3 id="modal-title">Novo Cliente</h3>
+            <h3 id="modal-title">Configurar Cliente</h3>
             <form id="form-client">
                 <input type="hidden" id="edit-id">
-                <input type="text" id="name" placeholder="Nome do Cliente/Empresa" required>
+                <input type="text" id="name" placeholder="Nome Completo" required>
                 <select id="tech">
-                    <option value="Starlink">Starlink High-Speed</option>
-                    <option value="PtP Wireless">Point-to-Point Wireless</option>
-                    <option value="Fiber MZ">Fibra Óptica</option>
+                    <option value="Starlink Professional">Starlink Professional</option>
+                    <option value="PtP AirFiber">PtP AirFiber</option>
+                    <option value="Fiber Home">Fiber Home</option>
                 </select>
                 <input type="number" id="price" placeholder="Valor Mensal (MT)" required>
                 <select id="status">
-                    <option value="online">Online</option>
-                    <option value="offline">Offline</option>
+                    <option value="online">Activo (Online)</option>
+                    <option value="offline">Suspenso (Offline)</option>
                 </select>
-                <div class="modal-btns">
-                    <button type="button" class="btn-close">Fechar</button>
-                    <button type="submit" class="btn-save">Sincronizar Dados</button>
-                </div>
+                <button type="submit" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:10px; font-weight:700;">Gravar no Banco de Dados</button>
+                <button type="button" onclick="closeModal()" style="width:100%; background:transparent; border:none; color:var(--text-dim); margin-top:10px; cursor:pointer;">Cancelar</button>
             </form>
         </div>
     </div>
