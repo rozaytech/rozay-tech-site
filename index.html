@@ -3,71 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rozay Tech Solutions</title>
+    <title>Rozay Tech Solutions | Hub de Engenharia Digital</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Cpath d='M30,30 h30 a15,15 0 0,1 0,30 h-30 v15 m15,-15 l15,15' stroke='%232563eb' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-theme">
     <div class="tech-bg"></div>
 
     <header class="topbar">
-        <div class="container topbar-content">
+        <div class="topbar-content container">
             <div class="logo-box">Rozay<span>Tech</span></div>
-            <div class="header-right" style="display:flex; align-items:center; gap:20px;">
-                <button id="themeToggle"><i class="fa-solid fa-sun"></i></button>
+            <div class="header-right">
+                <button id="themeToggle" title="Trocar Tema"><i class="fa-solid fa-sun"></i></button>
                 <div id="calendar" class="led-clock">00/00/00 • 00:00:00</div>
             </div>
         </div>
     </header>
 
     <nav class="navbar">
-        <a href="#sobre">Sobre</a>
-        <a href="#servicos">Serviços</a>
-        <a href="#contacto">Contacto</a>
+        <div class="nav-links">
+            <a href="#sobre">Sobre</a>
+            <a href="#servicos">Serviços</a>
+            <a href="#contacto">Contacto</a>
+        </div>
     </nav>
 
-    <main class="container">
-        <section id="hero" class="section">
-            <div class="badge">ENGINEERING HUB • MOZAMBIQUE</div>
-            <h1>Infraestrutura Digital de Alta Performance</h1>
-            <p style="color:var(--dim); max-width:600px; margin: 0 auto;">Redes Starlink, presença digital e operações audiovisuais com precisão técnica.</p>
+    <main class="main-content">
+        <section id="hero" class="hero">
+            <div class="container center-text">
+                <div class="badge">ENGINEERING HUB • MOZAMBIQUE</div>
+                <h1 class="reveal-up">Soluções de Engenharia para o Mercado Moderno</h1>
+                <p class="reveal-up">Infraestrutura de redes, presença digital e operações audiovisuais de alta performance.</p>
+            </div>
         </section>
 
         <section id="sobre" class="section">
-            <h2>Sobre a RozayTech</h2>
-            <p style="max-width:700px; margin: 0 auto;">Liderada por especialistas em Engenharia de Computadores, focamos em resolver gargalos tecnológicos com soluções de padrão internacional.</p>
+            <div class="container center-text">
+                <h2 class="reveal-up">Sobre Nós</h2>
+                <div class="sobre-text reveal-up">
+                    <p>A <strong>Rozay Tech Solutions</strong> é liderada por especialistas em <strong>Engenharia de Computadores e Redes</strong>. Atuamos como o parceiro estratégico para inovação digital em Pemba e além.</p>
+                    <p>Unimos precisão técnica com visão de negócio: desde a implementação de redes Starlink críticas, até ao desenvolvimento de sistemas de alta conversão e operações com drones.</p>
+                </div>
+            </div>
         </section>
 
-        <section id="servicos" class="section">
-            <h2>Especialidades</h2>
-            <div class="cards">
-                <div class="card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Net</h3><p>Starlink e Redes PtP.</p></div>
-                <div class="card"><i class="fa-solid fa-code"></i><h3>Websites</h3><p>Desenvolvimento ágil.</p></div>
-                <div class="card"><i class="fa-solid fa-plane-up"></i><h3>Drones</h3><p>Audiovisual 4K.</p></div>
-                <div class="card"><i class="fa-solid fa-truck-fast"></i><h3>Importação</h3><p>Logística Global.</p></div>
+        <section id="servicos" class="section bg-dim">
+            <div class="container center-text">
+                <h2 class="reveal-up">Serviços Especializados</h2>
+                <div class="cards">
+                    <div class="card reveal-card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Net</h3><p>Starlink, Redes PtP e gestão avançada de Firewalls.</p></div>
+                    <div class="card reveal-card"><i class="fa-solid fa-code"></i><h3>Websites</h3><p>Criação de sites profissionais, rápidos e otimizados.</p></div>
+                    <div class="card reveal-card"><i class="fa-solid fa-plane-up"></i><h3>Drones</h3><p>Inspeções técnicas e audiovisual profissional.</p></div>
+                    <div class="card reveal-card"><i class="fa-solid fa-microchip"></i><h3>Consultoria TI</h3><p>Gestão de infraestrutura e suporte especializado.</p></div>
+                    <div class="card reveal-card"><i class="fa-solid fa-shield-halved"></i><h3>Segurança</h3><p>Sistemas de CFTV inteligentes e proteção de dados.</p></div>
+                    <div class="card reveal-card"><i class="fa-solid fa-truck-fast"></i><h3>Import & Export</h3><p>Logística global rápida para equipamentos tecnológicos.</p></div>
+                </div>
             </div>
         </section>
 
         <section id="contacto" class="section">
-            <h2>Ligação Direta</h2>
-            <div class="contact-triangle">
-                <a href="https://wa.me/258846166104" class="m-btn wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-                <div class="base-row">
-                    <a href="tel:+258870018297" class="m-btn ph"><i class="fa-solid fa-phone"></i></a>
-                    <a href="mailto:adamgyadamo@gmail.com" class="m-btn em"><i class="fa-solid fa-envelope"></i></a>
+            <div class="container center-text">
+                <h2 class="reveal-up">Solicite o Serviço</h2>
+                <p class="reveal-up">Escolha o canal de comunicação direta com o nosso NOC:</p>
+                
+                <div class="contact-triangle-container reveal-up">
+                    <div class="contact-triangle">
+                        <a href="https://wa.me/258846166104" class="m-btn wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                        <div class="base-row">
+                            <a href="tel:258870018297" class="m-btn ph"><i class="fa-solid fa-phone"></i></a>
+                            <a href="mailto:adamgyadamo@gmail.com" class="m-btn em"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="container">
-        <div class="noc-status"><span class="led-green"></span> SISTEMA OPERACIONAL</div>
-        <p>© 2026 ROZAY TECH SOLUTIONS</p>
-        <a href="login.html">Painel de Controlo NOC</a>
+    <footer class="center-text">
+        <div class="container">
+            <p>© 2026 ROZAY TECH SOLUTIONS — TECNOLOGIA EM MOVIMENTO</p>
+            <div class="visitor-counter"><i class="fa-solid fa-eye"></i> <span id="visits">1042</span> VISITAS REGISTADAS</div>
+            <div class="noc-link"><a href="login.html"><i class="fa-solid fa-lock"></i> Acesso Restrito ao NOC</a></div>
+        </div>
     </footer>
 
-    <script src="https://unpkg.com/scrollreveal"></script>
     <script src="script.js"></script>
 </body>
 </html>
