@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rozay Tech Solutions | Hub de Engenharia Digital</title>
+    
+    <meta property="og:title" content="Rozay Tech Solutions | Hub de Engenharia Digital">
+    <meta property="og:description" content="Engenharia Digital e Logística de Alta Performance em Pemba.">
+    <meta property="og:image" content="https://rozay-tech-site.vercel.app/og-image.png">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#020617">
+
+    <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Cpath d='M30,30 h30 a15,15 0 0,1 0,30 h-30 v15 m15,-15 l15,15' stroke='%232563eb' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-theme">
-    <div class="tech-bg"></div>
+    <div class="mesh-bg"></div>
 
     <header class="topbar">
         <div class="topbar-content container">
@@ -33,15 +41,19 @@
     <main class="main-content">
         <section id="hero" class="hero">
             <div class="container center-text">
-                <div class="badge">ENGINEERING HUB • MOZAMBIQUE</div>
-                <h1 class="reveal-up">Engenharia Digital e Logística de Alta Performance</h1>
-                <p class="reveal-up">Integramos infraestruturas de rede críticas, presença web de elite e soluções audiovisuais, conectando o seu negócio ao futuro com precisão técnica e logística global.</p>
+                <div class="glass-title-card reveal-up">
+                    <div class="badge">ENGINEERING HUB • MOZAMBIQUE</div>
+                    <h1>Engenharia Digital e Logística de Alta Performance</h1>
+                    <p>Integramos infraestruturas de rede críticas, presença web de elite e soluções audiovisuais, conectando o seu negócio ao futuro com precisão técnica e logística global.</p>
+                </div>
             </div>
         </section>
 
         <section id="sobre" class="section">
             <div class="container center-text">
-                <h2 class="reveal-up">Sobre Nós</h2>
+                <div class="section-header-card reveal-up">
+                    <h2>Sobre Nós</h2>
+                </div>
                 <div class="sobre-text reveal-up">
                     <p>A <strong>Rozay Tech Solutions: O Seu Hub de Engenharia e Inovação</strong> é liderada por especialistas em <strong>Engenharia de Computadores e Redes</strong>. Atuamos como o parceiro estratégico para empresas que buscam excelência digital em Pemba e em todo o território nacional.</p>
                     <p>Unimos a precisão da engenharia com uma visão de negócio 360º. O nosso diferencial reside na capacidade de cobrir todo o ciclo tecnológico: desde a implementação de redes Starlink e sistemas de segurança complexos, ao desenvolvimento de plataformas digitais de alta conversão, operações aéreas com drones e a gestão logística de importação de hardware especializado.</p>
@@ -49,9 +61,11 @@
             </div>
         </section>
 
-        <section id="servicos" class="section bg-dim">
+        <section id="servicos" class="section">
             <div class="container center-text">
-                <h2 class="reveal-up">Serviços Especializados</h2>
+                <div class="section-header-card reveal-up">
+                    <h2>Serviços Especializados</h2>
+                </div>
                 <div class="cards">
                     <div class="card reveal-card"><i class="fa-solid fa-satellite-dish"></i><h3>Redes & Conectividade</h3><p>Starlink, Redes PtP, Cabeamento Estruturado e gestão avançada de firewalls para máxima estabilidade.</p></div>
                     <div class="card reveal-card"><i class="fa-solid fa-code"></i><h3>Websites de Elite</h3><p>Desenvolvimento ágil e sistemas web otimizados para alta performance e conversão.</p></div>
@@ -65,15 +79,17 @@
 
         <section id="contacto" class="section">
             <div class="container center-text">
-                <h2 class="reveal-up">Solicite o Serviço</h2>
-                <p class="reveal-up">Escolha o canal de comunicação direta com o nosso NOC:</p>
-                
-                <div class="contact-triangle-container reveal-up">
-                    <div class="contact-triangle">
-                        <a href="https://wa.me/258846166104" class="m-btn wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-                        <div class="base-row">
-                            <a href="tel:258870018297" class="m-btn ph"><i class="fa-solid fa-phone"></i></a>
-                            <a href="mailto:adamgyadamo@gmail.com" class="m-btn em"><i class="fa-solid fa-envelope"></i></a>
+                <div class="contact-glass-box reveal-up">
+                    <h2>Solicite o Serviço</h2>
+                    <p>Escolha o canal de comunicação direta com o nosso NOC:</p>
+                    
+                    <div class="contact-triangle-container">
+                        <div class="contact-triangle">
+                            <a href="https://wa.me/258846166104" class="m-btn wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                            <div class="base-row">
+                                <a href="tel:258870018297" class="m-btn ph"><i class="fa-solid fa-phone"></i></a>
+                                <a href="mailto:adamgyadamo@gmail.com" class="m-btn em"><i class="fa-solid fa-envelope"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -90,5 +106,10 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+    </script>
 </body>
 </html>
